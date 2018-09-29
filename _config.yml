@@ -8,15 +8,15 @@ author:
   name     : Yuhang Ming
   bio      : Ph.D. student in the Visual Information Lab in University of Bristol, currently working on semantic SLAM system.
   email    : yuhang.ming@bristol.ac.uk
-  twitter  : https://twitter.com/mateussousam
+  # twitter  : https://twitter.com/mateussousam
 
 #SEO settings
 logo: /assets/img/ym.jpg/ # Site logo URL
-twitter_username: mateussousam # Twitter username
-facebook:
-    app_id: 1445035275808959 # App ID
-    publisher: https://www.facebook.com/mateus.sousamedeiros # URL of the Facebook page
-    admins: 100000229048939 # Facebook user ID that manages the page
+# twitter_username: mateussousam # Twitter username
+# facebook:
+#     app_id: 1445035275808959 # App ID
+#     publisher: https://www.facebook.com/mateus.sousamedeiros # URL of the Facebook page
+#     admins: 100000229048939 # Facebook user ID that manages the page
 
 # Build settings
 permalink: /:title/
