@@ -1,7 +1,7 @@
 # Site settings
-title: Blade Theme
-description: A simple Jekyll blog theme developed by Mateus Medeiros 
-url: "http://mateussmedeiros.github.io/blade-theme/" # the base hostname & protocol for your site, e.g. http://example.com
+title: Yohann's Blog
+description: I'm gonna write down things I learned along with my understandings.
+url: "http://yuhangming.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author settings
 author:
