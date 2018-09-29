@@ -1,4 +1,11 @@
 source "https://rubygems.org"
+ruby RUBY_VERSION
 
-gem 'jekyll', '3.1.2' # this is the Jekyll version we are working with
-# gem 'nokogiri', '1.6.7.2' # Nokogiri is a dependency that might cause errors if it's not added to the script
+group :jekyll_plugins do
+   gem "jekyll-feed", "~> 0.6"
+   gem "jekyll", "3.3.1"
+   gem 'jekyll-paginate', '~> 1.1'
+   gem 'sass', '~> 3.4', '>= 3.4.19'
+   gem 'jekyll-seo-tag'
+   gem "jekyll-sitemap"
+end
