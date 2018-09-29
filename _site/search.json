@@ -1,0 +1,17 @@
+[
+  
+    {
+      "title"    : "Example content",
+      "tags"     : "",
+      "url"      : "/example/",
+      "date"     : "31 Jan 2017"
+    } ,
+  
+    {
+      "title"    : "Welcome to Jekyll!",
+      "tags"     : "",
+      "url"      : "/welcome-to-jekyll/",
+      "date"     : "25 Jan 2017"
+    } 
+  
+]
