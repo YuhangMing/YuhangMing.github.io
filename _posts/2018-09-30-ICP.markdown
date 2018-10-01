@@ -68,13 +68,13 @@ permalink: /ICP/
       $$ \boldsymbol{R}^* $$ 
       by 
 
-      <center>| $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ |
+      <center>| $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | </center>
       
       and then calculate 
       $$ \boldsymbol{t}^* $$ 
       by setting the second term to be zero, i.e. 
       
-      <center>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ |
+      <center>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | </center>
 
     - Find $$ \boldsymbol{R}^* $$
 
