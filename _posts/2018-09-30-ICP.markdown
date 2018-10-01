@@ -14,6 +14,7 @@ permalink: /ICP/
 
   Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images):
 
-  $$ \boldsymbol{P} = {\boldsymbol{p}_1, \boldsymbol{p}_2, \dots, \boldsymbol{p}_n} $$, and $$ \boldsymbol{P}' = {\boldsymbol{p}'_1, \boldsymbol{p}'_2, \dots, \boldsymbol{p}'_n} $$
+  $$ \boldsymbol{P} = \{\boldsymbol{p}_1, \boldsymbol{p}_2, \dots, \boldsymbol{p}_n\} $$
 
-  $$ {J(\theta) =\frac{1}{2m} [\sum^m_{i=1}(h_\theta(x^{(i)}) - y^{(i)})2 + \lambda\sum^n_{j=1}\theta^2_j} $$
+  $$ \boldsymbol{P}' = \{\boldsymbol{p}'_1, \boldsymbol{p}'_2, \dots, \boldsymbol{p}'_n\} $$
+
