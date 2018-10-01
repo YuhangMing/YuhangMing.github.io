@@ -96,6 +96,8 @@ permalink: /ICP/
 
       | $$ \boldsymbol{R} = \boldsymbol{U}\boldsymbol{V}^T $$ |
 
+      Mathematical details about the optimality can be found in Appendix 3.
+
 
 #### Reference:
 
