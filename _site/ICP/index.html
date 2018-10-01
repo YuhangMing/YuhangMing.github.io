@@ -193,15 +193,9 @@
 
         <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
 
-        <p>let</p>
+        <p>let <script type="math/tex">\boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}</script>, <script type="math/tex">\boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}'</script>, we have</p>
 
-        <script type="math/tex; mode=display">\boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}'</script>
-
-        <p>substitute back we have</p>
-
-        <script type="math/tex; mode=display">\underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' ||^2 
-
-+ \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+        <script type="math/tex; mode=display">\underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
       </li>
     </ul>
   </li>
