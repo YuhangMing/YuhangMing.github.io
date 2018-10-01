@@ -50,11 +50,9 @@ permalink: /ICP/
 
       $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}' $$
 
-      the least square term can now be expressed as:
+      the least square term can now be expressed as below with mathematical details in Appendix 1:
     
-      $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
-
-      after expanding and combining terms in the equation, we have:
+      $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
 
       $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$
 
@@ -68,13 +66,13 @@ permalink: /ICP/
       $$ \boldsymbol{R}^* $$ 
       by 
 
-      <center>| $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | </center>
+      <center> <p> | $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | </p> </center>
       
       and then calculate 
       $$ \boldsymbol{t}^* $$ 
       by setting the second term to be zero, i.e. 
       
-      <center>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | </center>
+      <center> <p>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | </p> </center>
 
     - Find $$ \boldsymbol{R}^* $$
 
@@ -86,7 +84,7 @@ permalink: /ICP/
 
       $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' $$
 
-      now we try to isolate $$\boldsymbol{R}$$ out of the summation:
+      now we try to isolate $$\boldsymbol{R}$$ out of the summation (mathematical details can be found in Appendix 2):
 
       $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) $$
 
@@ -103,6 +101,9 @@ permalink: /ICP/
 
 
 #### Appendix
+  1.
+  2.
+  3.
 
 
 

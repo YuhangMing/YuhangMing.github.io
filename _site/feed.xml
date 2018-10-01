@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T20:18:24+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T20:23:12+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -47,11 +47,9 @@
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'&lt;/script&gt;
 
-        &lt;p&gt;the least square term can now be expressed as:&lt;/p&gt;
+        &lt;p&gt;the least square term can now be expressed as below with mathematical details in Appendix 1:&lt;/p&gt;
 
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2&lt;/script&gt;
-
-        &lt;p&gt;after expanding and combining terms in the equation, we have:&lt;/p&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2&lt;/script&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2&lt;/script&gt;
 
@@ -65,25 +63,13 @@
 &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^*&lt;/script&gt; 
 by&lt;/p&gt;
 
-        &lt;table&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2&lt;/script&gt;&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
+        &lt;center&gt;| $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | &lt;/center&gt;
 
         &lt;p&gt;and then calculate 
 &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}^*&lt;/script&gt; 
 by setting the second term to be zero, i.e.&lt;/p&gt;
 
-        &lt;table&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}'&lt;/script&gt;&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
+        &lt;center&gt;| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | &lt;/center&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;Find &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^*&lt;/script&gt;&lt;/p&gt;
@@ -96,7 +82,7 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'&lt;/script&gt;
 
-        &lt;p&gt;now we try to isolate &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}&lt;/script&gt; out of the summation:&lt;/p&gt;
+        &lt;p&gt;now we try to isolate &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}&lt;/script&gt; out of the summation (mathematical details can be found in Appendix 2):&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T)&lt;/script&gt;
       &lt;/li&gt;
@@ -114,7 +100,10 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.&lt;/p&gt;
 
-&lt;h4 id=&quot;appendix&quot;&gt;Appendix&lt;/h4&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
+&lt;h4 id=&quot;appendix&quot;&gt;Appendix&lt;/h4&gt;
+&lt;p&gt;1.
+  2.
+  3.&lt;/p&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
 
 &lt;h2 id=&quot;h2--a-second-level-header&quot;&gt;H2- A Second Level Header&lt;/h2&gt;
 

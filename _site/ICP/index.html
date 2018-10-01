@@ -185,11 +185,9 @@
 
         <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'</script>
 
-        <p>the least square term can now be expressed as:</p>
+        <p>the least square term can now be expressed as below with mathematical details in Appendix 1:</p>
 
-        <script type="math/tex; mode=display">\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2</script>
-
-        <p>after expanding and combining terms in the equation, we have:</p>
+        <script type="math/tex; mode=display">\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2</script>
 
         <script type="math/tex; mode=display">\parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2</script>
 
@@ -203,25 +201,13 @@
 <script type="math/tex">\boldsymbol{R}^*</script> 
 by</p>
 
-        <table>
-          <tbody>
-            <tr>
-              <td><script type="math/tex">\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2</script></td>
-            </tr>
-          </tbody>
-        </table>
+        <center>| $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | </center>
 
         <p>and then calculate 
 <script type="math/tex">\boldsymbol{t}^*</script> 
 by setting the second term to be zero, i.e.</p>
 
-        <table>
-          <tbody>
-            <tr>
-              <td><script type="math/tex">\boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}'</script></td>
-            </tr>
-          </tbody>
-        </table>
+        <center>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | </center>
       </li>
       <li>
         <p>Find <script type="math/tex">\boldsymbol{R}^*</script></p>
@@ -234,7 +220,7 @@ by setting the second term to be zero, i.e.</p>
 
         <script type="math/tex; mode=display">\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>
 
-        <p>now we try to isolate <script type="math/tex">\boldsymbol{R}</script> out of the summation:</p>
+        <p>now we try to isolate <script type="math/tex">\boldsymbol{R}</script> out of the summation (mathematical details can be found in Appendix 2):</p>
 
         <script type="math/tex; mode=display">\sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T)</script>
       </li>
@@ -253,6 +239,9 @@ by setting the second term to be zero, i.e.</p>
 <p>[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
 
 <h4 id="appendix">Appendix</h4>
+<p>1.
+  2.
+  3.</p>
 
 
   </div>
