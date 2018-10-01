@@ -201,15 +201,26 @@
 <script type="math/tex">\boldsymbol{t}</script>
 , so we can find the 
 <script type="math/tex">\boldsymbol{R}^*</script> 
-by 
-<script type="math/tex">\underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2</script> 
-and then calculate 
+by</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2</script>
+
+        <p>and then calculate 
 <script type="math/tex">\boldsymbol{t}^*</script> 
-by setting the second term to be zero, i.e. 
-<script type="math/tex">\boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}'</script>.</p>
+by setting the second term to be zero, i.e.</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}'</script>
       </li>
       <li>
         <p>Find <script type="math/tex">\boldsymbol{R}^*</script></p>
+
+        <p>Expanding equation <script type="math/tex">\frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2</script> we have</p>
+
+        <script type="math/tex; mode=display">\frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{q_i} + \boldsymbol{q_i}'^T \boldsymbol{R}^T \boldsymbol{R} \boldsymbol{q_i}' - 2 \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>
+
+        <p>Due to the orthogonality of the rotation matrix, i.e. <script type="math/tex">\boldsymbol{R}^T \boldsymbol{R} = \boldsymbol{I}</script>, the first 2 terms irrelavant to <script type="math/tex">\boldsymbol{R}</script>. Hence the least square problem becomes:</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>
       </li>
     </ul>
   </li>
