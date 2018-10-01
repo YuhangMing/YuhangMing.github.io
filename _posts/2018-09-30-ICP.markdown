@@ -45,9 +45,12 @@ permalink: /ICP/
 
     Hence, the least square term can now be expressed as:
     
-    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2 = || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
+    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
 
-    $$ || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2 $$
+    After expanding and combining terms in the equation, we have
+
+    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || \boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+
 
 
 
