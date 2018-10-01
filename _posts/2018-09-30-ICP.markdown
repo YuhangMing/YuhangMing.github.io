@@ -129,12 +129,36 @@ permalink: /ICP/
   \end{split}
   $$
 
-  By the definition of the centroids, we can find that $$ \sum_{i=1}^n \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) = 0 $$
-  Therefore, we have: 
+  By the definition of the centroids, we can find that $$ \sum_{i=1}^n \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) = 0 $$. Therefore, we have: 
 
   $$ \sum_{i=1}^n \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
 
   3.
+
+  Assume that $$ \boldsymbol{v_i} = \boldsymbol{R}\boldsymbol{q_i}' $$, we have
+
+  $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{v_i} $$
+
+  Additionally, assume that $$ \boldsymbol{q_i} = (x_i, y_i, z_i)^T $$, $$ \boldsymbol{v_i} = (a_i, b_i, c_i)^T $$, we have
+
+  $$ 
+  \begin{split}
+    \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{v_i} 
+    &= \sum_{i=1}^n (x_i, y_i, z_i)(a_i, b_i, c_i)^T \\
+    &= \sum_{i=1}^n x_ia_i + y_ib_i + z_ic_i \\
+    &= \sum_{i=1}^n tr(
+    \begin{pmatrix}
+      x_ia_i & \dots & \dots \\
+      \dots & y_ib_i & \dots \\
+      \dots & \dots & z_ic_i
+    \end{pmatrix}
+    ) \\
+    &= \sum_{i=1}^n tr(\boldsymbol{v_i} \boldsymbol{q_i}^T) \\
+    &= tr(\sum_{i=1}^n \boldsymbol{v_i} \boldsymbol{q_i}^T ) \\
+    &= tr(\sum_{i=1}^n \boldsymbol{R} \boldsymbol{q_i}' \boldsymbol{q_i}^T) \\
+    &= tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) 
+  \end{split}
+  $$
 
   4.
 

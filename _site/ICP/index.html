@@ -282,12 +282,35 @@ by setting the second term to be zero, i.e.</p>
     &= \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) \parallel^2 + \sum_{i=1}^n \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t} \parallel^2 - 2 \sum_{i=1}^n (\boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ))^T (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t})
   \end{split} %]]></script>
 
-<p>By the definition of the centroids, we can find that <script type="math/tex">\sum_{i=1}^n \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) = 0</script>
-  Therefore, we have:</p>
+<p>By the definition of the centroids, we can find that <script type="math/tex">\sum_{i=1}^n \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) = 0</script>. Therefore, we have:</p>
 
 <script type="math/tex; mode=display">\sum_{i=1}^n \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2</script>
 
 <p>3.</p>
+
+<p>Assume that <script type="math/tex">\boldsymbol{v_i} = \boldsymbol{R}\boldsymbol{q_i}'</script>, we have</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{v_i}</script>
+
+<p>Additionally, assume that <script type="math/tex">\boldsymbol{q_i} = (x_i, y_i, z_i)^T</script>, <script type="math/tex">\boldsymbol{v_i} = (a_i, b_i, c_i)^T</script>, we have</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+    \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{v_i} 
+    &= \sum_{i=1}^n (x_i, y_i, z_i)(a_i, b_i, c_i)^T \\
+    &= \sum_{i=1}^n x_ia_i + y_ib_i + z_ic_i \\
+    &= \sum_{i=1}^n tr(
+    \begin{pmatrix}
+      x_ia_i & \dots & \dots \\
+      \dots & y_ib_i & \dots \\
+      \dots & \dots & z_ic_i
+    \end{pmatrix}
+    ) \\
+    &= \sum_{i=1}^n tr(\boldsymbol{v_i} \boldsymbol{q_i}^T) \\
+    &= tr(\sum_{i=1}^n \boldsymbol{v_i} \boldsymbol{q_i}^T ) \\
+    &= tr(\sum_{i=1}^n \boldsymbol{R} \boldsymbol{q_i}' \boldsymbol{q_i}^T) \\
+    &= tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) 
+  \end{split} %]]></script>
 
 <p>4.</p>
 
