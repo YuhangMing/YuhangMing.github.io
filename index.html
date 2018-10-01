@@ -13,7 +13,7 @@ layout: default
       {% for post in site.posts limit:2 %}
         <li class="post-container"> 
         
-          <p> <span class="post-date"><i>{{ post.date | date: "%-d %b, %Y" }}</i></span> — <a class="post-link" href="{{ post.permalink | prepend: site.baseurl }}">{{ post.title }}</a> — {{ post.content | strip_html | truncatewords: 40  }} <a href="{{ post.permalink | prepend: site.baseurl }}"> Read more... </a> </p>
+          <p> <b>{{ post.title }}</b>, <span class="post-date"><i>{{ post.date | date: "%-d %b, %Y" }}</i></span> — {{ post.content | strip_html | truncatewords: 40  }} <a href="{{ post.permalink | prepend: site.baseurl }}"> Read more... </a> </p>
 
         </li>
       {% endfor %}
