@@ -67,9 +67,26 @@ permalink: /ICP/
       , so we can find the 
       $$ \boldsymbol{R}^* $$ 
       by 
-      $$ \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ 
+
+      $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ 
+      
       and then calculate 
-      $$ \boldsymbol{t}^* $$ by setting the second term to be zero, i.e. $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' $$.
+      $$ \boldsymbol{t}^* $$ 
+      by setting the second term to be zero, i.e. 
+      
+      $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$.
+
+    - Find $$ \boldsymbol{R}^* $$
+
+      Expanding equation $$ \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2 $$ we have
+
+      $$ \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{q_i} + \boldsymbol{q_i}'^T \boldsymbol{R}^T \boldsymbol{R} \boldsymbol{q_i}' - 2 \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' $$
+
+      Due to the orthogonality of the rotation matrix, i.e. $$ \boldsymbol{R}^T \boldsymbol{R} = \boldsymbol{I} $$, the first 2 terms irrelavant to $$ \boldsymbol{R} $$. Hence the least square problem becomes:
+
+      $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' $$
+
+
 
 
 
