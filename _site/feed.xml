@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T15:33:23+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T16:08:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -14,6 +14,8 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\forall i, \boldsymbol{p}_i = \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}&lt;/script&gt;
 
+&lt;p&gt;ps. inhomogeneous coordinates are used here and below.&lt;/p&gt;
+
 &lt;h4 id=&quot;solutions&quot;&gt;Solutions:&lt;/h4&gt;
 
 &lt;p&gt;Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points.&lt;/p&gt;
@@ -22,17 +24,31 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{R}^*, \boldsymbol{t}^* = \underset{ \boldsymbol{R}, \boldsymbol{t} } {\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||_2^2&lt;/script&gt;
 
-&lt;p&gt;Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation, and Non-Linear Optimization.&lt;/p&gt;
+&lt;p&gt;Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation and Non-Linear Optimization.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Linear Estimation&lt;/li&gt;
+  &lt;li&gt;Linear Estimation
+The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.
+    &lt;ul&gt;
+      &lt;li&gt;SVD
+  To Be Added…&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;Moving on, we first define the centroids of each set of the points:&lt;/p&gt;
+
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4 id=&quot;reference&quot;&gt;Reference:&lt;/h4&gt;
 
-&lt;p&gt;[1] Pomerleau, François; Colas, Francis; Siegwart, Roland (2015). “A Review of Point Cloud Registration Algorithms for Mobile Robotics”. Foundations and Trends in Robotics. 4 (1): 1–104. doi:10.1561/2300000035.&lt;/p&gt;
+&lt;p&gt;[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;
 
-&lt;p&gt;[2] 高翔，张涛，刘毅，严沁睿 (2017). “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
+&lt;p&gt;[2] F. Pomerleau, F. Colas, R. Siegwart. “A Review of Point Cloud Registration Algorithms for Mobile Robotics”. Foundations and Trends in Robotics. 4 (1): 1–104, 2015.&lt;/p&gt;
+
+&lt;p&gt;[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.&lt;/p&gt;
+
+&lt;p&gt;[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.&lt;/p&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
 
 &lt;h2 id=&quot;h2--a-second-level-header&quot;&gt;H2- A Second Level Header&lt;/h2&gt;
 

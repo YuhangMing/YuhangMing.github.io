@@ -152,6 +152,8 @@
 
 <script type="math/tex; mode=display">\forall i, \boldsymbol{p}_i = \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}</script>
 
+<p>ps. inhomogeneous coordinates are used here and below.</p>
+
 <h4 id="solutions">Solutions:</h4>
 
 <p>Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points.</p>
@@ -160,17 +162,32 @@
 
 <script type="math/tex; mode=display">\boldsymbol{R}^*, \boldsymbol{t}^* = \underset{ \boldsymbol{R}, \boldsymbol{t} } {\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||_2^2</script>
 
-<p>Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation, and Non-Linear Optimization.</p>
+<p>Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation and Non-Linear Optimization.</p>
 
 <ul>
-  <li>Linear Estimation</li>
+  <li>Linear Estimation
+The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.
+    <ul>
+      <li>SVD
+  To Be Added…</li>
+    </ul>
+
+    <p>Moving on, we first define the centroids of each set of the points:</p>
+
+    <p><script type="math/tex">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i</script>, <script type="math/tex">\boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i</script></p>
+  </li>
 </ul>
 
 <h4 id="reference">Reference:</h4>
 
-<p>[1] Pomerleau, François; Colas, Francis; Siegwart, Roland (2015). “A Review of Point Cloud Registration Algorithms for Mobile Robotics”. Foundations and Trends in Robotics. 4 (1): 1–104. doi:10.1561/2300000035.</p>
+<p>[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.</p>
 
-<p>[2] 高翔，张涛，刘毅，严沁睿 (2017). “视觉SLAM十四讲，从理论到实践”.</p>
+<p>[2] F. Pomerleau, F. Colas, R. Siegwart. “A Review of Point Cloud Registration Algorithms for Mobile Robotics”. Foundations and Trends in Robotics. 4 (1): 1–104, 2015.</p>
+
+<p>[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.</p>
+
+<p>[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
+
 
   </div>
 
