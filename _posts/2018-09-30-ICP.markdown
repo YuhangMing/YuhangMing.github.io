@@ -48,7 +48,7 @@ permalink: /ICP/
 
       the least square term can now be expressed as below with mathematical details in Appendix 2:
     
-      $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
+      $$ \sum_{i=1}^n \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
 
       let $$ \boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}$$, $$ \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}' $$, we have
 
@@ -119,12 +119,20 @@ permalink: /ICP/
   1.
 
   2.
+
   $$
   \begin{split}
-    \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 &= \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t} \parallel^2 \\
-    &= \parallel (\boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) ) + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t}) \parallel^2
+    \sum_{i=1}^n \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 
+    &= \sum_{i=1}^n \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t} \parallel^2 \\
+    &= \sum_{i=1}^n \parallel (\boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) ) + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t}) \parallel^2 \\
+    &= \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) \parallel^2 + \sum_{i=1}^n \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t} \parallel^2 - 2 \sum_{i=1}^n (\boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ))^T (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t})
   \end{split}
   $$
+
+  By the definition of the centroids, we can find that $$ \sum_{i=1}^n \boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) = 0 $$
+  Therefore, we have: 
+
+  $$ \sum_{i=1}^n \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \sum_{i=1}^n \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
 
   3.
 
