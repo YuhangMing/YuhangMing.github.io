@@ -56,7 +56,7 @@ permalink: /ICP/
 
     Let
 
-    $$ \boldsymbol{q_i} \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \tiangleq \boldsymbol{p_i}' - \boldsymbol{p}' $$
+    $$ \boldsymbol{q_i}  \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \triangleq \boldsymbol{p_i}' - \boldsymbol{p}' $$
 
 
 
