@@ -23,3 +23,9 @@ permalink: /ICP/
   $$ \forall i, \boldsymbol{p}_i = \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t} $$
 
 #### Solutions:
+
+
+
+#### Reference:
+[1] Pomerleau, François; Colas, Francis; Siegwart, Roland (2015). "A Review of Point Cloud Registration Algorithms for Mobile Robotics". Foundations and Trends in Robotics. 4 (1): 1–104. doi:10.1561/2300000035.
+[2] 高翔，张涛，刘毅，严沁睿 (2017). "视觉SLAM十四讲，从理论到实践".
