@@ -7,6 +7,9 @@
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 
   	<title>Blog</title>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
   	<meta name="description" content="My blog about readings I have done during my Ph.D. study.">
 
   	<link rel="stylesheet" href="/assets/css/main.css">
@@ -135,9 +138,16 @@
       
         <li class="post-container"> 
 
-          <p> <b>Iterative Closest Point</b>, <span><i>30 Sep, 2018</i></span> — Test post:
+          <p> <b>Iterative Closest Point</b>, <span><i>30 Sep, 2018</i></span> — Usage:
 
-Trying to display mathematic formula $ \leftarrow $
+In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.
+
+Problem Setup:
+
+Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images):
+
+, and 
+
 
  <a href="/ICP/"> Read more... </a> </p>
 
