@@ -165,24 +165,34 @@
 <p>Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation and Non-Linear Optimization.</p>
 
 <ul>
-  <li>Linear Estimation
-The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.
+  <li>
+    <p>Linear Estimation</p>
+
+    <p>The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.</p>
+
     <ul>
-      <li>SVD
-  To Be Added…</li>
+      <li>
+        <p>SVD</p>
+
+        <p>To Be Added…</p>
+      </li>
     </ul>
 
     <p>Moving on, we first define the centroids of each set of the points:</p>
 
-    <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i</script>
+    <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'</script>
 
     <p>Hence, the least square term can now be expressed as:</p>
 
-    <script type="math/tex; mode=display">|| \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+    <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
 
     <p>After expanding and combining terms in the equation, we have</p>
 
-    <script type="math/tex; mode=display">|| \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || \boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+    <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+
+    <p>Let</p>
+
+    <script type="math/tex; mode=display">\boldsymbol{q_i} \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \tiangleq \boldsymbol{p_i}' - \boldsymbol{p}'</script>
   </li>
 </ul>
 
