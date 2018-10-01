@@ -35,21 +35,28 @@ permalink: /ICP/
   Like any other least square problems, there are 2 methods of finding the optimal transformation: Linear Estimation and Non-Linear Optimization.
 
   - Linear Estimation
+
     The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.
+
     - SVD
+
         To Be Added...
 
     Moving on, we first define the centroids of each set of the points:
 
-    $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i $$
+    $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}' $$
 
     Hence, the least square term can now be expressed as:
     
-    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
+    $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
 
     After expanding and combining terms in the equation, we have
 
-    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t}) ||^2 = || \boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+    $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+
+    Let
+
+    $$ \boldsymbol{q_i} \tiangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \tiangleq \boldsymbol{p_i}' - \boldsymbol{p}' $$
 
 
 
