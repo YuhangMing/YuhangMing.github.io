@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "Iterative Closest Point"
+date:   2018-09-30 15:00:00 -0200
+description: ICP.
+permalink: /ICP/
+---
+
+Test post:
+
+Trying to display mathematic formula \$ \leftarrow \$
+
