@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T17:23:15+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T17:25:38+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -62,11 +62,11 @@
         &lt;table&gt;
           &lt;tbody&gt;
             &lt;tr&gt;
-              &lt;td&gt;Noticing that the first term of the R.H.S. is irrelavent of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}&lt;/script&gt;, so we can find the &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^*&lt;/script&gt; by $$ underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n&lt;/td&gt;
+              &lt;td&gt;Noticing that the first term of the R.H.S. is irrelavent of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}&lt;/script&gt;, so we can find the &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^*&lt;/script&gt; by $$ \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n&lt;/td&gt;
               &lt;td&gt; &lt;/td&gt;
               &lt;td&gt;\boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}’&lt;/td&gt;
               &lt;td&gt; &lt;/td&gt;
-              &lt;td&gt;^2 and then calculate &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}^*&lt;/script&gt; by setting the second term to be zero, i.e. &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'&lt;/script&gt;.&lt;/td&gt;
+              &lt;td&gt;^2&lt;script type=&quot;math/tex&quot;&gt;and then calculate&lt;/script&gt; \boldsymbol{t}^* &lt;script type=&quot;math/tex&quot;&gt;by setting the second term to be zero, i.e.&lt;/script&gt; \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}’ $$.&lt;/td&gt;
             &lt;/tr&gt;
           &lt;/tbody&gt;
         &lt;/table&gt;
