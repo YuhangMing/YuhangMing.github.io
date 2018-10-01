@@ -218,9 +218,13 @@ by setting the second term to be zero, i.e.</p>
 
         <script type="math/tex; mode=display">\frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{q_i} + \boldsymbol{q_i}'^T \boldsymbol{R}^T \boldsymbol{R} \boldsymbol{q_i}' - 2 \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>
 
-        <p>Due to the orthogonality of the rotation matrix, i.e. <script type="math/tex">\boldsymbol{R}^T \boldsymbol{R} = \boldsymbol{I}</script>, the first 2 terms irrelavant to <script type="math/tex">\boldsymbol{R}</script>. Hence the least square problem becomes:</p>
+        <p>Due to the orthogonality of the rotation matrix, i.e. <script type="math/tex">\boldsymbol{R}^T \boldsymbol{R} = \boldsymbol{I}</script>, both the first 2 terms are irrelavant to <script type="math/tex">\boldsymbol{R}</script>. Hence the least square problem becomes:</p>
 
         <script type="math/tex; mode=display">\boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>
+
+        <p>now we try to isolate <script type="math/tex">\boldsymbol{R}</script> out of the summation:</p>
+
+        <script type="math/tex; mode=display">\sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T)</script>
       </li>
     </ul>
   </li>
@@ -235,6 +239,8 @@ by setting the second term to be zero, i.e.</p>
 <p>[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.</p>
 
 <p>[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
+
+<h4 id="appendix">Appendix</h4>
 
 
   </div>

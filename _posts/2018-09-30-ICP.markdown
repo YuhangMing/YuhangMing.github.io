@@ -88,8 +88,8 @@ permalink: /ICP/
 
       now we try to isolate $$\boldsymbol{R}$$ out of the summation:
 
-      $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T)
-      
+      $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) $$
+
 
 #### Reference:
 
