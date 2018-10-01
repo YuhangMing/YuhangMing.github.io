@@ -1,6 +1,13 @@
 [
   
     {
+      "title"    : "Iterative Closest Point",
+      "tags"     : "",
+      "url"      : "/ICP/",
+      "date"     : "30 Sep 2018"
+    } ,
+  
+    {
       "title"    : "Example content",
       "tags"     : "",
       "url"      : "/example/",
