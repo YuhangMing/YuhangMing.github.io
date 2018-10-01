@@ -66,13 +66,13 @@ permalink: /ICP/
       $$ \boldsymbol{R}^* $$ 
       by 
 
-      <center> <p> | $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ | </p> </center>
+      | $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' \parallel ^2$$ |
       
       and then calculate 
       $$ \boldsymbol{t}^* $$ 
       by setting the second term to be zero, i.e. 
       
-      <center> <p>| $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ | </p> </center>
+      | $$ \boldsymbol{t}^* = \boldsymbol{p} - \boldsymbol{R}^* \boldsymbol{p}' $$ |
 
     - Find $$ \boldsymbol{R}^* $$
 
@@ -87,6 +87,14 @@ permalink: /ICP/
       now we try to isolate $$\boldsymbol{R}$$ out of the summation (mathematical details can be found in Appendix 2):
 
       $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) $$
+
+      By defining matrix $$ \boldsymbol{H} = \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T $$, we can find the optimal rotation matrix by performing SVD on $$ \boldsymbol{H} $$:
+
+      $$ \boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T $$
+
+      where \boldsymbol{\Sigma} is a diagonal matrix of sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both diagonal matrices. When matrix $$ \boldsymbol{H} $$ is full rank,
+
+      | $$ \boldsymbol{R} = \boldsymbol{U}\boldsymbol{V}^T $$ |
 
 
 #### Reference:
