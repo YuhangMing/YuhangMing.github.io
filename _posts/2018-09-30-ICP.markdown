@@ -64,7 +64,9 @@ permalink: /ICP/
 
       substitute back we have
 
-      $$ \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}(\boldsymbol{q_i}') ||^2 + \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+      $$ \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}\boldsymbol{q_i}' ||^2 
+
+      + \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
 
 
 
