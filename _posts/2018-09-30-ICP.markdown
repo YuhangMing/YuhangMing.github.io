@@ -28,7 +28,7 @@ permalink: /ICP/
 
   Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points. 
 
-  In order to find the desired transformation, we first formulate this problem under the leastsquare manner:
+  In order to find the desired transformation, we first formulate this problem in the least square manner:
 
   $$ \boldsymbol{R}^*, \boldsymbol{t}^* = \underset{ \boldsymbol{R}, \boldsymbol{t} } {\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n \parallel \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  \parallel^2 $$
 
@@ -36,11 +36,7 @@ permalink: /ICP/
 
   - Linear Estimation
 
-    The most popular linear estimation method is Singular Value Decomposition (SVD). Therefore, some details of SVD are discussed here.
-
-    - SVD
-
-      To Be Added...
+    The most popular linear estimation method is Singular Value Decomposition (SVD), which is discussed thoroughly in Appendix 1. Here we focus on how SVD can be used to solve the optimal transformation.
 
     - Reduce the number of parameters
 
@@ -50,11 +46,9 @@ permalink: /ICP/
 
       $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}' $$
 
-      the least square term can now be expressed as below with mathematical details in Appendix 1:
+      the least square term can now be expressed as below with mathematical details in Appendix 2:
     
       $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$ 
-
-      $$ \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 = \parallel \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') \parallel^2 + \parallel \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} \parallel^2 $$
 
       let $$ \boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}$$, $$ \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}' $$, we have
 
@@ -84,7 +78,7 @@ permalink: /ICP/
 
       $$ \boldsymbol{R}^* = \underset{ \boldsymbol{R} }{\mathrm{argmax}} \frac{1}{2} \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' $$
 
-      now we try to isolate $$\boldsymbol{R}$$ out of the summation (mathematical details can be found in Appendix 2):
+      now we try to isolate $$\boldsymbol{R}$$ out of the summation (mathematical details can be found in Appendix 3):
 
       $$ \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' = tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) $$
 
@@ -94,9 +88,20 @@ permalink: /ICP/
 
       where \boldsymbol{\Sigma} is a diagonal matrix of sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both diagonal matrices. When matrix $$ \boldsymbol{H} $$ is full rank,
 
-      | $$ \boldsymbol{R} = \boldsymbol{U}\boldsymbol{V}^T $$ |
+      | $$ \boldsymbol{R}^* = \boldsymbol{U}\boldsymbol{V}^T $$ |
 
-      Mathematical details about the optimality can be found in Appendix 3.
+      Mathematical details about the optimality can be found in Appendix 4.
+
+  - Non-Linear Optimization
+
+    Non-Linear optimization method can solve for the optimal transformation in an interative manner.
+
+    Details To Be Added...
+
+
+#### Variants:
+  
+  More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++. 
 
 
 #### Reference:
@@ -112,8 +117,12 @@ permalink: /ICP/
 
 #### Appendix
   1.
+
   2.
+
   3.
+
+  4.
 
 
 
