@@ -6,7 +6,9 @@ description: ICP.
 permalink: /ICP/
 ---
 
-Test post:
+**Usage:**
+  In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.
 
-Trying to display mathematic formula \$ \leftarrow \$
-
+**Problem Setup:**
+  Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images)
+  $$ {J(\theta) =\frac{1}{2m} [\sum^m_{i=1}(h_\theta(x^{(i)}) - y^{(i)})2 + \lambda\sum^n_{j=1}\theta^2_j} $$
