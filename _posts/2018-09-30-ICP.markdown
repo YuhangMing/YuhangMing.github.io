@@ -6,15 +6,20 @@ description: ICP.
 permalink: /ICP/
 ---
 
-**Usage:**
+#### Usage:
 
   In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.
 
-**Problem Setup:**
+#### Problem Setup:
 
-  Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images):
+  Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images, details refering to the problem known as *data association / point matching / correspondence finding*):
 
   $$ \boldsymbol{P} = \{\boldsymbol{p}_1, \boldsymbol{p}_2, \dots, \boldsymbol{p}_n\} $$
 
   $$ \boldsymbol{P}' = \{\boldsymbol{p}'_1, \boldsymbol{p}'_2, \dots, \boldsymbol{p}'_n\} $$
 
+  We would like to find a transformation $$\boldsymbol{R}$$, $$\boldsymbol{t}$$, such that 
+
+  $$ \forall i, \boldsymbol{p}_i = \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t} $$
+
+#### Solutions:
