@@ -174,20 +174,15 @@ The most popular linear estimation method is Singular Value Decomposition (SVD).
 
     <p>Moving on, we first define the centroids of each set of the points:</p>
 
-    <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i \, \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i</script>
+    <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i</script>
 
     <p>Hence, the least square term can now be expressed as:</p>
 
-    <p>[
-\begin{equation}
-\begin{split}
-  || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}’_i + \boldsymbol{t})  ||^2 &amp;=  || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}’_i - \boldsymbol{p}’) - \boldsymbol{R}\boldsymbol{p}’ - \boldsymbol{t} ||^2 \ 
-  &amp;= || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}’_i + \boldsymbol{R}\boldsymbol{p}’) + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}’ - \boldsymbol{t}) ||^2
-\end{split}
-\end{euqation}
-]</p>
+    <script type="math/tex; mode=display">|| \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2</script>
 
-    <!-- $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2 &=  || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 \\ &= || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2 $$ -->
+    <script type="math/tex; mode=display">|| (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+
+    <script type="math/tex; mode=display">|| (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2</script>
   </li>
 </ul>
 
