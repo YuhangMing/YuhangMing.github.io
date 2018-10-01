@@ -176,23 +176,32 @@
 
         <p>To Be Added…</p>
       </li>
+      <li>
+        <p>Reduce the number of parameters</p>
+
+        <p>Optimizing over 2 parameters is more difficult than optimizing over only 1 parameter. Therefore, we first reduce the number parameters in this least square problem.</p>
+
+        <p>By defining the centroids of each set of the points:</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'</script>
+
+        <p>the least square term can now be expressed as:</p>
+
+        <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+
+        <p>after expanding and combining terms in the equation, we have:</p>
+
+        <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+
+        <p>let</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}'</script>
+
+        <p>substitute back we have</p>
+
+        <script type="math/tex; mode=display">\underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}(\boldsymbol{q_i}') ||^2 + \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
+      </li>
     </ul>
-
-    <p>Moving on, we first define the centroids of each set of the points:</p>
-
-    <script type="math/tex; mode=display">\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'</script>
-
-    <p>Hence, the least square term can now be expressed as:</p>
-
-    <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
-
-    <p>After expanding and combining terms in the equation, we have</p>
-
-    <script type="math/tex; mode=display">|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2</script>
-
-    <p>Let</p>
-
-    <script type="math/tex; mode=display">\boldsymbol{q_i}  \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \triangleq \boldsymbol{p_i}' - \boldsymbol{p}'</script>
   </li>
 </ul>
 

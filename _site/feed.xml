@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T16:55:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T17:07:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -38,23 +38,32 @@
 
         &lt;p&gt;To Be Added…&lt;/p&gt;
       &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Reduce the number of parameters&lt;/p&gt;
+
+        &lt;p&gt;Optimizing over 2 parameters is more difficult than optimizing over only 1 parameter. Therefore, we first reduce the number parameters in this least square problem.&lt;/p&gt;
+
+        &lt;p&gt;By defining the centroids of each set of the points:&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'&lt;/script&gt;
+
+        &lt;p&gt;the least square term can now be expressed as:&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2&lt;/script&gt;
+
+        &lt;p&gt;after expanding and combining terms in the equation, we have:&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2&lt;/script&gt;
+
+        &lt;p&gt;let&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}'&lt;/script&gt;
+
+        &lt;p&gt;substitute back we have&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}(\boldsymbol{q_i}') ||^2 + \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2&lt;/script&gt;
+      &lt;/li&gt;
     &lt;/ul&gt;
-
-    &lt;p&gt;Moving on, we first define the centroids of each set of the points:&lt;/p&gt;
-
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}'&lt;/script&gt;
-
-    &lt;p&gt;Hence, the least square term can now be expressed as:&lt;/p&gt;
-
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2&lt;/script&gt;
-
-    &lt;p&gt;After expanding and combining terms in the equation, we have&lt;/p&gt;
-
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;|| \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2&lt;/script&gt;
-
-    &lt;p&gt;Let&lt;/p&gt;
-
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{q_i}  \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \triangleq \boldsymbol{p_i}' - \boldsymbol{p}'&lt;/script&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 

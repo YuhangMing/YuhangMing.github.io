@@ -40,23 +40,32 @@ permalink: /ICP/
 
     - SVD
 
-        To Be Added...
+      To Be Added...
 
-    Moving on, we first define the centroids of each set of the points:
+    - Reduce the number of parameters
 
-    $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}' $$
+      Optimizing over 2 parameters is more difficult than optimizing over only 1 parameter. Therefore, we first reduce the number parameters in this least square problem.
 
-    Hence, the least square term can now be expressed as:
+      By defining the centroids of each set of the points:
+
+      $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}, \quad \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p_i}' $$
+
+      the least square term can now be expressed as:
     
-    $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
+      $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$ 
 
-    After expanding and combining terms in the equation, we have
+      after expanding and combining terms in the equation, we have:
 
-    $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+      $$ || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = || \boldsymbol{p_i} - \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p_i}' - \boldsymbol{p}') ||^2 + || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
 
-    Let
+      let
 
-    $$ \boldsymbol{q_i}  \triangleq \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' \triangleq \boldsymbol{p_i}' - \boldsymbol{p}' $$
+      $$ \boldsymbol{q_i} = \boldsymbol{p_i} - \boldsymbol{p}, \quad \boldsymbol{q_i}' = \boldsymbol{p_i}' - \boldsymbol{p}' $$
+
+      substitute back we have
+
+      $$ \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) ||^2 = \underset{ \boldsymbol{R} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{q_i} - \boldsymbol{R}(\boldsymbol{q_i}') ||^2 + \underset{ \boldsymbol{R}, \boldsymbol{t} }{\mathrm{argmin}} \frac{1}{2} \sum_{i=1}^n || \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 $$
+
 
 
 
