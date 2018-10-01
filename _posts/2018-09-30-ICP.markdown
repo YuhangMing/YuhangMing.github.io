@@ -41,11 +41,20 @@ permalink: /ICP/
 
     Moving on, we first define the centroids of each set of the points:
 
-    $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i $$, $$ \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i $$
+    $$ \boldsymbol{p} = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}_i \, \boldsymbol{p}' = \frac{1}{2} \sum_{i=1}^n \boldsymbol{p}'_i $$
 
     Hence, the least square term can now be expressed as:
 
-    $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2 &=  || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 \\ &= || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2 $$
+    \[
+    \begin{equation}
+    \begin{split}
+      || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2 &=  || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 \\ 
+      &= || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2
+    \end{split}
+    \end{euqation}
+    \]
+
+    <!-- $$ || \boldsymbol{p}_i - (\boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{t})  ||^2 &=  || (\boldsymbol{p}_i - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R}(\boldsymbol{p}'_i - \boldsymbol{p}') - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t} ||^2 \\ &= || (\boldsymbol{p}_i - \boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}'_i + \boldsymbol{R}\boldsymbol{p}') + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' - \boldsymbol{t}) ||^2 $$ -->
 
 
 
