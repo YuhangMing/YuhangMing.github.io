@@ -119,6 +119,12 @@ permalink: /ICP/
   1.
 
   2.
+  $$
+  \begin{split}
+    \parallel \boldsymbol{p_i} - (\boldsymbol{R}\boldsymbol{p_i}' + \boldsymbol{t}) \parallel^2 &= \parallel (\boldsymbol{p_i} - \boldsymbol{p}) + \boldsymbol{p} - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t} \parallel^2 \\
+    &= \parallel (\boldsymbol{p_i} - \boldsymbol{p}  - \boldsymbol{R} ( \boldsymbol{p_i}' - \boldsymbol{p}' ) ) + (\boldsymbol{p} - \boldsymbol{R}\boldsymbol{p}' -\boldsymbol{t}) \parallel^2
+  \end{split}
+  $$
 
   3.
 
