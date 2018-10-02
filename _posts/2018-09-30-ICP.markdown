@@ -6,11 +6,11 @@ description: ICP.
 permalink: /ICP/
 ---
 
-#### Usage:
+### Usage:
 
   In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.
 
-#### Problem Setup:
+### Problem Setup:
 
   Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images, details refering to the problem known as *data association / point matching / correspondence finding*):
 
@@ -24,7 +24,7 @@ permalink: /ICP/
 
   ps. inhomogeneous coordinates are used here and below.
 
-#### Solutions:
+### Solutions:
 
   Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points. 
 
@@ -86,9 +86,9 @@ permalink: /ICP/
 
       $$ \boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T $$
 
-      where \boldsymbol{\Sigma} is a diagonal matrix of sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both diagonal matrices. When matrix $$ \boldsymbol{H} $$ is full rank,
+      where \boldsymbol{\Sigma} is a diagonal matrix with nonnegative sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both orthonormal matrices. When matrix $$ det(\boldsymbol{H}) = 1 $$, we have,
 
-      | $$ \boldsymbol{R}^* = \boldsymbol{U}\boldsymbol{V}^T $$ |
+      | $$ \boldsymbol{R}^* = \boldsymbol{V}\boldsymbol{U}^T $$ |
 
       Mathematical details about the optimality can be found in <u>Appendix 4</u>.
 
@@ -99,12 +99,12 @@ permalink: /ICP/
     Details To Be Added...
 
 
-#### Variants:
+### Variants:
   
   More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++. 
 
 
-#### Reference:
+### Reference:
 
 [1] 高翔；张涛；刘毅；严沁睿: "视觉SLAM十四讲，从理论到实践".
 
@@ -115,7 +115,7 @@ permalink: /ICP/
 [n] S. Rusinkiewicz, M. Levoy. "Efficient Variants of the ICP Algorithm". In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.
 
 
-#### Appendix
+### Appendix
   1.
 
   2.
@@ -162,6 +162,10 @@ permalink: /ICP/
 
   4.
 
+  Quote from [3]:
+  > *Lemma*: For any positive definite matrix $$\boldsymbol{A}$$, and any orthonomal matrix $$\boldsymbol{B}$$,
+  > $$ tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A}) $$
+  > *Proof of Lemma*:
 
 
 
