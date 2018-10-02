@@ -118,6 +118,51 @@ permalink: /ICP/
 ### Appendix
   1.
 
+  From eigenvalues decomposition to sigular values decomposition:
+
+  <u> *Eigenvalues* </u>:
+
+  By definition we have $$ \boldsymbol{A}\boldsymbol{v} = \lambda\boldsymbol{v} $$, where $$ \boldsymbol{A} $$ must be a square matrix, $$\boldsymbol{v}$$ is an eigenvector with corresponding eigenvalue $$\lambda$$.
+
+  Putting all eigenvalues and eigenvectors into matrix form, we have
+
+  $$ \boldsymbol{A} \boldsymbol{Q} = \boldsymbol{Q} \boldsymbol{\Sigma} $$
+
+  where $$ \boldsymbol{Q} = [\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_n}] $$ is an orthogonal matrix, $$ \boldsymbol{\Sigma} = diag(\lambda_1, \lambda_2, \dots, \lambda_n) $$.
+
+  Leading to the eigenvalue decomposition:
+
+  | $$ \boldsymbol{A} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^{-1} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^T $$ |
+
+  <u> *SVD* </u>:
+
+  Going beyond square matrices, for any matrix $$ \boldsymbol{A} $$ of size $$m \times n$$, the SVD can be done as $$ \boldsymbol{A_{m \times n}} = \boldsymbol{U_{m \times m}} \boldsymbol{\Sigma_{m \times n}} \boldsymbol{V_{n \times n}} $$.
+
+  Reasoning with eigenvalues:
+
+  $$ 
+  \begin{cases}
+    (\boldsymbol{A}^T\boldsymbol{A})\boldsymbol{v_i} = \lambda_i\boldsymbol{v_i} \\
+    (\boldsymbol{A}\boldsymbol{A}^T)\boldsymbol{u_i} = \lambda_i\boldsymbol{u_i}
+  \end{cases} 
+  $$
+
+  where $$\boldsymbol{u_i}$$ and $$\boldsymbol{v_i}$$ are columns of $$\boldsymbol{U}$$ and $$\boldsymbol{V}$$ respectively. Note that $$\lambda_i$$ in both equations have the same values.
+
+  If $$ \boldsymbol{A} $$ has rank $$ r $$, i.e. there are $$ r $$ nonzero elements in the diagonal matrix $$ \boldsymbol{\Sigma} $$ ($$ \boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r) $$), then:
+
+  $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
+
+  $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
+
+  To find sigular values, you can either:
+
+  | $$ \sigma_i = \boldsymbol{A}\boldsymbol{v_i} / \boldsymbol{u_i} $$ |
+
+  or:
+
+  | $$ \sigma_i = \sqrt{\lambda_i} $$ |
+
   2.
 
   $$

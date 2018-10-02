@@ -272,6 +272,67 @@ by setting the second term to be zero, i.e.</p>
 <h3 id="appendix">Appendix</h3>
 <p>1.</p>
 
+<p>From eigenvalues decomposition to sigular values decomposition:</p>
+
+<p><u> *Eigenvalues* </u>:</p>
+
+<p>By definition we have <script type="math/tex">\boldsymbol{A}\boldsymbol{v} = \lambda\boldsymbol{v}</script>, where <script type="math/tex">\boldsymbol{A}</script> must be a square matrix, <script type="math/tex">\boldsymbol{v}</script> is an eigenvector with corresponding eigenvalue <script type="math/tex">\lambda</script>.</p>
+
+<p>Putting all eigenvalues and eigenvectors into matrix form, we have</p>
+
+<script type="math/tex; mode=display">\boldsymbol{A} \boldsymbol{Q} = \boldsymbol{Q} \boldsymbol{\Sigma}</script>
+
+<p>where <script type="math/tex">\boldsymbol{Q} = [\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_n}]</script> is an orthogonal matrix, <script type="math/tex">\boldsymbol{\Sigma} = diag(\lambda_1, \lambda_2, \dots, \lambda_n)</script>.</p>
+
+<p>Leading to the eigenvalue decomposition:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\boldsymbol{A} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^{-1} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^T</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><u> *SVD* </u>:</p>
+
+<p>Going beyond square matrices, for any matrix <script type="math/tex">\boldsymbol{A}</script> of size <script type="math/tex">m \times n</script>, the SVD can be done as <script type="math/tex">\boldsymbol{A_{m \times n}} = \boldsymbol{U_{m \times m}} \boldsymbol{\Sigma_{m \times n}} \boldsymbol{V_{n \times n}}</script>.</p>
+
+<p>Reasoning with eigenvalues:</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+    (\boldsymbol{A}^T\boldsymbol{A})\boldsymbol{v_i} = \lambda_i\boldsymbol{v_i} \\
+    (\boldsymbol{A}\boldsymbol{A}^T)\boldsymbol{u_i} = \lambda_i\boldsymbol{u_i}
+  \end{cases}</script>
+
+<p>where <script type="math/tex">\boldsymbol{u_i}</script> and <script type="math/tex">\boldsymbol{v_i}</script> are columns of <script type="math/tex">\boldsymbol{U}</script> and <script type="math/tex">\boldsymbol{V}</script> respectively. Note that <script type="math/tex">\lambda_i</script> in both equations have the same values.</p>
+
+<p>If <script type="math/tex">\boldsymbol{A}</script> has rank <script type="math/tex">r</script>, i.e. there are <script type="math/tex">r</script> nonzero elements in the diagonal matrix <script type="math/tex">\boldsymbol{\Sigma}</script> (<script type="math/tex">\boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r)</script>), then:</p>
+
+<p><script type="math/tex">\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}</script> form a set of orthogonal basis for <script type="math/tex">\boldsymbol{A}</script>;</p>
+
+<p><script type="math/tex">\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}</script> form a set of orthogonal basis for <script type="math/tex">\boldsymbol{A}^T</script>.</p>
+
+<p>To find sigular values, you can either:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\sigma_i = \boldsymbol{A}\boldsymbol{v_i} / \boldsymbol{u_i}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>or:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\sigma_i = \sqrt{\lambda_i}</script></td>
+    </tr>
+  </tbody>
+</table>
+
 <p>2.</p>
 
 <script type="math/tex; mode=display">% <![CDATA[

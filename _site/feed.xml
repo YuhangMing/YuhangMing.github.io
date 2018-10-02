@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T14:12:17+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T15:07:43+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -134,6 +134,67 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;
 &lt;p&gt;1.&lt;/p&gt;
+
+&lt;p&gt;From eigenvalues decomposition to sigular values decomposition:&lt;/p&gt;
+
+&lt;p&gt;&lt;u&gt; *Eigenvalues* &lt;/u&gt;:&lt;/p&gt;
+
+&lt;p&gt;By definition we have &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}\boldsymbol{v} = \lambda\boldsymbol{v}&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; must be a square matrix, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v}&lt;/script&gt; is an eigenvector with corresponding eigenvalue &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Putting all eigenvalues and eigenvectors into matrix form, we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{A} \boldsymbol{Q} = \boldsymbol{Q} \boldsymbol{\Sigma}&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{Q} = [\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_n}]&lt;/script&gt; is an orthogonal matrix, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma} = diag(\lambda_1, \lambda_2, \dots, \lambda_n)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Leading to the eigenvalue decomposition:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^{-1} = \boldsymbol{Q} \boldsymbol{\Sigma} \boldsymbol{Q}^T&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;u&gt; *SVD* &lt;/u&gt;:&lt;/p&gt;
+
+&lt;p&gt;Going beyond square matrices, for any matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; of size &lt;script type=&quot;math/tex&quot;&gt;m \times n&lt;/script&gt;, the SVD can be done as &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A_{m \times n}} = \boldsymbol{U_{m \times m}} \boldsymbol{\Sigma_{m \times n}} \boldsymbol{V_{n \times n}}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Reasoning with eigenvalues:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{cases}
+    (\boldsymbol{A}^T\boldsymbol{A})\boldsymbol{v_i} = \lambda_i\boldsymbol{v_i} \\
+    (\boldsymbol{A}\boldsymbol{A}^T)\boldsymbol{u_i} = \lambda_i\boldsymbol{u_i}
+  \end{cases}&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_i}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v_i}&lt;/script&gt; are columns of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{U}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{V}&lt;/script&gt; respectively. Note that &lt;script type=&quot;math/tex&quot;&gt;\lambda_i&lt;/script&gt; in both equations have the same values.&lt;/p&gt;
+
+&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; has rank &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;, i.e. there are &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; nonzero elements in the diagonal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; (&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r)&lt;/script&gt;), then:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;;&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}^T&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;To find sigular values, you can either:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\sigma_i = \boldsymbol{A}\boldsymbol{v_i} / \boldsymbol{u_i}&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;or:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\sigma_i = \sqrt{\lambda_i}&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;2.&lt;/p&gt;
 
