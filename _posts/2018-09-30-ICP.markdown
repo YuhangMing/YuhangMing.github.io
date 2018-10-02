@@ -163,26 +163,24 @@ permalink: /ICP/
   4.
 
   Quote from [3]:
-  > <u>Lemma</u>: For any positive definite matrix $$\boldsymbol{A}$$, and any orthonomal matrix $$\boldsymbol{B}$$,
-
-  > $$ tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A}) $$
-  
-  > <u>Proof of Lemma refer to [3]</u>.
-  
+  > <u>Lemma</u>: For any positive definite matrix $$\boldsymbol{A}$$, and any orthonomal matrix $$\boldsymbol{B}$$, $$ tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A}) $$.
+  >
+  > <u>Proof of Lemma refer to [3], using Schwarz inequality</u>.
+  >
   > Let the SVD of H be $$ \boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T $$,
-
+  >
   > and $$ \boldsymbol{X} = \boldsymbol{V}\boldsymbol{U}^T $$.
-
+  >
   > So, we have
-
-  > $$ \boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T$$
-
+  >
+  > $$ \boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T$$
+  >
   > which is symmetrical and positive definite. Using the Lemma above, for any orthonormal matrix $$ \boldsymbol{B} $$,
-
+  >
   > $$ tr(\boldsymbol{X}\boldsymbol{H}) \geq tr(\boldsymbol{B}\boldsymbol{X}\boldsymbol{H}) $$
-
+  >
   > i.e. among all 3x3 orthonomal matrices, $$ \boldsymbol{X} $$ maximizes $$ tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) = \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}' $$。
-
+  >
   > By definition, rotation matrices are special orthogonal matrices, thus $$ det(\boldsymbol{X}) = 1 $$. It is a reflection matrix if $$ det(\boldsymbol{X}) = -1 $$.
 
 

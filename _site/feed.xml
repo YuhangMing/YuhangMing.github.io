@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T14:01:05+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T14:12:17+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -95,7 +95,7 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T&lt;/script&gt;
 
-        &lt;p&gt;where \boldsymbol{\Sigma} is a diagonal matrix with nonnegative sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both orthonormal matrices. When matrix &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{H}) = 1&lt;/script&gt;, we have,&lt;/p&gt;
+        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; is a diagonal matrix with nonnegative sigular values in descending order, and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{U}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{V}&lt;/script&gt; are both orthonormal matrices. When matrix &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{H}) = 1&lt;/script&gt;, we have,&lt;/p&gt;
 
         &lt;table&gt;
           &lt;tbody&gt;
@@ -179,35 +179,25 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;Quote from [3]:&lt;/p&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;u&gt;Lemma&lt;/u&gt;: For any positive definite matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;, and any orthonomal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{B}&lt;/script&gt;,&lt;/p&gt;
-&lt;/blockquote&gt;
+  &lt;p&gt;&lt;u&gt;Lemma&lt;/u&gt;: For any positive definite matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;, and any orthonomal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{B}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})&lt;/script&gt;.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;script type=&quot;math/tex; mode=display&quot;&gt;tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})&lt;/script&gt;
-&lt;/blockquote&gt;
+  &lt;p&gt;&lt;u&gt;Proof of Lemma refer to [3], using Schwarz inequality&lt;/u&gt;.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;u&gt;Proof of Lemma refer to [3]&lt;/u&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
   &lt;p&gt;Let the SVD of H be &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T&lt;/script&gt;,&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;blockquote&gt;
   &lt;p&gt;and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{X} = \boldsymbol{V}\boldsymbol{U}^T&lt;/script&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;blockquote&gt;
   &lt;p&gt;So, we have&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;blockquote&gt;
-  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T&lt;/script&gt;
-&lt;/blockquote&gt;
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T&lt;/script&gt;
 
-&lt;blockquote&gt;
+  &lt;p&gt;which is symmetrical and positive definite. Using the Lemma above, for any orthonormal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{B}&lt;/script&gt;,&lt;/p&gt;
 
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;tr(\boldsymbol{X}\boldsymbol{H}) \geq tr(\boldsymbol{B}\boldsymbol{X}\boldsymbol{H})&lt;/script&gt;
+
+  &lt;p&gt;i.e. among all 3x3 orthonomal matrices, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{X}&lt;/script&gt; maximizes &lt;script type=&quot;math/tex&quot;&gt;tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) = \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'&lt;/script&gt;。&lt;/p&gt;
+
+  &lt;p&gt;By definition, rotation matrices are special orthogonal matrices, thus &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{X}) = 1&lt;/script&gt;. It is a reflection matrix if &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{X}) = -1&lt;/script&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
 
 &lt;h2 id=&quot;h2--a-second-level-header&quot;&gt;H2- A Second Level Header&lt;/h2&gt;

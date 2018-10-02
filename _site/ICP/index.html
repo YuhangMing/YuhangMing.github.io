@@ -232,7 +232,7 @@ by setting the second term to be zero, i.e.</p>
 
         <script type="math/tex; mode=display">\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T</script>
 
-        <p>where \boldsymbol{\Sigma} is a diagonal matrix with nonnegative sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both orthonormal matrices. When matrix <script type="math/tex">det(\boldsymbol{H}) = 1</script>, we have,</p>
+        <p>where <script type="math/tex">\boldsymbol{\Sigma}</script> is a diagonal matrix with nonnegative sigular values in descending order, and <script type="math/tex">\boldsymbol{U}</script> and <script type="math/tex">\boldsymbol{V}</script> are both orthonormal matrices. When matrix <script type="math/tex">det(\boldsymbol{H}) = 1</script>, we have,</p>
 
         <table>
           <tbody>
@@ -316,35 +316,25 @@ by setting the second term to be zero, i.e.</p>
 
 <p>Quote from [3]:</p>
 <blockquote>
-  <p><u>Lemma</u>: For any positive definite matrix <script type="math/tex">\boldsymbol{A}</script>, and any orthonomal matrix <script type="math/tex">\boldsymbol{B}</script>,</p>
-</blockquote>
+  <p><u>Lemma</u>: For any positive definite matrix <script type="math/tex">\boldsymbol{A}</script>, and any orthonomal matrix <script type="math/tex">\boldsymbol{B}</script>, <script type="math/tex">tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})</script>.</p>
 
-<blockquote>
-  <script type="math/tex; mode=display">tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})</script>
-</blockquote>
+  <p><u>Proof of Lemma refer to [3], using Schwarz inequality</u>.</p>
 
-<blockquote>
-  <p><u>Proof of Lemma refer to [3]</u>.</p>
-</blockquote>
-
-<blockquote>
   <p>Let the SVD of H be <script type="math/tex">\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T</script>,</p>
-</blockquote>
 
-<blockquote>
   <p>and <script type="math/tex">\boldsymbol{X} = \boldsymbol{V}\boldsymbol{U}^T</script>.</p>
-</blockquote>
 
-<blockquote>
   <p>So, we have</p>
-</blockquote>
 
-<blockquote>
-  <script type="math/tex; mode=display">\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T</script>
-</blockquote>
+  <script type="math/tex; mode=display">\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T</script>
 
-<blockquote>
+  <p>which is symmetrical and positive definite. Using the Lemma above, for any orthonormal matrix <script type="math/tex">\boldsymbol{B}</script>,</p>
 
+  <script type="math/tex; mode=display">tr(\boldsymbol{X}\boldsymbol{H}) \geq tr(\boldsymbol{B}\boldsymbol{X}\boldsymbol{H})</script>
+
+  <p>i.e. among all 3x3 orthonomal matrices, <script type="math/tex">\boldsymbol{X}</script> maximizes <script type="math/tex">tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) = \sum_{i=1}^n \boldsymbol{q_i}^T \boldsymbol{R} \boldsymbol{q_i}'</script>。</p>
+
+  <p>By definition, rotation matrices are special orthogonal matrices, thus <script type="math/tex">det(\boldsymbol{X}) = 1</script>. It is a reflection matrix if <script type="math/tex">det(\boldsymbol{X}) = -1</script>.</p>
 </blockquote>
 
 
