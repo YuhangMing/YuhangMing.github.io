@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T15:09:20+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T15:11:06+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -95,7 +95,7 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T&lt;/script&gt;
 
-        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; is a diagonal matrix with nonnegative sigular values in descending order, and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{U}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{V}&lt;/script&gt; are both orthonormal matrices. When matrix &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{H}) = 1&lt;/script&gt;, we have,&lt;/p&gt;
+        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; is a diagonal matrix with nonnegative sigular values in descending order, and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{U}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{V}&lt;/script&gt; are both orthonormal matrices. When &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{H}) = 1&lt;/script&gt;, we have,&lt;/p&gt;
 
         &lt;table&gt;
           &lt;tbody&gt;
@@ -172,9 +172,11 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; has rank &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;, i.e. there are &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; nonzero elements in the diagonal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; (&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r)&lt;/script&gt;), then:&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
 
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}^T&lt;/script&gt;.&lt;/p&gt;
+- $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;To find sigular values, you can either:&lt;/p&gt;
 
