@@ -135,11 +135,11 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h4 id="usage">Usage:</h4>
+    <h3 id="usage">Usage:</h3>
 
 <p>In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.</p>
 
-<h4 id="problem-setup">Problem Setup:</h4>
+<h3 id="problem-setup">Problem Setup:</h3>
 
 <p>Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images, details refering to the problem known as <em>data association / point matching / correspondence finding</em>):</p>
 
@@ -153,7 +153,7 @@
 
 <p>ps. inhomogeneous coordinates are used here and below.</p>
 
-<h4 id="solutions">Solutions:</h4>
+<h3 id="solutions">Solutions:</h3>
 
 <p>Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points.</p>
 
@@ -232,12 +232,12 @@ by setting the second term to be zero, i.e.</p>
 
         <script type="math/tex; mode=display">\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T</script>
 
-        <p>where \boldsymbol{\Sigma} is a diagonal matrix of sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both diagonal matrices. When matrix <script type="math/tex">\boldsymbol{H}</script> is full rank,</p>
+        <p>where \boldsymbol{\Sigma} is a diagonal matrix with nonnegative sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both orthonormal matrices. When matrix <script type="math/tex">det(\boldsymbol{H}) = 1</script>, we have,</p>
 
         <table>
           <tbody>
             <tr>
-              <td><script type="math/tex">\boldsymbol{R}^* = \boldsymbol{U}\boldsymbol{V}^T</script></td>
+              <td><script type="math/tex">\boldsymbol{R}^* = \boldsymbol{V}\boldsymbol{U}^T</script></td>
             </tr>
           </tbody>
         </table>
@@ -255,11 +255,11 @@ by setting the second term to be zero, i.e.</p>
   </li>
 </ul>
 
-<h4 id="variants">Variants:</h4>
+<h3 id="variants">Variants:</h3>
 
 <p>More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++.</p>
 
-<h4 id="reference">Reference:</h4>
+<h3 id="reference">Reference:</h3>
 
 <p>[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.</p>
 
@@ -269,7 +269,7 @@ by setting the second term to be zero, i.e.</p>
 
 <p>[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
 
-<h4 id="appendix">Appendix</h4>
+<h3 id="appendix">Appendix</h3>
 <p>1.</p>
 
 <p>2.</p>
@@ -313,6 +313,39 @@ by setting the second term to be zero, i.e.</p>
   \end{split} %]]></script>
 
 <p>4.</p>
+
+<p>Quote from [3]:</p>
+<blockquote>
+  <p><u>Lemma</u>: For any positive definite matrix <script type="math/tex">\boldsymbol{A}</script>, and any orthonomal matrix <script type="math/tex">\boldsymbol{B}</script>,</p>
+</blockquote>
+
+<blockquote>
+  <script type="math/tex; mode=display">tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})</script>
+</blockquote>
+
+<blockquote>
+  <p><u>Proof of Lemma refer to [3]</u>.</p>
+</blockquote>
+
+<blockquote>
+  <p>Let the SVD of H be <script type="math/tex">\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T</script>,</p>
+</blockquote>
+
+<blockquote>
+  <p>and <script type="math/tex">\boldsymbol{X} = \boldsymbol{V}\boldsymbol{U}^T</script>.</p>
+</blockquote>
+
+<blockquote>
+  <p>So, we have</p>
+</blockquote>
+
+<blockquote>
+  <script type="math/tex; mode=display">\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T</script>
+</blockquote>
+
+<blockquote>
+
+</blockquote>
 
 
   </div>

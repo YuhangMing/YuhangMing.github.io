@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-01T21:28:02+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h4 id=&quot;usage&quot;&gt;Usage:&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T14:01:05+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
-&lt;h4 id=&quot;problem-setup&quot;&gt;Problem Setup:&lt;/h4&gt;
+&lt;h3 id=&quot;problem-setup&quot;&gt;Problem Setup:&lt;/h3&gt;
 
 &lt;p&gt;Given 2 sets of matched 3D points (assuming that we already matched 2 RGB-D images, details refering to the problem known as &lt;em&gt;data association / point matching / correspondence finding&lt;/em&gt;):&lt;/p&gt;
 
@@ -16,7 +16,7 @@
 
 &lt;p&gt;ps. inhomogeneous coordinates are used here and below.&lt;/p&gt;
 
-&lt;h4 id=&quot;solutions&quot;&gt;Solutions:&lt;/h4&gt;
+&lt;h3 id=&quot;solutions&quot;&gt;Solutions:&lt;/h3&gt;
 
 &lt;p&gt;Before diving into the solutions, we should notice that camera model (intrinsic and extrinsic parameters of the camera) is not quite relevant when trying to find the transformation between 2 sets of 3D points.&lt;/p&gt;
 
@@ -95,12 +95,12 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T&lt;/script&gt;
 
-        &lt;p&gt;where \boldsymbol{\Sigma} is a diagonal matrix of sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both diagonal matrices. When matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H}&lt;/script&gt; is full rank,&lt;/p&gt;
+        &lt;p&gt;where \boldsymbol{\Sigma} is a diagonal matrix with nonnegative sigular values in descending order, and \boldsymbol{U} and \boldsymbol{V} are both orthonormal matrices. When matrix &lt;script type=&quot;math/tex&quot;&gt;det(\boldsymbol{H}) = 1&lt;/script&gt;, we have,&lt;/p&gt;
 
         &lt;table&gt;
           &lt;tbody&gt;
             &lt;tr&gt;
-              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^* = \boldsymbol{U}\boldsymbol{V}^T&lt;/script&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{R}^* = \boldsymbol{V}\boldsymbol{U}^T&lt;/script&gt;&lt;/td&gt;
             &lt;/tr&gt;
           &lt;/tbody&gt;
         &lt;/table&gt;
@@ -118,11 +118,11 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;variants&quot;&gt;Variants:&lt;/h4&gt;
+&lt;h3 id=&quot;variants&quot;&gt;Variants:&lt;/h3&gt;
 
 &lt;p&gt;More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++.&lt;/p&gt;
 
-&lt;h4 id=&quot;reference&quot;&gt;Reference:&lt;/h4&gt;
+&lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
 &lt;p&gt;[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;
 
@@ -132,7 +132,7 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.&lt;/p&gt;
 
-&lt;h4 id=&quot;appendix&quot;&gt;Appendix&lt;/h4&gt;
+&lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;
 &lt;p&gt;1.&lt;/p&gt;
 
 &lt;p&gt;2.&lt;/p&gt;
@@ -175,7 +175,40 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
     &amp;= tr(\boldsymbol{R} \sum_{i=1}^n \boldsymbol{q_i}' \boldsymbol{q_i}^T) 
   \end{split} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;4.&lt;/p&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
+&lt;p&gt;4.&lt;/p&gt;
+
+&lt;p&gt;Quote from [3]:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;u&gt;Lemma&lt;/u&gt;: For any positive definite matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;, and any orthonomal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{B}&lt;/script&gt;,&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;tr(\boldsymbol{A}) \geq tr(\boldsymbol{B}\boldsymbol{A})&lt;/script&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;u&gt;Proof of Lemma refer to [3]&lt;/u&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Let the SVD of H be &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H} = \boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{V}^T&lt;/script&gt;,&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{X} = \boldsymbol{V}\boldsymbol{U}^T&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;So, we have&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{X}\boldsymbol{H} = \boldsymbol{V} \boldsymbol{U}^T boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T = \boldsymbol{V} \boldsymbol{\Sigma} \boldsymbol{V}^T&lt;/script&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+&lt;/blockquote&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Usage:</summary></entry><entry><title type="html">Example content</title><link href="http://localhost:4000/example/" rel="alternate" type="text/html" title="Example content" /><published>2017-01-31T11:00:09+00:00</published><updated>2017-01-31T11:00:09+00:00</updated><id>http://localhost:4000/example</id><content type="html" xml:base="http://localhost:4000/example/">&lt;h1 id=&quot;h1---a-first-level-header&quot;&gt;H1 - A First Level Header&lt;/h1&gt;
 
 &lt;h2 id=&quot;h2--a-second-level-header&quot;&gt;H2- A Second Level Header&lt;/h2&gt;
 
