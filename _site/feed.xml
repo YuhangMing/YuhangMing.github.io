@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T15:11:06+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T16:39:31+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -114,13 +114,13 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
     &lt;p&gt;Non-Linear optimization method can solve for the optimal transformation in an interative manner.&lt;/p&gt;
 
-    &lt;p&gt;Details To Be Added…&lt;/p&gt;
+    &lt;p&gt;&lt;u&gt;Details To Be Added...&lt;/u&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;variants&quot;&gt;Variants:&lt;/h3&gt;
+&lt;h3 id=&quot;slam&quot;&gt;SLAM++:&lt;/h3&gt;
 
-&lt;p&gt;More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++.&lt;/p&gt;
+&lt;p&gt;The ICP algorithm used in SLAM++.&lt;/p&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
@@ -130,7 +130,9 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.&lt;/p&gt;
 
-&lt;p&gt;[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.&lt;/p&gt;
+&lt;p&gt;[4] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.&lt;/p&gt;
+
+&lt;p&gt;[5] R. F. Salas-Moreno, R. A. Newcombe, H. Strasdat, P. H. Kelly, and A. J. Davison, “SLAM++: Simultaneous localisation and mapping at the level of objects,” in Computer Vision and Pattern Recognition (CVPR), 2013 IEEE Conference on. IEEE, 2013, pp. 1352–1359.&lt;/p&gt;
 
 &lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;
 &lt;p&gt;1.&lt;/p&gt;
@@ -170,13 +172,16 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_i}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v_i}&lt;/script&gt; are columns of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{U}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{V}&lt;/script&gt; respectively. Note that &lt;script type=&quot;math/tex&quot;&gt;\lambda_i&lt;/script&gt; in both equations have the same values.&lt;/p&gt;
 
-&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; has rank &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;, i.e. there are &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; nonzero elements in the diagonal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; (&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r)&lt;/script&gt;), then:&lt;/p&gt;
+&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt; has rank &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;, i.e. there are &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; nonzero elements in the diagonal matrix &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\Sigma}&lt;/script&gt; (&lt;script type=&quot;math/tex&quot;&gt;diag(\sigma_1, \dots, \sigma_r)&lt;/script&gt;), then:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
-
-- $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}&lt;/script&gt;;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}&lt;/script&gt; form a set of orthogonal basis for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{A}^T&lt;/script&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;To find sigular values, you can either:&lt;/p&gt;
 

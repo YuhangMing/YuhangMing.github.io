@@ -251,13 +251,13 @@ by setting the second term to be zero, i.e.</p>
 
     <p>Non-Linear optimization method can solve for the optimal transformation in an interative manner.</p>
 
-    <p>Details To Be Added…</p>
+    <p><u>Details To Be Added...</u></p>
   </li>
 </ul>
 
-<h3 id="variants">Variants:</h3>
+<h3 id="slam">SLAM++:</h3>
 
-<p>More about efficient variants of ICP algorithms will be discussed along with how they are used in SLAM++.</p>
+<p>The ICP algorithm used in SLAM++.</p>
 
 <h3 id="reference">Reference:</h3>
 
@@ -267,7 +267,9 @@ by setting the second term to be zero, i.e.</p>
 
 <p>[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.</p>
 
-<p>[n] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
+<p>[4] S. Rusinkiewicz, M. Levoy. “Efficient Variants of the ICP Algorithm”. In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.</p>
+
+<p>[5] R. F. Salas-Moreno, R. A. Newcombe, H. Strasdat, P. H. Kelly, and A. J. Davison, “SLAM++: Simultaneous localisation and mapping at the level of objects,” in Computer Vision and Pattern Recognition (CVPR), 2013 IEEE Conference on. IEEE, 2013, pp. 1352–1359.</p>
 
 <h3 id="appendix">Appendix</h3>
 <p>1.</p>
@@ -307,13 +309,16 @@ by setting the second term to be zero, i.e.</p>
 
 <p>where <script type="math/tex">\boldsymbol{u_i}</script> and <script type="math/tex">\boldsymbol{v_i}</script> are columns of <script type="math/tex">\boldsymbol{U}</script> and <script type="math/tex">\boldsymbol{V}</script> respectively. Note that <script type="math/tex">\lambda_i</script> in both equations have the same values.</p>
 
-<p>If <script type="math/tex">\boldsymbol{A}</script> has rank <script type="math/tex">r</script>, i.e. there are <script type="math/tex">r</script> nonzero elements in the diagonal matrix <script type="math/tex">\boldsymbol{\Sigma}</script> (<script type="math/tex">\boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r)</script>), then:</p>
+<p>If <script type="math/tex">\boldsymbol{A}</script> has rank <script type="math/tex">r</script>, i.e. there are <script type="math/tex">r</script> nonzero elements in the diagonal matrix <script type="math/tex">\boldsymbol{\Sigma}</script> (<script type="math/tex">diag(\sigma_1, \dots, \sigma_r)</script>), then:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
-
-- $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
-</code></pre>
-</div>
+<ul>
+  <li>
+    <p><script type="math/tex">\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}</script> form a set of orthogonal basis for <script type="math/tex">\boldsymbol{A}</script>;</p>
+  </li>
+  <li>
+    <p><script type="math/tex">\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}</script> form a set of orthogonal basis for <script type="math/tex">\boldsymbol{A}^T</script>.</p>
+  </li>
+</ul>
 
 <p>To find sigular values, you can either:</p>
 

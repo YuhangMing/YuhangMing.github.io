@@ -151,11 +151,11 @@ permalink: /ICP/
 
   where $$\boldsymbol{u_i}$$ and $$\boldsymbol{v_i}$$ are columns of $$\boldsymbol{U}$$ and $$\boldsymbol{V}$$ respectively. Note that $$\lambda_i$$ in both equations have the same values.
 
-  If $$ \boldsymbol{A} $$ has rank $$ r $$, i.e. there are $$ r $$ nonzero elements in the diagonal matrix $$ \boldsymbol{\Sigma} $$ ($$ \boldsymbol{\Sigma} = diag(\sigma_1, \dots, \sigma_r) $$), then:
+  If $$ \boldsymbol{A} $$ has rank $$ r $$, i.e. there are $$ r $$ nonzero elements in the diagonal matrix $$ \boldsymbol{\Sigma} $$ ($$ diag(\sigma_1, \dots, \sigma_r) $$), then:
 
-    $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
+  - $$\boldsymbol{u_1}, \boldsymbol{u_2}, \dots, \boldsymbol{u_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A} $$;
 
-    $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
+  - $$\boldsymbol{v_1}, \boldsymbol{v_2}, \dots, \boldsymbol{v_r}$$ form a set of orthogonal basis for $$ \boldsymbol{A}^T $$.
 
   To find sigular values, you can either:
 
