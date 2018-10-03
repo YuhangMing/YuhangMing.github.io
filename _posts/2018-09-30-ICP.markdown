@@ -103,55 +103,55 @@ permalink: /ICP/
   
   SLAM++ uses a fast dense ICP algorithm proposed in [3], which uses a *projection-based algorithm to generate point correspondences combined with a point-to-plane error metric and the standard "select-match-minimize" ICP iteration, along with random sampling, constant weighting, and a distance threshold for rejecting pairs*. 
 
-  -. Compute a reference view prediction
+  - Compute a reference view prediction
 
-  $$
-  \begin{cases}
-    \mathrm{Depth} \, \mathrm{Map} \, D_r \\
-    \mathrm{Normal} \, \mathrm{Map} \,  N_r
-  \end{cases}
-  $$
+    $$
+    \begin{cases}
+      \mathrm{Depth} \, \mathrm{Map} \, D_r \\
+      \mathrm{Normal} \, \mathrm{Map} \,  N_r
+    \end{cases}
+    $$
 
-  $$ \rightarrow \mathrm{estimated} \, \mathrm{frame} \, \mathrm{pose} \, T_{wr} (\mathrm{6-DoF}) $$
+    $$ \rightarrow \mathrm{estimated} \, \mathrm{frame} \, \mathrm{pose} \, T_{wr} (\mathrm{6-DoF}) $$
 
-  -. Point-to-plane error metric
+  - Point-to-plane error metric
 
-  $$
-  \begin{cases}
-    E_c(\boldsymbol{x}) = \underset{u \in \Omega}{\sum} \psi (e(u, \boldsymbol{x})) \\
-    e(u, \boldsymbol{x}) = N_r(u')^T (exp(\boldsymbol{x}) \hat{v_l}(u) - v_r(u')) \\
-    \hat{v_l}(u) = \tilde{T_{rl}^n} v_l(u) \\
-    v_l(u) = K^{-1} \dot{u} D_l(u) \\
-    v_r(u') = K^{-1} \dot{u}'' D_r(u') \\
-    u' = \pi (K \hat{v_l}(u))
-  \end{cases}
-  $$
+    $$
+    \begin{cases}
+      E_c(\boldsymbol{x}) = \underset{u \in \Omega}{\sum} \psi (e(u, \boldsymbol{x})) \\
+      e(u, \boldsymbol{x}) = N_r(u')^T (exp(\boldsymbol{x}) \hat{v_l}(u) - v_r(u')) \\
+      \hat{v_l}(u) = \tilde{T_{rl}^n} v_l(u) \\
+      v_l(u) = K^{-1} \dot{u} D_l(u) \\
+      v_r(u') = K^{-1} \dot{u}'' D_r(u') \\
+      u' = \pi (K \hat{v_l}(u))
+    \end{cases}
+    $$
+    
+    where $$\Omega$$ is the set of all valid pixels in the live depth map; 
+    $$ \psi $$ is a robust Huber penalty function; 
+    $$ v_r(u') $$ is the projectively data associated predicted vertex; 
+    $$ \boldsymbol{x} \in \mathbb{R}^6 $$ is the parameterised incremental update $$ \tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)} $$ ($$ \tilde{T_{rl}^{n=0}} $$ is the identity); 
+    $$K$$ is the camera intrinsic matrix; and $$\pi$$ is standard pin-hole projection function.
 
-  where $$\Omega$$ is the set of all valid pixels in the live depth map; 
-  $$ \psi $$ is a robust Huber penalty function; 
-  $$ v_r(u') $$ is the projectively data associated predicted vertex; 
-  $$ \boldsymbol{x} \in \mathbb{R}^6 $$ is the parameterised incremental update $$ \tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)} $$ ($$ \tilde{T_{rl}^{n=0}} $$ is the identity); 
-  $$K$$ is the camera intrinsic matrix; and $$\pi$$ is standard pin-hole projection function.
+  - Gauss-Newton based gradient descent
 
-  -. Gauss-Newton based gradient descent
+    $$
+    \begin{cases}
+      \underset{u \in \Omega}{\sum} J(u)^T J(u) \boldsymbol{x} = \underset{u \in \Omega}{\sum} \psi'(e) J(u) \\
+      J(u) = \frac{\partial e(\boldsymbol{x},u)}{\partial \boldsymbol{x}}
+    \end{cases}
+    $$
 
-  $$
-  \begin{cases}
-    \underset{u \in \Omega}{\sum} J(u)^T J(u) \boldsymbol{x} = \underset{u \in \Omega}{\sum} \psi'(e) J(u) \\
-    J(u) = \frac{\partial e(\boldsymbol{x},u)}{\partial \boldsymbol{x}}
-  \end{cases}
-  $$
+    $$\psi'$$ computes the robust penalty function derivative given currently estimated error.
 
-  $$\psi'$$ computes the robust penalty function derivative given currently estimated error.
+    Solve for the optimal $$\boldsymbol{x}$$ and compute current pose after m incremental updates by:
 
-  Solve for the optimal $$\boldsymbol{x}$$ and compute current pose after m incremental updates by:
-
-  $$
-  \begin{cases}
-    \tilde{T_{rl}^{n+1}} \leftarrow exp(\boldsymbol{x})\tilde{T_{rl}^n} \\
-    T_{wl} \leftarrow T_{wr} \tilde{T_{rl}^m} 
-  \end{cases}
-  $$
+    $$
+    \begin{cases}
+      \tilde{T_{rl}^{n+1}} \leftarrow exp(\boldsymbol{x})\tilde{T_{rl}^n} \\
+      T_{wl} \leftarrow T_{wr} \tilde{T_{rl}^m} 
+    \end{cases}
+    $$
 
 
 ### Reference:
