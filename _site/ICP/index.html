@@ -264,20 +264,48 @@ by setting the second term to be zero, i.e.</p>
 </ol>
 
 <script type="math/tex; mode=display">\begin{cases}
-    \mathrm{Depth Map } D_r \\
-    \mathrm{Normal Map } N_r
+    \mathrm{Depth} \, \mathrm{Map} \, D_r \\
+    \mathrm{Normal} \, \mathrm{Map} \,  N_r
   \end{cases}</script>
 
-<script type="math/tex; mode=display">\rightarrow \mathrm{ estimated frame pose } T_{wr} (\mathrm{6 DoF})</script>
+<script type="math/tex; mode=display">\rightarrow \mathrm{estimated} \, \mathrm{frame} \, \mathrm{pose} \, T_{wr} (\mathrm{6-DoF})</script>
 
 <ol>
-  <li>Update live camera to world transform</li>
+  <li>Point-to-plane error metric</li>
 </ol>
 
-<p>The point-to-plane error metric is defined as:</p>
+<script type="math/tex; mode=display">\begin{cases}
+    E_c(\boldsymbol{x}) = \underset{u \in \Omega}{\sum} \psi (e(u, \boldsymbol{x})) \\
+    e(u, \boldsymbol{x}) = N_r(u')^T (exp(\boldsymbol{x}) \hat{v_l}(u) - v_r(u')) \\
+    \hat{v_l}(u) = \tilde{T_{rl}^n} v_l(u) \\
+    v_l(u) = K^{-1} \dot{u} D_l(u) \\
+    v_r(u') = K^{-1} \dot{u}'' D_r(u') \\
+    u' = \pi (K \hat{v_l}(u))
+  \end{cases}</script>
 
-<p>$$
-  \begin{cases}</p>
+<p>where <script type="math/tex">\Omega</script> is the set of all valid pixels in the live depth map; 
+  <script type="math/tex">\psi</script> is a robust Huber penalty function; 
+  <script type="math/tex">v_r(u')</script> is the projectively data associated predicted vertex; 
+  <script type="math/tex">\boldsymbol{x} \in \mathbb{R}^6</script> is the parameterised incremental update <script type="math/tex">\tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)}</script> (<script type="math/tex">\tilde{T_{rl}^{n=0}}</script> is the identity); 
+  <script type="math/tex">K</script> is the camera intrinsic matrix; and <script type="math/tex">\pi</script> is standard pin-hole projection function.</p>
+
+<ol>
+  <li>Gauss-Newton based gradient descent</li>
+</ol>
+
+<script type="math/tex; mode=display">\begin{cases}
+    \underset{u \in \Omega}{\sum} J(u)^T J(u) \boldsymbol{x} = \underset{u \in \Omega}{\sum} \psi'(e) J(u) \\
+    J(u) = \frac{\partial e(\boldsymbol{x},u)}{\partial \boldsymbol{x}}
+  \end{cases}</script>
+
+<p><script type="math/tex">\psi'</script> computes the robust penalty function derivative given currently estimated error.</p>
+
+<p>Solve for the optimal <script type="math/tex">\boldsymbol{x}</script> and compute current pose after m incremental updates by:</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+    \tilde{T_{rl}^{n+1}} \leftarrow exp(\boldsymbol{x})\tilde{T_{rl}^n} \\
+    T_{wl} \leftarrow T_{wr} \tilde{T_{rl}^m} 
+  \end{cases}</script>
 
 <h3 id="reference">Reference:</h3>
 

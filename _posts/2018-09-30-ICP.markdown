@@ -130,7 +130,7 @@ permalink: /ICP/
   where $$\Omega$$ is the set of all valid pixels in the live depth map; 
   $$ \psi $$ is a robust Huber penalty function; 
   $$ v_r(u') $$ is the projectively data associated predicted vertex; 
-  $$ \boldsymbol{x} \in \R^6 $$ is the parameterised incremental update $$ \tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)} $$ ($$ \tilde{T_{rl}^{n=0} $$ is the identity); 
+  $$ \boldsymbol{x} \in \mathbb{R}^6 $$ is the parameterised incremental update $$ \tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)} $$ ($$ \tilde{T_{rl}^{n=0}} $$ is the identity); 
   $$K$$ is the camera intrinsic matrix; and $$\pi$$ is standard pin-hole projection function.
 
   3. Gauss-Newton based gradient descent
@@ -138,7 +138,7 @@ permalink: /ICP/
   $$
   \begin{cases}
     \underset{u \in \Omega}{\sum} J(u)^T J(u) \boldsymbol{x} = \underset{u \in \Omega}{\sum} \psi'(e) J(u) \\
-    J(u) = \frac{\par e(\boldsymbol{x},u)}{\par\boldsymbol{x}}
+    J(u) = \frac{\partial e(\boldsymbol{x},u)}{\partial \boldsymbol{x}}
   \end{cases}
   $$
 
