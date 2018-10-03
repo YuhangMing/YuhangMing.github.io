@@ -259,9 +259,7 @@ by setting the second term to be zero, i.e.</p>
 
 <p>SLAM++ uses a fast dense ICP algorithm proposed in [3], which uses a <em>projection-based algorithm to generate point correspondences combined with a point-to-plane error metric and the standard “select-match-minimize” ICP iteration, along with random sampling, constant weighting, and a distance threshold for rejecting pairs</em>.</p>
 
-<ol>
-  <li>Compute a reference view prediction</li>
-</ol>
+<p>-. Compute a reference view prediction</p>
 
 <script type="math/tex; mode=display">\begin{cases}
     \mathrm{Depth} \, \mathrm{Map} \, D_r \\
@@ -270,9 +268,7 @@ by setting the second term to be zero, i.e.</p>
 
 <script type="math/tex; mode=display">\rightarrow \mathrm{estimated} \, \mathrm{frame} \, \mathrm{pose} \, T_{wr} (\mathrm{6-DoF})</script>
 
-<ol>
-  <li>Point-to-plane error metric</li>
-</ol>
+<p>-. Point-to-plane error metric</p>
 
 <script type="math/tex; mode=display">\begin{cases}
     E_c(\boldsymbol{x}) = \underset{u \in \Omega}{\sum} \psi (e(u, \boldsymbol{x})) \\
@@ -289,9 +285,7 @@ by setting the second term to be zero, i.e.</p>
   <script type="math/tex">\boldsymbol{x} \in \mathbb{R}^6</script> is the parameterised incremental update <script type="math/tex">\tilde{T_{rl}^n} \in \mathrm{\boldsymbol{SE}(3)}</script> (<script type="math/tex">\tilde{T_{rl}^{n=0}}</script> is the identity); 
   <script type="math/tex">K</script> is the camera intrinsic matrix; and <script type="math/tex">\pi</script> is standard pin-hole projection function.</p>
 
-<ol>
-  <li>Gauss-Newton based gradient descent</li>
-</ol>
+<p>-. Gauss-Newton based gradient descent</p>
 
 <script type="math/tex; mode=display">\begin{cases}
     \underset{u \in \Omega}{\sum} J(u)^T J(u) \boldsymbol{x} = \underset{u \in \Omega}{\sum} \psi'(e) J(u) \\
