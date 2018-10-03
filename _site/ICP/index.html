@@ -257,7 +257,27 @@ by setting the second term to be zero, i.e.</p>
 
 <h3 id="slam">SLAM++:</h3>
 
-<p>The ICP algorithm used in SLAM++.</p>
+<p>SLAM++ uses a fast dense ICP algorithm proposed in [3], which uses a <em>projection-based algorithm to generate point correspondences combined with a point-to-plane error metric and the standard “select-match-minimize” ICP iteration, along with random sampling, constant weighting, and a distance threshold for rejecting pairs</em>.</p>
+
+<ol>
+  <li>Compute a reference view prediction</li>
+</ol>
+
+<script type="math/tex; mode=display">\begin{cases}
+    \mathrm{Depth Map } D_r \\
+    \mathrm{Normal Map } N_r
+  \end{cases}</script>
+
+<script type="math/tex; mode=display">\rightarrow \mathrm{ estimated frame pose } T_{wr} (\mathrm{6 DoF})</script>
+
+<ol>
+  <li>Update live camera to world transform</li>
+</ol>
+
+<p>The point-to-plane error metric is defined as:</p>
+
+<p>$$
+  \begin{cases}</p>
 
 <h3 id="reference">Reference:</h3>
 

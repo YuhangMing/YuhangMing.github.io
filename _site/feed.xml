@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-02T16:39:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-03T17:15:35+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
@@ -120,7 +120,27 @@ by setting the second term to be zero, i.e.&lt;/p&gt;
 
 &lt;h3 id=&quot;slam&quot;&gt;SLAM++:&lt;/h3&gt;
 
-&lt;p&gt;The ICP algorithm used in SLAM++.&lt;/p&gt;
+&lt;p&gt;SLAM++ uses a fast dense ICP algorithm proposed in [3], which uses a &lt;em&gt;projection-based algorithm to generate point correspondences combined with a point-to-plane error metric and the standard “select-match-minimize” ICP iteration, along with random sampling, constant weighting, and a distance threshold for rejecting pairs&lt;/em&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Compute a reference view prediction&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{cases}
+    \mathrm{Depth Map } D_r \\
+    \mathrm{Normal Map } N_r
+  \end{cases}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\rightarrow \mathrm{ estimated frame pose } T_{wr} (\mathrm{6 DoF})&lt;/script&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Update live camera to world transform&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The point-to-plane error metric is defined as:&lt;/p&gt;
+
+&lt;p&gt;$$
+  \begin{cases}&lt;/p&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
