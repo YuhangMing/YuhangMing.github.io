@@ -10,13 +10,13 @@ permalink: /graph-based-SLAM/
 
   Along a trajectory, given:
   
-  - A series of camera poses: $$ \boldsymbol{x_{1:T}} = \{ \boldsymbol{x_1}, \dots, \boldsymbol{x_T} \} $$;
+  -> A series of camera poses: $$ \boldsymbol{x_{1:T}} = \{ \boldsymbol{x_1}, \dots, \boldsymbol{x_T} \} $$;
   
-  - A series of measurements from motion sensors (like wheel odometry or IMU): $$ \boldsymbol{u_{1:T}} = \{ \boldsymbol{u_1}, \dots, \boldsymbol{u_T} \} $$;
+  -> A series of measurements from motion sensors (like wheel odometry or IMU): $$ \boldsymbol{u_{1:T}} = \{ \boldsymbol{u_1}, \dots, \boldsymbol{u_T} \} $$;
 
-  - A series of perceptions of the environment (the landmarks observed by the camera at each time step): $$ \boldsymbol{z_{1:T}} = \{ \boldsymbol{z_1}, \dots, \boldsymbol{z_T} \} $$;
+  -> A series of perceptions of the environment (the landmarks observed by the camera at each time step): $$ \boldsymbol{z_{1:T}} = \{ \boldsymbol{z_1}, \dots, \boldsymbol{z_T} \} $$;
 
-  - A map of the environment $$ \boldsymbol{m} $$ which consists of N landmarks $$ \boldsymbol{y_{1:N}} = \{ \boldsymbol{y_1}, \dots, \boldsymbol{y_N} \} $$;
+  -> A map of the environment $$ \boldsymbol{m} $$ which consists of N landmarks $$ \boldsymbol{y_{1:N}} = \{ \boldsymbol{y_1}, \dots, \boldsymbol{y_N} \} $$;
 
   The SLAM problem can be formulated as: 
 
