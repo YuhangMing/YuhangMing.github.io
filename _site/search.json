@@ -1,6 +1,13 @@
 [
   
     {
+      "title"    : "Graph-Based SLAM",
+      "tags"     : "",
+      "url"      : "/graph-based-SLAM/",
+      "date"     : "07 Oct 2018"
+    } ,
+  
+    {
       "title"    : "Iterative Closest Point",
       "tags"     : "",
       "url"      : "/ICP/",

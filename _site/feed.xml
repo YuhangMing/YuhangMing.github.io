@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T17:24:45+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T20:33:06+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+
+&lt;p&gt;Along a trajectory, given:&lt;/p&gt;
+
+&lt;p&gt;-&amp;gt; A series of camera poses: &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_{1:T}} = \{ \boldsymbol{x_1}, \dots, \boldsymbol{x_T} \}&lt;/script&gt;;&lt;/p&gt;
+
+&lt;p&gt;-&amp;gt; A series of measurements from motion sensors (like wheel odometry or IMU): &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{u_{1:T}} = \{ \boldsymbol{u_1}, \dots, \boldsymbol{u_T} \}&lt;/script&gt;;&lt;/p&gt;
+
+&lt;p&gt;-&amp;gt; A series of perceptions of the environment (the landmarks observed by the camera at each time step): &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{z_{1:T}} = \{ \boldsymbol{z_1}, \dots, \boldsymbol{z_T} \}&lt;/script&gt;;&lt;/p&gt;
+
+&lt;p&gt;-&amp;gt; A map of the environment &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{m}&lt;/script&gt; which consists of &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; landmarks &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{l_{1:N}} = \{ \boldsymbol{l_1}, \dots, \boldsymbol{l_N} \}&lt;/script&gt;;&lt;/p&gt;
+
+&lt;p&gt;The SLAM problem can be formulated as:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Estimating the posterior probability of the trajectory&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_{1:T}}&lt;/script&gt; &lt;em&gt;and the map&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{m}&lt;/script&gt; &lt;em&gt;given all the measurements plus an initial pose&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_0}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;p(\boldsymbol{x_{1:T}}, \boldsymbol{m} \vert \boldsymbol{z_{1:T}}, \boldsymbol{u_{1:T}}, \boldsymbol{x_0})&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;dynamic-bayesian-network-dbn&quot;&gt;Dynamic Bayesian Network (DBN)&lt;/h3&gt;
+
+&lt;p&gt;DBN describs a stochastic process as a directed graph where an arrow in the graph indicats the dependency between two nodes. E.g. an arrow pointed from &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_0}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_1}&lt;/script&gt; means &lt;script type=&quot;math/tex&quot;&gt;p(\boldsymbol{x_1} \vert \boldsymbol{x_0})&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\assets\img\graph-based-slam\DBN.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Expressing SLAM as a DBN highlights its temporal structure. Hence this formulization is well-suited for the filtering processes that can be used to tackle SLAM problems via the MAP (Maximize-A-Posterior) scheme.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\{ \boldsymbol{x}, \boldsymbol{l} \}^* = \mathrm{argmax}(\boldsymbol{x_0}) \prod P(\boldsymbol{x_k} \vert \boldsymbol{x_{k-1}, \boldsymbol{u_k}}) \prod P(\boldsymbol{z_k} \vert \boldsymbol{x_i}, \boldsymbol{l_j})&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;graph-based--network-based-formulation&quot;&gt;Graph-Based / Network-Based Formulation&lt;/h3&gt;
+
+&lt;p&gt;This formulation highlights the underlying spatial structure of the SLAM system. This is usually divided into a 2-step tast: 1. constructing the graph from raw measurements (front-end); 2. determining the MOST LIKELY configuration of the poses given constraints (edges) of the graph.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Data Association [Front-End]&lt;/p&gt;
+
+    &lt;p&gt;An edge between 2 nodes is labelled with a probatility distribution over teh relative transformation of 2 poses, conditioned on their mutual measurements. One needs to determine the Most Likely constraint resulting from an observation. More details about probablistic data association refer to [3].&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}_{t, t+1} = \underset{\mathcal{D}}{\mathrm{argmax}} p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}})&lt;/script&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Graph-Based Mapping [Back-End]&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Assuming that Gaussian noise is added to the observations and the data association is known. The GOAL is to find a Gaussian approximation of the posterior over the trajectory.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;First some new notations are introduced here:
+let &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T&lt;/script&gt; be the vector of parameters where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_i}&lt;/script&gt; stands for the pose of node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;; let the noise be zero-mean Gaussian with information matrix &lt;script type=&quot;math/tex&quot;&gt;\Omega_{ij}&lt;/script&gt;, so the transformation that makes the observation acquired from &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; maximally overlap with overvation acquired form &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; follows the Gaussian distribution &lt;script type=&quot;math/tex&quot;&gt;\mathcal{N}(T_{ij}, \Omega_{ij}^{-1})&lt;/script&gt;; let &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})&lt;/script&gt; be the prediction transformation between node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; (note that this is a random variable).&lt;/p&gt;
+
+    &lt;p&gt;Therefore, we have the distribution of the random variable &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}&lt;/script&gt;:
+&lt;script type=&quot;math/tex&quot;&gt;P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }}&lt;/script&gt;,
+assuming that &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}&lt;/script&gt; is a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; dimensional vector.&lt;/p&gt;
+
+    &lt;p&gt;Then, the negative log-likelihood is&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}})&lt;/script&gt;
+
+    &lt;p&gt;By defining &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{e_{ij}} = \boldsymbol{e_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) = T_{ij} - \hat{T_{ij}}&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
+
+&lt;p&gt;[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;
+
+&lt;p&gt;[2] G. Grisetti, R. Kümmerle, C. Stachniss, and W. Burgard. “A Tutorial on Graph-Based SLAM”. IEEE Intelligent Transportation Systems Magazine. 2(4):31-43, December 2010.&lt;/p&gt;
+
+&lt;p&gt;[3] S. Bowman, N. Atanasov, K. Daniilidis, and G. Pappas. “Probabilistic Data Association for Semantic SLAM”. IEEE International Conference on Robotics and Automation (ICRA). May 2017.&lt;/p&gt;
+
+&lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Probabilistic Formulation:</summary></entry><entry><title type="html">Iterative Closest Point</title><link href="http://localhost:4000/ICP/" rel="alternate" type="text/html" title="Iterative Closest Point" /><published>2018-09-30T18:00:00+01:00</published><updated>2018-09-30T18:00:00+01:00</updated><id>http://localhost:4000/ICP</id><content type="html" xml:base="http://localhost:4000/ICP/">&lt;h3 id=&quot;usage&quot;&gt;Usage:&lt;/h3&gt;
 
 &lt;p&gt;In SLAM systems, the ICP algorithm is usually used in the front-end, i.e. visual odometry, for 3D-3D pose estimation.&lt;/p&gt;
 
