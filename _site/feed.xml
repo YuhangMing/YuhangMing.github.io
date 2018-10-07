@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T20:33:06+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T20:46:24+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -61,8 +61,13 @@
 
     &lt;p&gt;&lt;em&gt;Assuming that Gaussian noise is added to the observations and the data association is known. The GOAL is to find a Gaussian approximation of the posterior over the trajectory.&lt;/em&gt;&lt;/p&gt;
 
-    &lt;p&gt;First some new notations are introduced here:
-let &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T&lt;/script&gt; be the vector of parameters where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_i}&lt;/script&gt; stands for the pose of node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;; let the noise be zero-mean Gaussian with information matrix &lt;script type=&quot;math/tex&quot;&gt;\Omega_{ij}&lt;/script&gt;, so the transformation that makes the observation acquired from &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; maximally overlap with overvation acquired form &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; follows the Gaussian distribution &lt;script type=&quot;math/tex&quot;&gt;\mathcal{N}(T_{ij}, \Omega_{ij}^{-1})&lt;/script&gt;; let &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})&lt;/script&gt; be the prediction transformation between node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; (note that this is a random variable).&lt;/p&gt;
+    &lt;p&gt;First some new notations are introduced here:&lt;/p&gt;
+
+    &lt;p&gt;-&amp;gt; let &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T&lt;/script&gt; be the vector of parameters where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_i}&lt;/script&gt; stands for the pose of node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;;&lt;/p&gt;
+
+    &lt;p&gt;-&amp;gt; let the noise be zero-mean Gaussian with information matrix &lt;script type=&quot;math/tex&quot;&gt;\Omega_{ij}&lt;/script&gt;, so the transformation that makes the observation acquired from &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; maximally overlap with overvation acquired form &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; follows the Gaussian distribution &lt;script type=&quot;math/tex&quot;&gt;\mathcal{N}(T_{ij}, \Omega_{ij}^{-1})&lt;/script&gt;;&lt;/p&gt;
+
+    &lt;p&gt;-&amp;gt; let &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})&lt;/script&gt; be the prediction transformation between node &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; (note that this is a random variable).&lt;/p&gt;
 
     &lt;p&gt;Therefore, we have the distribution of the random variable &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}&lt;/script&gt;:
 &lt;script type=&quot;math/tex&quot;&gt;P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }}&lt;/script&gt;,
@@ -72,7 +77,20 @@ assuming that &lt;script type=&quot;math/tex&quot;&gt;\hat{T_{ij}}&lt;/script&gt
 
     &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}})&lt;/script&gt;
 
-    &lt;p&gt;By defining &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{e_{ij}} = \boldsymbol{e_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) = T_{ij} - \hat{T_{ij}}&lt;/script&gt;&lt;/p&gt;
+    &lt;p&gt;By defining &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{e_{ij}} = \boldsymbol{e_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) = T_{ij} - \hat{T_{ij}}&lt;/script&gt;, we have the final objective function:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\boldsymbol{\mathrm{F}}(\boldsymbol{x}) = \sum_{&lt;i, j&gt; \in C} \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} %]]&gt;&lt;/script&gt;
+
+    &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; is the set of pairs of indices for which a constraint (ovservation) exits. Under the MLE scheme, we can find the optimal values for &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x}&lt;/script&gt; by:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \boldsymbol{\mathrm{F}}(\boldsymbol{x})&lt;/script&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 

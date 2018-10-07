@@ -44,7 +44,7 @@ permalink: /graph-based-SLAM/
 
     An edge between 2 nodes is labelled with a probatility distribution over teh relative transformation of 2 poses, conditioned on their mutual measurements. One needs to determine the Most Likely constraint resulting from an observation. More details about probablistic data association refer to [3].
 
-    | $$ \mathcal{D}_{t, t+1} = \underset{\mathcal{D}}{\mathrm{argmax}} p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}}) $$ |
+    | $$ \mathcal{D}_{t, t+1} = \underset{\mathcal{D}}{\mathrm{argmax}} \, p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}}) $$ |
 
   - Graph-Based Mapping [Back-End]
 
@@ -52,13 +52,17 @@ permalink: /graph-based-SLAM/
 
     First some new notations are introduced here:
 
-    let $$ \boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T $$ be the vector of parameters where $$ \boldsymbol{x_i} $$ stands for the pose of node $$ i $$; let the noise be zero-mean Gaussian with information matrix $$ \Omega_{ij} $$, so the transformation that makes the observation acquired from $$i$$ maximally overlap with overvation acquired form $$j$$ follows the Gaussian distribution $$ \mathcal{N}(T_{ij}, \Omega_{ij}^{-1}) $$; let $$ \hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) $$ be the prediction transformation between node $$i$$ and $$j$$ (note that this is a random variable).
+    -> let $$ \boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T $$ be the vector of parameters where $$ \boldsymbol{x_i} $$ stands for the pose of node $$ i $$; 
+
+    -> let the noise be zero-mean Gaussian with information matrix $$ \Omega_{ij} $$, so the transformation that makes the observation acquired from $$i$$ maximally overlap with overvation acquired form $$j$$ follows the Gaussian distribution $$ \mathcal{N}(T_{ij}, \Omega_{ij}^{-1}) $$; 
+
+    -> let $$ \hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) $$ be the prediction transformation between node $$i$$ and $$j$$ (note that this is a random variable).
 
     Therefore, we have the distribution of the random variable $$ \hat{T_{ij}} $$:
-    $$ P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }} $$,
-    assuming that $$ \hat{T_{ij}} $$ is a $$k$$ dimensional vector.
 
-    Then, the negative log-likelihood is
+    $$ P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }} $$
+
+    assuming that $$ \hat{T_{ij}} $$ is a $$k$$ dimensional vector. Then, the negative log-likelihood is
 
     $$ \mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}}) $$
 
@@ -68,7 +72,7 @@ permalink: /graph-based-SLAM/
 
     where $$C$$ is the set of pairs of indices for which a constraint (ovservation) exits. Under the MLE scheme, we can find the optimal values for $$ \boldsymbol{x} $$ by:
 
-    | $$ \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \boldsymbol{\mathrm{F}}(\boldsymbol{x}) $$ |
+    | $$ \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}}(\boldsymbol{x}) $$ |
 
 
 ### Reference:

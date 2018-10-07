@@ -198,8 +198,13 @@
 
     <p><em>Assuming that Gaussian noise is added to the observations and the data association is known. The GOAL is to find a Gaussian approximation of the posterior over the trajectory.</em></p>
 
-    <p>First some new notations are introduced here:
-let <script type="math/tex">\boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T</script> be the vector of parameters where <script type="math/tex">\boldsymbol{x_i}</script> stands for the pose of node <script type="math/tex">i</script>; let the noise be zero-mean Gaussian with information matrix <script type="math/tex">\Omega_{ij}</script>, so the transformation that makes the observation acquired from <script type="math/tex">i</script> maximally overlap with overvation acquired form <script type="math/tex">j</script> follows the Gaussian distribution <script type="math/tex">\mathcal{N}(T_{ij}, \Omega_{ij}^{-1})</script>; let <script type="math/tex">\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})</script> be the prediction transformation between node <script type="math/tex">i</script> and <script type="math/tex">j</script> (note that this is a random variable).</p>
+    <p>First some new notations are introduced here:</p>
+
+    <p>-&gt; let <script type="math/tex">\boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T</script> be the vector of parameters where <script type="math/tex">\boldsymbol{x_i}</script> stands for the pose of node <script type="math/tex">i</script>;</p>
+
+    <p>-&gt; let the noise be zero-mean Gaussian with information matrix <script type="math/tex">\Omega_{ij}</script>, so the transformation that makes the observation acquired from <script type="math/tex">i</script> maximally overlap with overvation acquired form <script type="math/tex">j</script> follows the Gaussian distribution <script type="math/tex">\mathcal{N}(T_{ij}, \Omega_{ij}^{-1})</script>;</p>
+
+    <p>-&gt; let <script type="math/tex">\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})</script> be the prediction transformation between node <script type="math/tex">i</script> and <script type="math/tex">j</script> (note that this is a random variable).</p>
 
     <p>Therefore, we have the distribution of the random variable <script type="math/tex">\hat{T_{ij}}</script>:
 <script type="math/tex">P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }}</script>,
@@ -209,7 +214,20 @@ assuming that <script type="math/tex">\hat{T_{ij}}</script> is a <script type="m
 
     <script type="math/tex; mode=display">\mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}})</script>
 
-    <p>By defining <script type="math/tex">\boldsymbol{e_{ij}} = \boldsymbol{e_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) = T_{ij} - \hat{T_{ij}}</script></p>
+    <p>By defining <script type="math/tex">\boldsymbol{e_{ij}} = \boldsymbol{e_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) = T_{ij} - \hat{T_{ij}}</script>, we have the final objective function:</p>
+
+    <script type="math/tex; mode=display">% <![CDATA[
+\boldsymbol{\mathrm{F}}(\boldsymbol{x}) = \sum_{<i, j> \in C} \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} %]]></script>
+
+    <p>where <script type="math/tex">C</script> is the set of pairs of indices for which a constraint (ovservation) exits. Under the MLE scheme, we can find the optimal values for <script type="math/tex">\boldsymbol{x}</script> by:</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><script type="math/tex">\boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \boldsymbol{\mathrm{F}}(\boldsymbol{x})</script></td>
+        </tr>
+      </tbody>
+    </table>
   </li>
 </ul>
 
