@@ -2,7 +2,7 @@
 layout: post
 title:  "Iterative Closest Point"
 date:   2018-09-30 15:00:00 -0200
-description: ICP.
+description: details about ICP algorithm and its application in SLAM++.
 permalink: /ICP/
 ---
 
@@ -158,13 +158,13 @@ permalink: /ICP/
 
 [1] 高翔；张涛；刘毅；严沁睿: "视觉SLAM十四讲，从理论到实践".
 
-[2] F. Pomerleau, F. Colas, R. Siegwart. "A Review of Point Cloud Registration Algorithms for Mobile Robotics". Foundations and Trends in Robotics. 4 (1): 1–104, 2015.
+[2] F. Pomerleau, F. Colas, and R. Siegwart. "A Review of Point Cloud Registration Algorithms for Mobile Robotics". Foundations and Trends in Robotics. 4 (1): 1–104, 2015.
 
-[3] K. S. Arun, T. S. Huang, and S. D. Blostein. Least-Squares Fitting of Two 3-D Point Sets. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.
+[3] K. S. Arun, T. S. Huang, and S. D. Blostein. "Least-Squares Fitting of Two 3-D Point Sets". Pattern Analysis and Machine Intelligence, IEEE Transactions on, 9(5):698–700, 1987.
 
-[4] S. Rusinkiewicz, M. Levoy. "Efficient Variants of the ICP Algorithm". In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.
+[4] S. Rusinkiewicz and M. Levoy. "Efficient Variants of the ICP Algorithm". In Proceedings of the IEEE International Workshop on 3D Digital Imaging and Modeling (3DIM), 2001.
 
-[5] R. F. Salas-Moreno, R. A. Newcombe, H. Strasdat, P. H. Kelly, and A. J. Davison, “SLAM++: Simultaneous localisation and mapping at the level of objects,” in Computer Vision and Pattern Recognition (CVPR), 2013 IEEE Conference on. IEEE, 2013, pp. 1352–1359.
+[5] R. F. Salas-Moreno, R. A. Newcombe, H. Strasdat, P. H. Kelly, and A. J. Davison, "SLAM++: Simultaneous localisation and mapping at the level of objects". Computer Vision and Pattern Recognition (CVPR), 2013 IEEE Conference on. IEEE, 2013, pp. 1352–1359.
 
 
 ### Appendix
