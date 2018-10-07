@@ -27,7 +27,7 @@ permalink: /graph-based-SLAM/
 
 ### Dynamic Bayesian Network (DBN)
 
-  DBN describs a stochastic process as a directed graph where an arrow in the graph indicats the dependency between two nodes. E.g. arrow pointed from $$\boldsymbol{x_0}$$ to $$\boldsymbol{x_1}$$ means $$p(\boldsymbol{x_1} \vert \boldsymbol{x_0})$$.
+  DBN describs a stochastic process as a directed graph where an arrow in the graph indicats the dependency between two nodes. E.g. an arrow pointed from $$\boldsymbol{x_0}$$ to $$\boldsymbol{x_1}$$ means $$p(\boldsymbol{x_1} \vert \boldsymbol{x_0})$$.
 
   ![Image](\assets\img\graph-based-slam\DBN.png)
 
@@ -36,6 +36,32 @@ permalink: /graph-based-SLAM/
   | $$ \{ \boldsymbol{x}, \boldsymbol{l} \}^* = \mathrm{argmax}(\boldsymbol{x_0}) \prod P(\boldsymbol{x_k} \vert \boldsymbol{x_{k-1}, \boldsymbol{u_k}}) \prod P(\boldsymbol{z_k} \vert \boldsymbol{x_i}, \boldsymbol{l_j}) $$ |
 
 
+### Graph-Based / Network-Based Formulation
+
+  This formulation highlights the underlying spatial structure of the SLAM system. This is usually divided into a 2-step tast: 1. constructing the graph from raw measurements (front-end); 2. determining the MOST LIKELY configuration of the poses given constraints (edges) of the graph.
+
+  - Data Association [Front-End]
+
+    An edge between 2 nodes is labelled with a probatility distribution over teh relative transformation of 2 poses, conditioned on their mutual measurements. One needs to determine the Most Likely constraint resulting from an observation. More details about probablistic data association refer to [3].
+
+    | $$ \mathcal{D}_{t, t+1} = \underset{\mathcal{D}}\mathrm{argmax} p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}}) $$ |
+
+  - Graph-Based Mapping [Back-End]
+
+    *Assuming that Gaussian noise is added to the observations and the data association is known. The GOAL is to find a Gaussian approximation of the posterior over the trajectory.*
+
+    First some new notations are introduced here:
+    let $$ \boldsymbol{x} = (\boldsymbol{x_1}, \dots, \boldsymbol{x_T})^T $$ be the vector of parameters where $$ \boldsymbol{x_i} $$ stands for the pose of node $$ i $$; let the noise be zero-mean Gaussian with information matrix $$ \Omega_{ij} $$, so the transformation that makes the observation acquired from $$i$$ maximally overlap with overvation acquired form $$j$$ follows the Gaussian distribution $$ \mathcal{N}(T_{ij}, \Omega_{ij}^{-1}) $$; let $$ \hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j}) $$ be the prediction transformation between node $$i$$ and $$j$$ (note that this is a random variable).
+
+    Therefore, we have the distribution of the random variable $$ \hat{T_{ij}} $$:
+    $$ P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }},
+    assuming that $$ \hat{T_{ij}} $$ is a $$k$$ dimensional vector.
+
+    Then, the log-likelihood is
+
+    $$ \mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}}) $$
+
+    
 
 
 ### Reference:
@@ -43,6 +69,8 @@ permalink: /graph-based-SLAM/
 [1] 高翔；张涛；刘毅；严沁睿: "视觉SLAM十四讲，从理论到实践".
 
 [2] G. Grisetti, R. Kümmerle, C. Stachniss, and W. Burgard. "A Tutorial on Graph-Based SLAM". IEEE Intelligent Transportation Systems Magazine. 2(4):31-43, December 2010.
+
+[3] S. Bowman, N. Atanasov, K. Daniilidis, and G. Pappas. "Probabilistic Data Association for Semantic SLAM". IEEE International Conference on Robotics and Automation (ICRA). May 2017.
 
 
 ### Appendix
