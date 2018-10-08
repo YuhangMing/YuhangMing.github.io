@@ -82,6 +82,14 @@ permalink: /graph-based-SLAM/
 
        The most straight-forward way is performing Taylor expansion around the initial guess $$\breve{\boldsymbol{x}}$$, we have:
 
+       |$$ 
+       \begin{split}
+         & \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\boldsymbol{x}) \\
+         \Rightarrow \quad
+         & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+       \end{split}
+       $$|
+
        $$ 
        \begin{split}
          \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
@@ -113,7 +121,17 @@ permalink: /graph-based-SLAM/
 
        $$ \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x} $$
 
-       Then substituting the error term back into the objective funciton, we have:
+       Then substituting the error term back into the objective funciton, we have the new objective function:
+       
+       |$$ 
+       \begin{split}
+        & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+        \Rightarrow \quad
+        & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})
+       \end{split}
+       $$|
+
+       after expanding and combining terms, we have:
 
        $$
        \begin{split}
@@ -129,16 +147,46 @@ permalink: /graph-based-SLAM/
        $$ 
        \begin{split}
          & \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
-         \Rightarrow 
+         \Rightarrow \quad
          & \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
        \end{split}
        $$
 
-       Let $$\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}$$, $$\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}$$, 
+       Let $$\,\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}$$, $$\,\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}$$, 
 
-       | \boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g} |
+       | $\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}$ |
 
        which is called **Augmented Equation**, a.k.a. Gauss Newton Equation or Normal Equation.
+
+       **Solving the augmented equation is the core of the optimization.** The complete optimization algorithm is:
+
+       i. Calculate the initial guess $$\breve{\boldsymbol{x}}$$;
+
+       ii. For kth iteration, calculate Jacobian matrix and the error term;
+
+       iii. Sovle the augmented equation;
+
+       iv. If $$\Delta\boldsymbol{x_k}$$ is small enough, stop; else, $$\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}$$.
+
+       *Problems with* Gauss-Newton: $$\boldsymbol{H}$$ should be positive definite while $$\boldsymbol{J}^T\Omega\boldsymbol{J}$$ is positive semi-definite (may be a singular matrix or in ill-condition); the algorithm may not converge due to the unstable augmented value.
+
+    3. Levenberg-Marquardt Method
+       
+       To get a better approximation of the Hessian matrix, a Trust Region is added to the $$\Delta\boldsymbol{x}$$. The new objective function is defined as:
+
+       |$$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \quad s.t. (D\Delta\boldsymbol{x})^T \Omega D\Delta\boldsymbol{x} \leq \mu $$|
+
+
+       We define:
+
+       $$ \rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}} $$
+
+       -> $$ \rho \, \rightarrow \, 1$$, meaning the approximation is good;
+
+       -> $$\rho$$ is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;
+
+       -> $$\rho$$ is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.
+
 
 
     Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess $$\breve{\boldsymbol{x}}$$.

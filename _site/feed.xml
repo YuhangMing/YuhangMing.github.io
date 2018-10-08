@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T12:39:55+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T12:51:54+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -108,10 +108,10 @@
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
   &amp;= \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
   &amp;= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
-  &amp;\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+  &amp;\simeq \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
 \end{split} %]]&gt;&lt;/script&gt;
 
-        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{J}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H}&lt;/script&gt; are the Jacobian matrix and Hessian matrix of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\mathrm{F_{ij}}}&lt;/script&gt;. To find minimum, simply take derivative w.r.t. &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x}&lt;/script&gt; and set to 0.&lt;/p&gt;
+        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{J}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H}&lt;/script&gt; are the Jacobian matrix and Hessian matrix of &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{\mathrm{F_{ij}}}&lt;/script&gt;. To find minimum, simply take derivative w.r.t. &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x}&lt;/script&gt; and set the equation equal to 0.&lt;/p&gt;
 
         &lt;p&gt;When keeping first-order gradient only, we have &lt;strong&gt;Steepst Descent Method&lt;/strong&gt;, with&lt;/p&gt;
 
@@ -132,7 +132,7 @@
 
         &lt;p&gt;To avoid the computation complexity when calculating Hessian, we tried to use first-order gradient (Jacobian) to approximate second-order gradient (Hessian). To begin with, we take Taylor expansion of the error term around the initial guess &lt;script type=&quot;math/tex&quot;&gt;\breve{\boldsymbol{x}}&lt;/script&gt;:&lt;/p&gt;
 
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}&lt;/script&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}&lt;/script&gt;
 
         &lt;p&gt;Then substituting the error term back into the objective funciton, we have:&lt;/p&gt;
 
@@ -140,9 +140,30 @@
 \begin{split}
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) 
   &amp;= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})^T \Omega_{ij} \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
-  &amp;\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}) \\
-  &amp;= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_ij}^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x}
+  &amp;\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) \\
+  &amp;= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x}
 \end{split} %]]&gt;&lt;/script&gt;
+
+        &lt;p&gt;Again, to find the optimal, we take derivative w.r.t. &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x}&lt;/script&gt; and set the equation equal to 0, we have:&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{split}
+  &amp; \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
+  \Rightarrow 
+  &amp; \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
+\end{split} %]]&gt;&lt;/script&gt;
+
+        &lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;,&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;p&gt;which is called &lt;strong&gt;Augmented Equation&lt;/strong&gt;, a.k.a. Gauss Newton Equation or Normal Equation.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
 

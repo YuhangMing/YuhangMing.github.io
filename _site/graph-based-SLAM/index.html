@@ -245,10 +245,10 @@
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
   &= \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
   &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
-  &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+  &\simeq \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
 \end{split} %]]></script>
 
-        <p>where <script type="math/tex">\boldsymbol{J}</script> and <script type="math/tex">\boldsymbol{H}</script> are the Jacobian matrix and Hessian matrix of <script type="math/tex">\boldsymbol{\mathrm{F_{ij}}}</script>. To find minimum, simply take derivative w.r.t. <script type="math/tex">\Delta\boldsymbol{x}</script> and set to 0.</p>
+        <p>where <script type="math/tex">\boldsymbol{J}</script> and <script type="math/tex">\boldsymbol{H}</script> are the Jacobian matrix and Hessian matrix of <script type="math/tex">\boldsymbol{\mathrm{F_{ij}}}</script>. To find minimum, simply take derivative w.r.t. <script type="math/tex">\Delta\boldsymbol{x}</script> and set the equation equal to 0.</p>
 
         <p>When keeping first-order gradient only, we have <strong>Steepst Descent Method</strong>, with</p>
 
@@ -269,7 +269,7 @@
 
         <p>To avoid the computation complexity when calculating Hessian, we tried to use first-order gradient (Jacobian) to approximate second-order gradient (Hessian). To begin with, we take Taylor expansion of the error term around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>:</p>
 
-        <script type="math/tex; mode=display">\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}</script>
+        <script type="math/tex; mode=display">\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}</script>
 
         <p>Then substituting the error term back into the objective funciton, we have:</p>
 
@@ -277,9 +277,30 @@
 \begin{split}
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) 
   &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})^T \Omega_{ij} \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
-  &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}) \\
-  &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_ij}^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x}
+  &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) \\
+  &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x}
 \end{split} %]]></script>
+
+        <p>Again, to find the optimal, we take derivative w.r.t. <script type="math/tex">\Delta\boldsymbol{x}</script> and set the equation equal to 0, we have:</p>
+
+        <script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+  & \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
+  \Rightarrow 
+  & \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
+\end{split} %]]></script>
+
+        <p>Let <script type="math/tex">\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}</script>, <script type="math/tex">\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}</script>,</p>
+
+        <table>
+          <tbody>
+            <tr>
+              <td>\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>which is called <strong>Augmented Equation</strong>, a.k.a. Gauss Newton Equation or Normal Equation.</p>
       </li>
     </ol>
 
