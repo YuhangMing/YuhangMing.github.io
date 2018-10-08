@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T15:28:22+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T16:10:22+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -198,13 +198,35 @@
 
         &lt;p&gt;To get a better approximation of the Hessian matrix, a Trust Region &lt;script type=&quot;math/tex&quot;&gt;\mu&lt;/script&gt; is added to the &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x}&lt;/script&gt;. The new objective function is defined as:&lt;/p&gt;
 
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, \parallel D\Delta\boldsymbol{x} \parallel^2 \leq \mu&lt;/script&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, || D\Delta\boldsymbol{x} ||^2 \leq \mu&lt;/script&gt;
 
-        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; can either be identity or tha square root of the diagonal elements from &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{J}^T\boldsymbol{J}&lt;/script&gt;. Using Lagrange multipliers, we have:&lt;/p&gt;
+        &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; can either be identity or tha square root of the diagonal elements from &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{J}^T\boldsymbol{J}&lt;/script&gt;. Using Lagrange multipliers and, again, looking at one pair, we have:&lt;/p&gt;
 
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) - \frac{\lambda}{2} (|| D\Delta\boldsymbol{x} ||^2 - \mu)&lt;/script&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) + \frac{\lambda}{2} || D\Delta\boldsymbol{x} ||^2&lt;/script&gt;
 
-        &lt;p&gt;We define:&lt;/p&gt;
+        &lt;p&gt;Similarly, we have the augmented equation:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;(\boldsymbol{H} + \lambda D^TD) \Delta\boldsymbol{x} = \boldsymbol{g}&lt;/script&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;p&gt;Setting &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; to identity (for simplicity),&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;(\boldsymbol{H} + \lambda I) \Delta\boldsymbol{x} = \boldsymbol{g}&lt;/script&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;p&gt;To view the L-M algorithm from another angle, we can see that the L-M algorithm adaptively varies the parameter updates between the gradient descent update and the Gauss-Newton update. When &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; is relatively small, &lt;script type=&quot;math/tex&quot;&gt;(\boldsymbol{H} + \lambda I) \rightarrow \boldsymbol{H}&lt;/script&gt;, meaning the approximation is acceptable, L-M algorithm is more like G-N; when &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; is relatively large, &lt;script type=&quot;math/tex&quot;&gt;(\boldsymbol{H} + \lambda I) \rightarrow \lambda I&lt;/script&gt;, meaning the approximation is not good enough, L-M is more like steepest descent. Details discussion can be found in &lt;a href=&quot;http://www.ananth.in/docs/lmtut.pdf&quot;&gt; L-M &lt;/a&gt;.&lt;/p&gt;
+
+        &lt;p&gt;To find the range of trust region, we define:&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}}&lt;/script&gt;
 
@@ -213,13 +235,32 @@
         &lt;p&gt;-&amp;gt; &lt;script type=&quot;math/tex&quot;&gt;\rho&lt;/script&gt; is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;&lt;/p&gt;
 
         &lt;p&gt;-&amp;gt; &lt;script type=&quot;math/tex&quot;&gt;\rho&lt;/script&gt; is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.&lt;/p&gt;
+
+        &lt;p&gt;Finally, the complete algorithm is:&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;i. Calculate the initial guess&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\,\breve{\boldsymbol{x}} \,&lt;/script&gt; &lt;em&gt;and the initial range of trust region&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\mu&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;ii. Calculate the Jacobian matrix and the error term, solve for the augmented equation&lt;/em&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;iii. Compute&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\, \rho&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;iv. If&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\, \rho &gt; 0.75, \quad \mu = 2\mu&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;v. If&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\, \rho &lt; 0.25, \quad \mu = 0.5\mu %]]&gt;&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;vi. If&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\, \rho \,&lt;/script&gt; &lt;em&gt;is greater than some threshold, then we consider the approximation is acceptable,&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;vii. Decide if the algorithm converge, return to step ii if not converge&lt;/em&gt;.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
 
-    &lt;p&gt;Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess &lt;script type=&quot;math/tex&quot;&gt;\breve{\boldsymbol{x}}&lt;/script&gt;.&lt;/p&gt;
+    &lt;Check CSE252B=&quot;&quot; notes=&quot;&quot; for=&quot;&quot; more=&quot;&quot; info=&quot;&quot; on=&quot;&quot; L-M=&quot;&quot;&gt;
+
+
+&lt;/Check&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
 &lt;p&gt;[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;

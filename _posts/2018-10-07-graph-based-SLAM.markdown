@@ -204,11 +204,20 @@ permalink: /graph-based-SLAM/
 
        *i. Calculate the initial guess* $$\,\breve{\boldsymbol{x}} \,$$ *and the initial range of trust region* $$\mu$$;
 
-       
+       *ii. Calculate the Jacobian matrix and the error term, solve for the augmented equation*;
+
+       *iii. Compute* $$\, \rho$$;
+
+       *iv. If* $$\, \rho > 0.75, \quad \mu = 2\mu$$;
+
+       *v. If* $$\, \rho < 0.25, \quad \mu = 0.5\mu$$;
+
+       *vi. If* $$\, \rho \,$$ *is greater than some threshold, then we consider the approximation is acceptable,* $$\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}$$;
+
+       *vii. Decide if the algorithm converge, return to step ii if not converge*.
 
 
-
-    Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess $$\breve{\boldsymbol{x}}$$.
+    <Check CSE252B notes for more info on L-M>
 
 
 ### Reference:

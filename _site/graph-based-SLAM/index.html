@@ -335,13 +335,35 @@
 
         <p>To get a better approximation of the Hessian matrix, a Trust Region <script type="math/tex">\mu</script> is added to the <script type="math/tex">\Delta\boldsymbol{x}</script>. The new objective function is defined as:</p>
 
-        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, \parallel D\Delta\boldsymbol{x} \parallel^2 \leq \mu</script>
+        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, || D\Delta\boldsymbol{x} ||^2 \leq \mu</script>
 
-        <p>where <script type="math/tex">D</script> can either be identity or tha square root of the diagonal elements from <script type="math/tex">\boldsymbol{J}^T\boldsymbol{J}</script>. Using Lagrange multipliers, we have:</p>
+        <p>where <script type="math/tex">D</script> can either be identity or tha square root of the diagonal elements from <script type="math/tex">\boldsymbol{J}^T\boldsymbol{J}</script>. Using Lagrange multipliers and, again, looking at one pair, we have:</p>
 
-        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) - \frac{\lambda}{2} (|| D\Delta\boldsymbol{x} ||^2 - \mu)</script>
+        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) + \frac{\lambda}{2} || D\Delta\boldsymbol{x} ||^2</script>
 
-        <p>We define:</p>
+        <p>Similarly, we have the augmented equation:</p>
+
+        <table>
+          <tbody>
+            <tr>
+              <td><script type="math/tex">(\boldsymbol{H} + \lambda D^TD) \Delta\boldsymbol{x} = \boldsymbol{g}</script></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Setting <script type="math/tex">D</script> to identity (for simplicity),</p>
+
+        <table>
+          <tbody>
+            <tr>
+              <td><script type="math/tex">(\boldsymbol{H} + \lambda I) \Delta\boldsymbol{x} = \boldsymbol{g}</script></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>To view the L-M algorithm from another angle, we can see that the L-M algorithm adaptively varies the parameter updates between the gradient descent update and the Gauss-Newton update. When <script type="math/tex">\lambda</script> is relatively small, <script type="math/tex">(\boldsymbol{H} + \lambda I) \rightarrow \boldsymbol{H}</script>, meaning the approximation is acceptable, L-M algorithm is more like G-N; when <script type="math/tex">\lambda</script> is relatively large, <script type="math/tex">(\boldsymbol{H} + \lambda I) \rightarrow \lambda I</script>, meaning the approximation is not good enough, L-M is more like steepest descent. Details discussion can be found in <a href="http://www.ananth.in/docs/lmtut.pdf"> L-M </a>.</p>
+
+        <p>To find the range of trust region, we define:</p>
 
         <script type="math/tex; mode=display">\rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}}</script>
 
@@ -350,13 +372,32 @@
         <p>-&gt; <script type="math/tex">\rho</script> is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;</p>
 
         <p>-&gt; <script type="math/tex">\rho</script> is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.</p>
+
+        <p>Finally, the complete algorithm is:</p>
+
+        <p><em>i. Calculate the initial guess</em> <script type="math/tex">\,\breve{\boldsymbol{x}} \,</script> <em>and the initial range of trust region</em> <script type="math/tex">\mu</script>;</p>
+
+        <p><em>ii. Calculate the Jacobian matrix and the error term, solve for the augmented equation</em>;</p>
+
+        <p><em>iii. Compute</em> <script type="math/tex">\, \rho</script>;</p>
+
+        <p><em>iv. If</em> <script type="math/tex">\, \rho > 0.75, \quad \mu = 2\mu</script>;</p>
+
+        <p><em>v. If</em> <script type="math/tex">% <![CDATA[
+\, \rho < 0.25, \quad \mu = 0.5\mu %]]></script>;</p>
+
+        <p><em>vi. If</em> <script type="math/tex">\, \rho \,</script> <em>is greater than some threshold, then we consider the approximation is acceptable,</em> <script type="math/tex">\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}</script>;</p>
+
+        <p><em>vii. Decide if the algorithm converge, return to step ii if not converge</em>.</p>
       </li>
     </ol>
 
-    <p>Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>.</p>
+    <Check CSE252B="" notes="" for="" more="" info="" on="" L-M="">
+
+
+</Check>
   </li>
 </ul>
-
 <h3 id="reference">Reference:</h3>
 
 <p>[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.</p>
