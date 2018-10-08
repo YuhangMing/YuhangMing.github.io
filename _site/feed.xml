@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T12:51:54+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T15:05:03+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -103,6 +103,13 @@
 
         &lt;p&gt;The most straight-forward way is performing Taylor expansion around the initial guess &lt;script type=&quot;math/tex&quot;&gt;\breve{\boldsymbol{x}}&lt;/script&gt;, we have:&lt;/p&gt;
 
+        &lt;p&gt;|&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{split}
+  &amp; \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\boldsymbol{x}) \\
+  \Rightarrow \quad
+  &amp; \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+\end{split} %]]&gt;&lt;/script&gt;|&lt;/p&gt;
+
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{split}
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
@@ -134,7 +141,16 @@
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}&lt;/script&gt;
 
-        &lt;p&gt;Then substituting the error term back into the objective funciton, we have:&lt;/p&gt;
+        &lt;p&gt;Then substituting the error term back into the objective funciton, we have the new objective function:&lt;/p&gt;
+
+        &lt;p&gt;|&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{split}
+ &amp; \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+ \Rightarrow \quad
+ &amp; \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{&lt;i, j&gt; \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})
+\end{split} %]]&gt;&lt;/script&gt;|&lt;/p&gt;
+
+        &lt;p&gt;after expanding and combining terms, we have:&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{split}
@@ -149,21 +165,57 @@
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{split}
   &amp; \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
-  \Rightarrow 
+  \Rightarrow \quad
   &amp; \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
 \end{split} %]]&gt;&lt;/script&gt;
 
-        &lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;,&lt;/p&gt;
+        &lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;\,\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\,\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}&lt;/script&gt;,&lt;/p&gt;
 
         &lt;table&gt;
           &lt;tbody&gt;
             &lt;tr&gt;
-              &lt;td&gt;\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}&lt;/td&gt;
+              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}&lt;/script&gt;&lt;/td&gt;
             &lt;/tr&gt;
           &lt;/tbody&gt;
         &lt;/table&gt;
 
         &lt;p&gt;which is called &lt;strong&gt;Augmented Equation&lt;/strong&gt;, a.k.a. Gauss Newton Equation or Normal Equation.&lt;/p&gt;
+
+        &lt;p&gt;&lt;strong&gt;Solving the augmented equation is the core of the optimization.&lt;/strong&gt; The complete optimization algorithm is:&lt;/p&gt;
+
+        &lt;p&gt;i. Calculate the initial guess &lt;script type=&quot;math/tex&quot;&gt;\breve{\boldsymbol{x}}&lt;/script&gt;;&lt;/p&gt;
+
+        &lt;p&gt;ii. For kth iteration, calculate Jacobian matrix and the error term;&lt;/p&gt;
+
+        &lt;p&gt;iii. Sovle the augmented equation;&lt;/p&gt;
+
+        &lt;p&gt;iv. If &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x_k}&lt;/script&gt; is small enough, stop; else, &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}&lt;/script&gt;.&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;Problems with&lt;/em&gt; Gauss-Newton: &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{H}&lt;/script&gt; should be positive definite while &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{J}^T\Omega\boldsymbol{J}&lt;/script&gt; is positive semi-definite (may be a singular matrix or in ill-condition); the algorithm may not converge due to the unstable augmented value.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Levenberg-Marquardt Method&lt;/p&gt;
+
+        &lt;p&gt;To get a better approximation of the Hessian matrix, a Trust Region is added to the &lt;script type=&quot;math/tex&quot;&gt;\Delta\boldsymbol{x}&lt;/script&gt;. The new objective function is defined as:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{&lt;i, j&gt; \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \quad s.t. (D\Delta\boldsymbol{x})^T \Omega D\Delta\boldsymbol{x} \leq \mu %]]&gt;&lt;/script&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;p&gt;We define:&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;\rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}}&lt;/script&gt;
+
+        &lt;p&gt;-&amp;gt; &lt;script type=&quot;math/tex&quot;&gt;\rho \, \rightarrow \, 1&lt;/script&gt;, meaning the approximation is good;&lt;/p&gt;
+
+        &lt;p&gt;-&amp;gt; &lt;script type=&quot;math/tex&quot;&gt;\rho&lt;/script&gt; is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;&lt;/p&gt;
+
+        &lt;p&gt;-&amp;gt; &lt;script type=&quot;math/tex&quot;&gt;\rho&lt;/script&gt; is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
 

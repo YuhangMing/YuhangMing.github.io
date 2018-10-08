@@ -240,6 +240,13 @@
 
         <p>The most straight-forward way is performing Taylor expansion around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>, we have:</p>
 
+        <p>|<script type="math/tex">% <![CDATA[
+\begin{split}
+  & \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\boldsymbol{x}) \\
+  \Rightarrow \quad
+  & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+\end{split} %]]></script>|</p>
+
         <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
   \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
@@ -271,7 +278,16 @@
 
         <script type="math/tex; mode=display">\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}</script>
 
-        <p>Then substituting the error term back into the objective funciton, we have:</p>
+        <p>Then substituting the error term back into the objective funciton, we have the new objective function:</p>
+
+        <p>|<script type="math/tex">% <![CDATA[
+\begin{split}
+ & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+ \Rightarrow \quad
+ & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})
+\end{split} %]]></script>|</p>
+
+        <p>after expanding and combining terms, we have:</p>
 
         <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
@@ -286,21 +302,57 @@
         <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
   & \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
-  \Rightarrow 
+  \Rightarrow \quad
   & \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
 \end{split} %]]></script>
 
-        <p>Let <script type="math/tex">\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}</script>, <script type="math/tex">\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}</script>,</p>
+        <p>Let <script type="math/tex">\,\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}</script>, <script type="math/tex">\,\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}</script>,</p>
 
         <table>
           <tbody>
             <tr>
-              <td>\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}</td>
+              <td><script type="math/tex">\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}</script></td>
             </tr>
           </tbody>
         </table>
 
         <p>which is called <strong>Augmented Equation</strong>, a.k.a. Gauss Newton Equation or Normal Equation.</p>
+
+        <p><strong>Solving the augmented equation is the core of the optimization.</strong> The complete optimization algorithm is:</p>
+
+        <p>i. Calculate the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>;</p>
+
+        <p>ii. For kth iteration, calculate Jacobian matrix and the error term;</p>
+
+        <p>iii. Sovle the augmented equation;</p>
+
+        <p>iv. If <script type="math/tex">\Delta\boldsymbol{x_k}</script> is small enough, stop; else, <script type="math/tex">\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}</script>.</p>
+
+        <p><em>Problems with</em> Gauss-Newton: <script type="math/tex">\boldsymbol{H}</script> should be positive definite while <script type="math/tex">\boldsymbol{J}^T\Omega\boldsymbol{J}</script> is positive semi-definite (may be a singular matrix or in ill-condition); the algorithm may not converge due to the unstable augmented value.</p>
+      </li>
+      <li>
+        <p>Levenberg-Marquardt Method</p>
+
+        <p>To get a better approximation of the Hessian matrix, a Trust Region is added to the <script type="math/tex">\Delta\boldsymbol{x}</script>. The new objective function is defined as:</p>
+
+        <table>
+          <tbody>
+            <tr>
+              <td><script type="math/tex">% <![CDATA[
+\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \quad s.t. (D\Delta\boldsymbol{x})^T \Omega D\Delta\boldsymbol{x} \leq \mu %]]></script></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>We define:</p>
+
+        <script type="math/tex; mode=display">\rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}}</script>
+
+        <p>-&gt; <script type="math/tex">\rho \, \rightarrow \, 1</script>, meaning the approximation is good;</p>
+
+        <p>-&gt; <script type="math/tex">\rho</script> is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;</p>
+
+        <p>-&gt; <script type="math/tex">\rho</script> is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.</p>
       </li>
     </ol>
 
