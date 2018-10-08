@@ -2,7 +2,7 @@
 layout: post
 title:  "Graph-Based SLAM"
 date:   2018-10-07 16:17:00 -0200
-description: details about the graph based SLAM and its probabilistic formulation.
+description: details about the graph based SLAM, its probabilistic formulation, and optimization methods.
 permalink: /graph-based-SLAM/
 ---
 
@@ -215,9 +215,6 @@ permalink: /graph-based-SLAM/
        *vi. If* $$\, \rho \,$$ *is greater than some threshold, then we consider the approximation is acceptable,* $$\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}$$;
 
        *vii. Decide if the algorithm converge, return to step ii if not converge*.
-
-
-    <Check CSE252B notes for more info on L-M>
 
 
 ### Reference:
