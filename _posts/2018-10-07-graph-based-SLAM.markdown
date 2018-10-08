@@ -80,13 +80,14 @@ permalink: /graph-based-SLAM/
 
     1. First-order and Second-order Gradient Descent
 
-       By performing Taylor expansion around the initial guess $$\breve{\boldsymbol{x}}$$, we have:
+       The most straight-forward way is performing Taylor expansion around the initial guess $$\breve{\boldsymbol{x}}$$, we have:
 
        $$ 
        \begin{split}
-       \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
-       &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
-       &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+         \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
+         &= \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+         &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
+         &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
        \end{split}
        $$
 
@@ -107,6 +108,21 @@ permalink: /graph-based-SLAM/
        -> Newton Method: huge computation complexity when calculating Hessian.
 
     2. Gauss-Newton Method
+
+       To avoid the computation complexity when calculating Hessian, we tried to use first-order gradient (Jacobian) to approximate second-order gradient (Hessian). To begin with, we take Taylor expansion of the error term around the initial guess $$\breve{\boldsymbol{x}}$$:
+
+       $$ \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x} $$
+
+       Then substituting the error term back into the objective funciton, we have:
+
+       $$
+       \begin{split}
+         \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) 
+         &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})^T \Omega_{ij} \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+         &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}) \\
+         &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_ij}^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x}
+       \end{split}
+       $$
 
 
     Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess $$\breve{\boldsymbol{x}}$$.
