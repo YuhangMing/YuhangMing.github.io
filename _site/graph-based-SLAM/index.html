@@ -229,6 +229,47 @@
       </tbody>
     </table>
   </li>
+  <li>
+    <p>Solving for The Optimal</p>
+
+    <p>Given a good initial guess of the poses <script type="math/tex">\breve{\boldsymbol{x}}</script>, usually can be obtained using linear estimation like SVD, the numerical solution of <script type="math/tex">\underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}}(\boldsymbol{x})</script> can be found using following methods:</p>
+
+    <ol>
+      <li>
+        <p>First-order and Second-order Gradient Descent</p>
+
+        <p>By performing Taylor expansion around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>, we have:</p>
+
+        <script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+\boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+&= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
+&\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+\end{split} %]]></script>
+
+        <p>where <script type="math/tex">\boldsymbol{J}</script> and <script type="math/tex">\boldsymbol{H}</script> are the Jacobian matrix and Hessian matrix of <script type="math/tex">\boldsymbol{\mathrm{F_{ij}}}</script>. To find minimum, simply take derivative w.r.t. <script type="math/tex">\Delta\boldsymbol{x}</script> and set to 0.</p>
+
+        <p>When keeping first-order gradient only, we have <strong>Steepst Descent Method</strong>, with</p>
+
+        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = -\boldsymbol{J}^T(\breve{\boldsymbol{x}})</script>
+
+        <p>When keeping the additional second-order gradient, we have <strong>Newton Method</strong>, with</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{H}\Delta\boldsymbol{x} = -\boldsymbol{J}^T</script>
+
+        <p><em>Problems with</em></p>
+
+        <p>-&gt; Steepest Descent Method: too greedy, leaning to zig-zag desent;</p>
+
+        <p>-&gt; Newton Method: huge computation complexity when calculating Hessian.</p>
+      </li>
+      <li>
+        <p>Gauss-Newton Method</p>
+      </li>
+    </ol>
+
+    <p>Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>.</p>
+  </li>
 </ul>
 
 <h3 id="reference">Reference:</h3>
