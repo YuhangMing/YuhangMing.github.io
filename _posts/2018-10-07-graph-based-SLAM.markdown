@@ -174,15 +174,23 @@ permalink: /graph-based-SLAM/
        
        To get a better approximation of the Hessian matrix, a Trust Region $$\mu$$ is added to the $$\Delta\boldsymbol{x}$$. The new objective function is defined as:
 
-       $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, \parallel D\Delta\boldsymbol{x} \parallel^2 \leq \mu $$
+       $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, || D\Delta\boldsymbol{x} ||^2 \leq \mu $$
 
-       where $$D$$ can either be identity or tha square root of the diagonal elements from $$\boldsymbol{J}^T\boldsymbol{J}$$. Using Lagrange multipliers, we have:
+       where $$D$$ can either be identity or tha square root of the diagonal elements from $$\boldsymbol{J}^T\boldsymbol{J}$$. Using Lagrange multipliers and, again, looking at one pair, we have:
 
-       $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) - \frac{\lambda}{2} (|| D\Delta\boldsymbol{x} ||^2 - \mu) $$
+       $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) + \frac{\lambda}{2} || D\Delta\boldsymbol{x} ||^2 $$
 
+       Similarly, we have the augmented equation:
 
+       | $$ (\boldsymbol{H} + \lambda D^TD) \Delta\boldsymbol{x} = \boldsymbol{g} $$ |
 
-       We define:
+       Setting $$D$$ to identity (for simplicity),
+
+       | $$ (\boldsymbol{H} + \lambda I) \Delta\boldsymbol{x} = \boldsymbol{g} $$ |
+
+       To view the L-M algorithm from another angle, we can see that the L-M algorithm adaptively varies the parameter updates between the gradient descent update and the Gauss-Newton update. When $$\lambda$$ is relatively small, $$ (\boldsymbol{H} + \lambda I) \rightarrow \boldsymbol{H} $$, meaning the approximation is acceptable, L-M algorithm is more like G-N; when $$\lambda$$ is relatively large, $$ (\boldsymbol{H} + \lambda I) \rightarrow \lambda I $$, meaning the approximation is not good enough, L-M is more like steepest descent. Details discussion can be found in <a href="http://www.ananth.in/docs/lmtut.pdf"> L-M </a>. 
+
+       To find the range of trust region, we define:
 
        $$ \rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}} $$
 
@@ -191,6 +199,12 @@ permalink: /graph-based-SLAM/
        -> $$\rho$$ is too small, meaning the real descent is far smaller than the approximated descent, the range needs to be narrowed down;
 
        -> $$\rho$$ is too large, meaning the real descent is far larger than the approximated descent, the range needs to be expanded.
+
+       Finally, the complete algorithm is:
+
+       *i. Calculate the initial guess* $$\,\breve{\boldsymbol{x}} \,$$ *and the initial range of trust region* $$\mu$$;
+
+       
 
 
 
