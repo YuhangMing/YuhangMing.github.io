@@ -74,6 +74,43 @@ permalink: /graph-based-SLAM/
 
     | $$ \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}}(\boldsymbol{x}) $$ |
 
+  - Solving for The Optimal
+
+    Given a good initial guess of the poses $$\breve{\boldsymbol{x}}$$, usually can be obtained using linear estimation like SVD, the numerical solution of $$ \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}}(\boldsymbol{x}) $$ can be found using following methods:
+
+    1. First-order and Second-order Gradient Descent
+
+      By performing Taylor expansion around the initial guess $$\breve{\boldsymbol{x}}$$, we have:
+
+      $$ 
+      \begin{split}
+      \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+      &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
+      &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+      \end{split}
+      $$
+
+      where $$\boldsymbol{J}$$ and $$\boldsymbol{H}$$ are the Jacobian matrix and Hessian matrix of $$\boldsymbol{\mathrm{F_ij}}$$. To find minimum, simply take derivative w.r.t. $$\Delta\boldsymbol{x}$$ and set to 0.
+
+      When keeping first-order gradient only, we have **Steepst Descent Method**, with
+
+      $$ \Delta\boldsymbol{x}^* = -\boldsymbol{J}^T(\breve{\boldsymbol{x}}) $$
+
+      When keeping the additional second-order gradient, we have **Newton Method**, with
+
+      $$ \boldsymbol{H}\Delta\boldsymbol{x} = -\boldsymbol{J}^T $$
+
+      *Problems* with 
+
+      -> Steepest Descent Method: too greedy, leaning to zig-zag desent;
+
+      -> Newton Method: huge computation complexity when calculating Hessian.
+
+    2. Gauss-Newton Method
+
+
+    Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess $$\breve{\boldsymbol{x}}$$.
+
 
 ### Reference:
 

@@ -188,7 +188,7 @@
     <table>
       <tbody>
         <tr>
-          <td><script type="math/tex">\mathcal{D}_{t, t+1} = \underset{\mathcal{D}}{\mathrm{argmax}} p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}})</script></td>
+          <td><script type="math/tex">\mathcal{D}_{t, t+1} = \underset{\mathcal{D}}{\mathrm{argmax}} \, p(\mathcal{D} \vert \boldsymbol{x_0}, \boldsymbol{z_{t, t+1}}, \boldsymbol{u_{t, t+1}})</script></td>
         </tr>
       </tbody>
     </table>
@@ -206,11 +206,11 @@
 
     <p>-&gt; let <script type="math/tex">\hat{T_{ij}}(\boldsymbol{x_i}, \boldsymbol{x_j})</script> be the prediction transformation between node <script type="math/tex">i</script> and <script type="math/tex">j</script> (note that this is a random variable).</p>
 
-    <p>Therefore, we have the distribution of the random variable <script type="math/tex">\hat{T_{ij}}</script>:
-<script type="math/tex">P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }}</script>,
-assuming that <script type="math/tex">\hat{T_{ij}}</script> is a <script type="math/tex">k</script> dimensional vector.</p>
+    <p>Therefore, we have the distribution of the random variable <script type="math/tex">\hat{T_{ij}}</script>:</p>
 
-    <p>Then, the negative log-likelihood is</p>
+    <script type="math/tex; mode=display">P_T( \hat{T_{ij}} ) = \frac{ \mathrm{exp} (-\frac{1}{2} (\hat{T_{ij}} - T_{ij})^T \Omega_{ij} (\hat{T_{ij}} - T_{ij})) }{\sqrt{ (2\pi)^k \vert\Sigma_{ij}\vert }}</script>
+
+    <p>assuming that <script type="math/tex">\hat{T_{ij}}</script> is a <script type="math/tex">k</script> dimensional vector. Then, the negative log-likelihood is</p>
 
     <script type="math/tex; mode=display">\mathcal{L}_{ij} \propto (T_{ij} - \hat{T_{ij}})^T \Omega_{ij} (T_{ij} - \hat{T_{ij}})</script>
 
@@ -224,7 +224,7 @@ assuming that <script type="math/tex">\hat{T_{ij}}</script> is a <script type="m
     <table>
       <tbody>
         <tr>
-          <td><script type="math/tex">\boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \boldsymbol{\mathrm{F}}(\boldsymbol{x})</script></td>
+          <td><script type="math/tex">\boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}}(\boldsymbol{x})</script></td>
         </tr>
       </tbody>
     </table>
