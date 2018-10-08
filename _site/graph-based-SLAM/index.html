@@ -238,13 +238,14 @@
       <li>
         <p>First-order and Second-order Gradient Descent</p>
 
-        <p>By performing Taylor expansion around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>, we have:</p>
+        <p>The most straight-forward way is performing Taylor expansion around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>, we have:</p>
 
         <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
-\boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
-&= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
-&\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+  \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
+  &= \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+  &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
+  &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
 \end{split} %]]></script>
 
         <p>where <script type="math/tex">\boldsymbol{J}</script> and <script type="math/tex">\boldsymbol{H}</script> are the Jacobian matrix and Hessian matrix of <script type="math/tex">\boldsymbol{\mathrm{F_{ij}}}</script>. To find minimum, simply take derivative w.r.t. <script type="math/tex">\Delta\boldsymbol{x}</script> and set to 0.</p>
@@ -265,6 +266,20 @@
       </li>
       <li>
         <p>Gauss-Newton Method</p>
+
+        <p>To avoid the computation complexity when calculating Hessian, we tried to use first-order gradient (Jacobian) to approximate second-order gradient (Hessian). To begin with, we take Taylor expansion of the error term around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>:</p>
+
+        <script type="math/tex; mode=display">\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}</script>
+
+        <p>Then substituting the error term back into the objective funciton, we have:</p>
+
+        <script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+  \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) 
+  &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})^T \Omega_{ij} \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
+  &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}) \\
+  &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_ij}^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x}
+\end{split} %]]></script>
       </li>
     </ol>
 

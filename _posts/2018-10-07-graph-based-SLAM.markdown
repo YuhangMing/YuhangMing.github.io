@@ -87,11 +87,11 @@ permalink: /graph-based-SLAM/
          \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x_i}} + \Delta\boldsymbol{x_i}, \breve{\boldsymbol{x_j}} + \Delta\boldsymbol{x_j}) 
          &= \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
          &= \boldsymbol{e_{ij}}^T \Omega_{ij} \boldsymbol{e_{ij}} \\
-         &\simeq \boldsymbol{\mathrm{F_ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
+         &\simeq \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}}) + \boldsymbol{J} \Delta\boldsymbol{x} + \frac{1}{2} \Delta\boldsymbol{x}^T\boldsymbol{H}\Delta\boldsymbol{x}
        \end{split}
        $$
 
-       where $$\boldsymbol{J}$$ and $$\boldsymbol{H}$$ are the Jacobian matrix and Hessian matrix of $$\boldsymbol{\mathrm{F_{ij}}}$$. To find minimum, simply take derivative w.r.t. $$\Delta\boldsymbol{x}$$ and set to 0.
+       where $$\boldsymbol{J}$$ and $$\boldsymbol{H}$$ are the Jacobian matrix and Hessian matrix of $$\boldsymbol{\mathrm{F_{ij}}}$$. To find minimum, simply take derivative w.r.t. $$\Delta\boldsymbol{x}$$ and set the equation equal to 0.
 
        When keeping first-order gradient only, we have **Steepst Descent Method**, with
 
@@ -111,7 +111,7 @@ permalink: /graph-based-SLAM/
 
        To avoid the computation complexity when calculating Hessian, we tried to use first-order gradient (Jacobian) to approximate second-order gradient (Hessian). To begin with, we take Taylor expansion of the error term around the initial guess $$\breve{\boldsymbol{x}}$$:
 
-       $$ \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x} $$
+       $$ \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \simeq \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x} $$
 
        Then substituting the error term back into the objective funciton, we have:
 
@@ -119,10 +119,26 @@ permalink: /graph-based-SLAM/
        \begin{split}
          \boldsymbol{\mathrm{F_{ij}}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) 
          &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})^T \Omega_{ij} \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
-         &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_ij}\Delta\boldsymbol{x}) \\
-         &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_ij}^T\Omega_{ij}\boldsymbol{J_ij}\Delta\boldsymbol{x}
+         &\simeq (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) \\
+         &= \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + 2\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} + \Delta\boldsymbol{x}^T\boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x}
        \end{split}
        $$
+
+       Again, to find the optimal, we take derivative w.r.t. $$\Delta\boldsymbol{x}$$ and set the equation equal to 0, we have:
+
+       $$ 
+       \begin{split}
+         & \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}} + \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = \boldsymbol{0} \\
+         \Rightarrow 
+         & \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}\Delta\boldsymbol{x} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}
+       \end{split}
+       $$
+
+       Let $$\boldsymbol{H} = \boldsymbol{J_{ij}}^T\Omega_{ij}\boldsymbol{J_{ij}}$$, $$\boldsymbol{g} = -\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})^T\Omega_{ij}\boldsymbol{J_{ij}}$$, 
+
+       | \boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g} |
+
+       which is called **Augmented Equation**, a.k.a. Gauss Newton Equation or Normal Equation.
 
 
     Gauss-Newton or Levernberg-Marquardt algorithms. The main idea behind these algorithms is to approximate the error function by its first order Taylor expansion around the current initial guess $$\breve{\boldsymbol{x}}$$.
