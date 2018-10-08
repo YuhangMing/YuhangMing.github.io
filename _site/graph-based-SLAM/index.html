@@ -240,12 +240,12 @@
 
         <p>The most straight-forward way is performing Taylor expansion around the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>, we have:</p>
 
-        <p>|<script type="math/tex">% <![CDATA[
+        <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
   & \boldsymbol{x}^* = \underset{\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\boldsymbol{x}) \\
   \Rightarrow \quad
-  & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
-\end{split} %]]></script>|</p>
+  & \breve{\boldsymbol{x}} + \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x})
+\end{split} %]]></script>
 
         <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
@@ -280,12 +280,12 @@
 
         <p>Then substituting the error term back into the objective funciton, we have the new objective function:</p>
 
-        <p>|<script type="math/tex">% <![CDATA[
+        <script type="math/tex; mode=display">% <![CDATA[
 \begin{split}
  & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \boldsymbol{\mathrm{F}} (\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) \\
  \Rightarrow \quad
  & \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})
-\end{split} %]]></script>|</p>
+\end{split} %]]></script>
 
         <p>after expanding and combining terms, we have:</p>
 
@@ -320,29 +320,26 @@
 
         <p><strong>Solving the augmented equation is the core of the optimization.</strong> The complete optimization algorithm is:</p>
 
-        <p>i. Calculate the initial guess <script type="math/tex">\breve{\boldsymbol{x}}</script>;</p>
+        <p><em>i. Calculate the initial guess</em> <script type="math/tex">\,\breve{\boldsymbol{x}}</script>;</p>
 
-        <p>ii. For kth iteration, calculate Jacobian matrix and the error term;</p>
+        <p><em>ii. For kth iteration, calculate Jacobian matrix and the error term</em>;</p>
 
-        <p>iii. Sovle the augmented equation;</p>
+        <p><em>iii. Sovle the augmented equation</em>;</p>
 
-        <p>iv. If <script type="math/tex">\Delta\boldsymbol{x_k}</script> is small enough, stop; else, <script type="math/tex">\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}</script>.</p>
+        <p><em>iv. If</em> <script type="math/tex">\,\Delta\boldsymbol{x_k}\,</script> <em>is small enough, stop; else,</em> <script type="math/tex">\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}</script>.</p>
 
         <p><em>Problems with</em> Gauss-Newton: <script type="math/tex">\boldsymbol{H}</script> should be positive definite while <script type="math/tex">\boldsymbol{J}^T\Omega\boldsymbol{J}</script> is positive semi-definite (may be a singular matrix or in ill-condition); the algorithm may not converge due to the unstable augmented value.</p>
       </li>
       <li>
         <p>Levenberg-Marquardt Method</p>
 
-        <p>To get a better approximation of the Hessian matrix, a Trust Region is added to the <script type="math/tex">\Delta\boldsymbol{x}</script>. The new objective function is defined as:</p>
+        <p>To get a better approximation of the Hessian matrix, a Trust Region <script type="math/tex">\mu</script> is added to the <script type="math/tex">\Delta\boldsymbol{x}</script>. The new objective function is defined as:</p>
 
-        <table>
-          <tbody>
-            <tr>
-              <td><script type="math/tex">% <![CDATA[
-\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum_{<i, j> \in C} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \quad s.t. (D\Delta\boldsymbol{x})^T \Omega D\Delta\boldsymbol{x} \leq \mu %]]></script></td>
-            </tr>
-          </tbody>
-        </table>
+        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, \parallel D\Delta\boldsymbol{x} \parallel^2 \leq \mu</script>
+
+        <p>where <script type="math/tex">D</script> can either be identity or tha square root of the diagonal elements from <script type="math/tex">\boldsymbol{J}^T\boldsymbol{J}</script>. Using Lagrange multipliers, we have:</p>
+
+        <script type="math/tex; mode=display">\Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) - \frac{\lambda}{2} (|| D\Delta\boldsymbol{x} ||^2 - \mu)</script>
 
         <p>We define:</p>
 

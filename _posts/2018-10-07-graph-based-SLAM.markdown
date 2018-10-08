@@ -166,7 +166,7 @@ permalink: /graph-based-SLAM/
 
        *iii. Sovle the augmented equation*;
 
-       *iv. If* $,\Delta\boldsymbol{x_k}\,$$ *is small enough, stop; else,* $$\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}$$.
+       *iv. If* $$\,\Delta\boldsymbol{x_k}\,$$ *is small enough, stop; else,* $$\,\Delta\boldsymbol{x_{k+1}} = \boldsymbol{x_k} + \Delta\boldsymbol{x_k}$$.
 
        *Problems with* Gauss-Newton: $$\boldsymbol{H}$$ should be positive definite while $$\boldsymbol{J}^T\Omega\boldsymbol{J}$$ is positive semi-definite (may be a singular matrix or in ill-condition); the algorithm may not converge due to the unstable augmented value.
 
@@ -176,7 +176,13 @@ permalink: /graph-based-SLAM/
 
        $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}), \,\, s.t. \,\, \parallel D\Delta\boldsymbol{x} \parallel^2 \leq \mu $$
 
-       where $$D$$ can either be identity or tha square root of the diagonal elements from $$\boldsymbol{J}^T\boldsymbol{J}$$. We define:
+       where $$D$$ can either be identity or tha square root of the diagonal elements from $$\boldsymbol{J}^T\boldsymbol{J}$$. Using Lagrange multipliers, we have:
+
+       $$ \Delta\boldsymbol{x}^* = \underset{\Delta\boldsymbol{x}}{\mathrm{argmin}} \, \sum (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x})^T \Omega_{ij} (\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}}) + \boldsymbol{J_{ij}}\Delta\boldsymbol{x}) - \frac{\lambda}{2} (|| D\Delta\boldsymbol{x} ||^2 - \mu) $$
+
+
+
+       We define:
 
        $$ \rho = \frac{\boldsymbol{e_{ij}}(\breve{\boldsymbol{x}} + \Delta\boldsymbol{x}) - \boldsymbol{e_{ij}}(\breve{\boldsymbol{x}})}{\boldsymbol{J}(\breve{\boldsymbol{x}}) \Delta\boldsymbol{x}} $$
 
