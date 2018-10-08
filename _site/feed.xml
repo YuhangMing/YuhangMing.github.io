@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T16:10:42+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T20:34:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -254,13 +254,9 @@
         &lt;p&gt;&lt;em&gt;vii. Decide if the algorithm converge, return to step ii if not converge&lt;/em&gt;.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
-
-    &lt;Check CSE252B=&quot;&quot; notes=&quot;&quot; for=&quot;&quot; more=&quot;&quot; info=&quot;&quot; on=&quot;&quot; L-M=&quot;&quot;&gt;
-
-
-&lt;/Check&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
 &lt;p&gt;[1] 高翔；张涛；刘毅；严沁睿: “视觉SLAM十四讲，从理论到实践”.&lt;/p&gt;
