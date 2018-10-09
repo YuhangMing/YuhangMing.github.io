@@ -1,4 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T14:40:45+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T16:49:25+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">REVIEW: Semantic SLAM (Keep Updating)</title><link href="http://localhost:4000/review-semantic-SLAM/" rel="alternate" type="text/html" title="REVIEW: Semantic SLAM (Keep Updating)" /><published>2018-10-09T15:00:00+01:00</published><updated>2018-10-09T15:00:00+01:00</updated><id>http://localhost:4000/review-semantic-SLAM</id><content type="html" xml:base="http://localhost:4000/review-semantic-SLAM/">&lt;p&gt;Why higher level features are needed:&lt;/p&gt;
+
+&lt;p&gt;More discriminative, which helps data association;&lt;/p&gt;
+
+&lt;p&gt;Serve to inform robotic tasks that require higher level information.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-semantic-information-is-used&quot;&gt;HOW Semantic Information Is Used&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Objection Recognition&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Feature-Based Recognition&lt;/p&gt;
+
+        &lt;p&gt;[12] proposes to use SURF features and reconstruct the object in a SfM manner.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Use Pre-Defined Models&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;
+            &lt;p&gt;[1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The pipeline of the SLAM++ system is shown below.&lt;/p&gt;
+
+            &lt;p&gt;&lt;img src=&quot;\assets\img\posts\SLAM++.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[3] doesn’t mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Use Deep Learning Methods&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;
+            &lt;p&gt;[6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D segmentation is performed leveraging depth information.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[7] proposes a more general setup of semantic SLAM which uses points, planes and objects. &lt;strong&gt;This is the first real-time semantic SLAM system proposed in literature that uses previously unseen objects as landmarks&lt;/strong&gt;. The authors use Faster-RCNN to perform object recognition and then instead of bounding boxes, ellipsoids are used to represent objects. The pipeline of the semantic point-plane-object SLAM system is shown below.&lt;/p&gt;
+
+            &lt;p&gt;&lt;img src=&quot;\assets\img\posts\point-plane-object-SLAM.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[8] also uses Faster-RCNN to detec objects and then a novel nonparametric pose graph that models data association and SLAM in a single framework.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Semantic Segmentation&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Plane Segmentation&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;
+            &lt;p&gt;[5] considers all homogeneous planes as planar landmarks and the remaining non-planar regions as the regions corresponding to potential objects of interest. The ICP algorithm is then used to find matches between objects of interest. In this manner, no pre-defined object models are needed, and a dataset of objects as the system is running.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[10] uses CNN to detect planes and then incorporating them into points-based LSD-SLAM to achieve better performance in low texture environment.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Scene Segmentation&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;
+            &lt;p&gt;[4] tackles the problem of medium-term continuous tracking. Patch / feature-point based tracking may fail due to severe scale variation, but if we have the information about the semantic identity of the patch / feature-point, we can still perform correct matching. Meaning that although the patch appearance changes drastically, its semantic identity remains the same, for example from the same vehicle.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[9] aims to improve SLAM performance in the dynamic environments. The authors incorporate the semantic information with optical flow to determine whether the object is moving. Given results from pixel-wise semantic segmentation and moving consistency check, the authors decide if an object is moving based on the following criteria: if the number of dynamic points producedby moving consistency check fall in the contours of a segmented object is larger than a specific threshold, then this object is determined to be moving. If the segmented object is determined to be moving, then all the feature points located in the object’s contour is considered as outlier and will be removed.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;[11] proposes that the error in outdoor-senario tracking is most likely caused by sky-region and car-region, based on its empirical studies. So the authors propose to use DNN to segment these regions out of the input image, by using a mask, and then perform ORB-SLAM on the rest regions of the image.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-optimization-is-performed&quot;&gt;HOW Optimization Is Performed&lt;/h3&gt;
+
+&lt;h3 id=&quot;how-the-map-is-built&quot;&gt;HOW The Map Is Built&lt;/h3&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
+
+&lt;p&gt;[1] R. F. Salas-Moreno, R. A. Newcombe, H. Strasdat, P. H. J. Kelly, and A. J. Davison. “SLAM++: Simultaneous Local- isation and Mapping at the Level of Objects”. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2013.&lt;/p&gt;
+
+&lt;p&gt;[2] M. Bloesch, J. Czarnowski, R. Clark, S. Leutenegger, and A. J. Davison. “CodeSLAM - Learning a Compact, Optimisable Representation for Dense Visual SLAM”. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018.&lt;/p&gt;
+
+&lt;p&gt;[3] S. L. Bowman, N. Atanasov, K. Daniilidis, and G. J. Pappas. “Probabilistic Data Association for Semantic SLAM”. IEEE/RSJ International Conference on Robotics and Automation (ICRA), 2017.&lt;/p&gt;
+
+&lt;p&gt;[4] K. Lianos, J. L. Schönberger, M. Pollefeys, and T. Sattler. “VSO: Visual Semantic Odometry”. European Conference on Computer Vision (ECCV), 2018.&lt;/p&gt;
+
+&lt;p&gt;[5] S. Choudhary, A. J. B. Trevor, H. I. Christensen, and F. Dellaert. “SLAM with Object Discovery, Modeling and Mapping” IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2014.&lt;/p&gt;
+
+&lt;p&gt;[6] N. Sünderhauf, T. T. Pham, Y. Latif, M. Milford, and I. Reid. “Meaningful Maps with Object-Oriented Semantic Mapping”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2017.&lt;/p&gt;
+
+&lt;p&gt;[7] M. Hosseinzadeh, Y. Latif, T. Pham, N. Sünderhauf, and I. Reid. “Towards Semantic SLAM: Points, Planes and Objects”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2017.&lt;/p&gt;
+
+&lt;p&gt;[8] B. Mu, S. Liu, L. Paull, J. Leonard, and J. P. How. “SLAM with Objects using a Nonparametric Pose Graph”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2016.&lt;/p&gt;
+
+&lt;p&gt;[9] C. Yu, Z. Liu, X. Liu, F. Xie, Y. Yang, Q. Wei, and Q. Fei. “DS-SLAM: A Semantic Visual SLAM Towards Dynamic Environments”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2018.&lt;/p&gt;
+
+&lt;p&gt;[10] S. Yang, Y. Song, M. Kaess, adn S. Scherer. “Pop-up SLAM: Semantic Monocular Plane SLAM for Low-texture Environments”. arXiv, 2017.&lt;/p&gt;
+
+&lt;p&gt;[11] M. Kaneko, K. Iwami, T. Ogawa, T. Yamasaki, and K. Aizawa. “Mask-SLAM: Robust Feature-Based Monocular SLAM by Masking Using Semantic Segmentation”. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018.&lt;/p&gt;
+
+&lt;p&gt;[12] J. Civera, D. Gálvez-López, L. Riazuelo, J. D. Tardós, and J. M. M. Montiel. “Towards Semantic SLAM Using a Monocular Camera”. IEEE/RSJ International Conference on Robotics and Automation (ICRA), 2011.&lt;/p&gt;
+
+&lt;p&gt;[13] S. Pillai and J. J. Leonard. “Monocular SLAM Supported Object Recognition”. Robotics: Science and Systems, 2015.&lt;/p&gt;
+
+&lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Why higher level features are needed:</summary></entry><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
@@ -26,7 +144,7 @@
 
 &lt;p&gt;DBN describs a stochastic process as a directed graph where an arrow in the graph indicats the dependency between two nodes. E.g. an arrow pointed from &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_0}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;\boldsymbol{x_1}&lt;/script&gt; means &lt;script type=&quot;math/tex&quot;&gt;p(\boldsymbol{x_1} \vert \boldsymbol{x_0})&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;\assets\img\graph-based-slam\DBN.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\assets\img\posts\DBN.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Expressing SLAM as a DBN highlights its temporal structure. Hence this formulization is well-suited for the filtering processes that can be used to tackle SLAM problems via the MAP (Maximize-A-Posterior) scheme.&lt;/p&gt;
 

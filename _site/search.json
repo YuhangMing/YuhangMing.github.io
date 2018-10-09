@@ -1,6 +1,13 @@
 [
   
     {
+      "title"    : "REVIEW: Semantic SLAM (Keep Updating)",
+      "tags"     : "",
+      "url"      : "/review-semantic-SLAM/",
+      "date"     : "09 Oct 2018"
+    } ,
+  
+    {
       "title"    : "Graph-Based SLAM",
       "tags"     : "",
       "url"      : "/graph-based-SLAM/",

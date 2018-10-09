@@ -16,13 +16,13 @@ Serve to inform robotic tasks that require higher level information.
 
 ### HOW Semantic Information Is Used
 
-- Objection Recognition
+<u>Objection Recognition</u>
 
-  - Feature-Based Recognition
+- Feature-Based Recognition
 
      [12] proposes to use SURF features and reconstruct the object in a SfM manner.
 
-  - Use Pre-Defined Models
+- Use Pre-Defined Models
 
      1. [1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The pipeline of the SLAM++ system is shown below.
 
@@ -30,7 +30,7 @@ Serve to inform robotic tasks that require higher level information.
 
      2. [3] doesn't mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection.
 
-  - Use Deep Learning Methods
+- Use Deep Learning Methods
 
      1. [6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D segmentation is performed leveraging depth information.
 
@@ -40,15 +40,15 @@ Serve to inform robotic tasks that require higher level information.
 
     3. [8] also uses Faster-RCNN to detec objects and then a novel nonparametric pose graph that models data association and SLAM in a single framework.
 
-- Semantic Segmentation
+<u>Semantic Segmentation</u>
 
-  - Plane Segmentation
+- Plane Segmentation
 
      1. [5] considers all homogeneous planes as planar landmarks and the remaining non-planar regions as the regions corresponding to potential objects of interest. The ICP algorithm is then used to find matches between objects of interest. In this manner, no pre-defined object models are needed, and a dataset of objects as the system is running.
 
      2. [10] uses CNN to detect planes and then incorporating them into points-based LSD-SLAM to achieve better performance in low texture environment.
 
-  - Scene Segmentation
+- Scene Segmentation
 
      1. [4] tackles the problem of medium-term continuous tracking. Patch / feature-point based tracking may fail due to severe scale variation, but if we have the information about the semantic identity of the patch / feature-point, we can still perform correct matching. Meaning that although the patch appearance changes drastically, its semantic identity remains the same, for example from the same vehicle.
 
@@ -88,8 +88,6 @@ Serve to inform robotic tasks that require higher level information.
 [11] M. Kaneko, K. Iwami, T. Ogawa, T. Yamasaki, and K. Aizawa. "Mask-SLAM: Robust Feature-Based Monocular SLAM by Masking Using Semantic Segmentation". In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018.
 
 [12] J. Civera, D. Gálvez-López, L. Riazuelo, J. D. Tardós, and J. M. M. Montiel. "Towards Semantic SLAM Using a Monocular Camera". IEEE/RSJ International Conference on Robotics and Automation (ICRA), 2011. 
-
-[13] S. Pillai and J. J. Leonard. "Monocular SLAM Supported Object Recognition". Robotics: Science and Systems, 2015.
 
 
 ### Appendix
