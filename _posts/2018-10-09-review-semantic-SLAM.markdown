@@ -20,15 +20,15 @@ Serve to inform robotic tasks that require higher level information.
 
 - Feature-Based Recognition
 
-     [12] proposes to use SURF features and reconstruct the object in a SfM manner.
+  [12] proposes to use SURF features and reconstruct the object in a SfM manner.
 
 - Use Pre-Defined Models
 
-     1. [1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The pipeline of the SLAM++ system is shown below.
+  1. [1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The pipeline of the SLAM++ system is shown below.
 
-       ![Image](\assets\img\posts\SLAM++.png)
+  ![Image](\assets\img\posts\SLAM++.png)
 
-     2. [3] doesn't mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection.
+  2. [3] doesn't mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection.
 
 - Use Deep Learning Methods
 
@@ -36,7 +36,7 @@ Serve to inform robotic tasks that require higher level information.
 
      2. [7] proposes a more general setup of semantic SLAM which uses points, planes and objects. <u>This is the first real-time semantic SLAM system proposed in literature that uses previously unseen objects as landmarks</u>. The authors use Faster-RCNN to perform object recognition and then instead of bounding boxes, ellipsoids are used to represent objects. The pipeline of the semantic point-plane-object SLAM system is shown below.
 
-       ![Image](\assets\img\posts\point-plane-object-SLAM.png)
+     ![Image](\assets\img\posts\point-plane-object-SLAM.png)
 
     3. [8] also uses Faster-RCNN to detec objects and then a novel nonparametric pose graph that models data association and SLAM in a single framework.
 
