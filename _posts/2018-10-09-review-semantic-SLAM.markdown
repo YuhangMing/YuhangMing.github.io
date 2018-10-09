@@ -9,11 +9,17 @@ permalink: /review-semantic-SLAM/
 
 ### Towards Semantic SLAM
 
-What is semantic SLAM: [6] states that semantic SLAM requires information flow in both directions: SLAM helping semantics and semantics helping SLAM.
+What is semantic SLAM: 
 
-Why detecting objects helps: [1] states that tracking one object in 6DoF is enough to localise a camera, and reliable relocalisation of a lost camera or loop closure detection can be performed on the basis of just a small number of object measurements due to their high saliency. Further, and crucially, instant recognition of objects provides great efficiency and robustness benefits via the active approaches it permits to tracking and object detection, guided entirely by the dense predictions we can make of the positions of known objects.
+[6] states that semantic SLAM requires information flow in both directions: SLAM helping semantics and semantics helping SLAM.
 
-Why higher level features are needed: First of all, as stated above, they are more discriminative, which helps data association; Secondly, they can serve to inform robotic tasks that require higher level information, saying if a robot that needs to reason about moving from point A to B needs access to place identities (room, corridor, kitchen etc), while a robot that manipulates objects needs information about object identities and affordances (What can be done with the object? How to grab it? How is it supported in space?) [6].
+Why detecting objects helps: 
+
+[1] states that tracking one object in 6DoF is enough to localise a camera, and reliable relocalisation of a lost camera or loop closure detection can be performed on the basis of just a small number of object measurements due to their high saliency. Further, and crucially, instant recognition of objects provides great efficiency and robustness benefits via the active approaches it permits to tracking and object detection, guided entirely by the dense predictions we can make of the positions of known objects.
+
+Why higher level features are needed: 
+
+First of all, as stated above, they are more discriminative, which helps data association; Secondly, they can serve to inform robotic tasks that require higher level information, saying if a robot that needs to reason about moving from point A to B needs access to place identities (room, corridor, kitchen etc), while a robot that manipulates objects needs information about object identities and affordances (What can be done with the object? How to grab it? How is it supported in space?) [6].
 
 
 ### Semantic Information

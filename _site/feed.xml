@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T17:24:41+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">REVIEW: Semantic SLAM (Keep Updating)</title><link href="http://localhost:4000/review-semantic-SLAM/" rel="alternate" type="text/html" title="REVIEW: Semantic SLAM (Keep Updating)" /><published>2018-10-09T15:00:00+01:00</published><updated>2018-10-09T15:00:00+01:00</updated><id>http://localhost:4000/review-semantic-SLAM</id><content type="html" xml:base="http://localhost:4000/review-semantic-SLAM/">&lt;p&gt;Why higher level features are needed:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T17:52:35+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">REVIEW: Semantic SLAM (Keep Updating)</title><link href="http://localhost:4000/review-semantic-SLAM/" rel="alternate" type="text/html" title="REVIEW: Semantic SLAM (Keep Updating)" /><published>2018-10-09T15:00:00+01:00</published><updated>2018-10-09T15:00:00+01:00</updated><id>http://localhost:4000/review-semantic-SLAM</id><content type="html" xml:base="http://localhost:4000/review-semantic-SLAM/">&lt;h3 id=&quot;towards-semantic-slam&quot;&gt;Towards Semantic SLAM&lt;/h3&gt;
 
-&lt;p&gt;More discriminative, which helps data association;&lt;/p&gt;
+&lt;p&gt;What is semantic SLAM: [6] states that semantic SLAM requires information flow in both directions: SLAM helping semantics and semantics helping SLAM.&lt;/p&gt;
 
-&lt;p&gt;Serve to inform robotic tasks that require higher level information.&lt;/p&gt;
+&lt;p&gt;Why detecting objects helps: [1] states that tracking one object in 6DoF is enough to localise a camera, and reliable relocalisation of a lost camera or loop closure detection can be performed on the basis of just a small number of object measurements due to their high saliency. Further, and crucially, instant recognition of objects provides great efficiency and robustness benefits via the active approaches it permits to tracking and object detection, guided entirely by the dense predictions we can make of the positions of known objects.&lt;/p&gt;
 
-&lt;h3 id=&quot;how-semantic-information-is-used&quot;&gt;HOW Semantic Information Is Used&lt;/h3&gt;
+&lt;p&gt;Why higher level features are needed: First of all, as stated above, they are more discriminative, which helps data association; Secondly, they can serve to inform robotic tasks that require higher level information, saying if a robot that needs to reason about moving from point A to B needs access to place identities (room, corridor, kitchen etc), while a robot that manipulates objects needs information about object identities and affordances (What can be done with the object? How to grab it? How is it supported in space?) [6].&lt;/p&gt;
+
+&lt;h3 id=&quot;semantic-information&quot;&gt;Semantic Information&lt;/h3&gt;
 
 &lt;p&gt;&lt;u&gt;Objection Recognition&lt;/u&gt;&lt;/p&gt;
 
@@ -26,7 +28,7 @@
   &lt;li&gt;
     &lt;p&gt;Use Deep Learning Methods&lt;/p&gt;
 
-    &lt;p&gt;[6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D segmentation is performed leveraging depth information.&lt;/p&gt;
+    &lt;p&gt;[6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D unsupervised segmentation is performed leveraging depth information.&lt;/p&gt;
 
     &lt;p&gt;[7] proposes a more general setup of semantic SLAM which uses points, planes and objects. &lt;u&gt;This is the first real-time semantic SLAM system proposed in literature that uses previously unseen objects as landmarks&lt;/u&gt;. The authors use Faster-RCNN to perform object recognition and then instead of bounding boxes, ellipsoids are used to represent objects. The pipeline of the semantic point-plane-object SLAM system is shown below.&lt;/p&gt;
 
@@ -57,9 +59,9 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;how-optimization-is-performed&quot;&gt;HOW Optimization Is Performed&lt;/h3&gt;
+&lt;h3 id=&quot;optimization&quot;&gt;Optimization&lt;/h3&gt;
 
-&lt;h3 id=&quot;how-the-map-is-built&quot;&gt;HOW The Map Is Built&lt;/h3&gt;
+&lt;h3 id=&quot;map&quot;&gt;Map&lt;/h3&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 
@@ -87,7 +89,7 @@
 
 &lt;p&gt;[12] J. Civera, D. Gálvez-López, L. Riazuelo, J. D. Tardós, and J. M. M. Montiel. “Towards Semantic SLAM Using a Monocular Camera”. IEEE/RSJ International Conference on Robotics and Automation (ICRA), 2011.&lt;/p&gt;
 
-&lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Why higher level features are needed:</summary></entry><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
+&lt;h3 id=&quot;appendix&quot;&gt;Appendix&lt;/h3&gt;</content><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><summary type="html">Towards Semantic SLAM</summary></entry><entry><title type="html">Graph-Based SLAM</title><link href="http://localhost:4000/graph-based-SLAM/" rel="alternate" type="text/html" title="Graph-Based SLAM" /><published>2018-10-07T19:17:00+01:00</published><updated>2018-10-07T19:17:00+01:00</updated><id>http://localhost:4000/graph-based-SLAM</id><content type="html" xml:base="http://localhost:4000/graph-based-SLAM/">&lt;h3 id=&quot;probabilistic-formulation&quot;&gt;Probabilistic Formulation:&lt;/h3&gt;
 
 &lt;p&gt;Along a trajectory, given:&lt;/p&gt;
 
