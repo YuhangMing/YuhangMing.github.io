@@ -29,7 +29,7 @@ permalink: /graph-based-SLAM/
 
   DBN describs a stochastic process as a directed graph where an arrow in the graph indicats the dependency between two nodes. E.g. an arrow pointed from $$\boldsymbol{x_0}$$ to $$\boldsymbol{x_1}$$ means $$p(\boldsymbol{x_1} \vert \boldsymbol{x_0})$$.
 
-  ![Image](\assets\img\graph-based-slam\DBN.png)
+  ![Image](\assets\img\posts\DBN.png)
 
   Expressing SLAM as a DBN highlights its temporal structure. Hence this formulization is well-suited for the filtering processes that can be used to tackle SLAM problems via the MAP (Maximize-A-Posterior) scheme. 
 
