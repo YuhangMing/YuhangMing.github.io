@@ -7,6 +7,37 @@ permalink: /review-semantic-SLAM/
 ---
 
 
+Why higher level features are needed:
+
+More discriminative, which helps data association;
+
+Serve to inform robotic tasks that require higher level information.
+
+
+### HOW Semantic Information Is Used
+
+- Objection Recognition
+
+  - Feature-Based Recognition
+
+  - Use Pre-Defined Models
+
+  - Use Deep Learning Methods
+
+- Segmentation
+
+  - Plane Segmentation
+
+     1. [5] considers all homogeneous planes as planar landmarks and the remaining non-planar regions as the regions corresponding to potential objects of interest. The ICP algorithm is then used to find matches between objects of interest. In this manner, no pre-defined object models are needed, and a dataset of objects as the system is running.
+
+     2. [10] uses CNN to detect planes and then incorporating them into points-based LSD-SLAM to achieve better performance in low texture environment.
+
+  - Scene Segmentation
+
+     1. [4] tackles the problem of medium-term continuous tracking. Patch / feature-point based tracking may fail due to severe scale variation, but if we have the information about the semantic identity of the patch / feature-point, we can still perform correct matching. Meaning that although the patch appearance changes drastically, its semantic identity remains the same, for example from the same vehicle.
+
+     2. [11] proposes that the error in outdoor-senario tracking is most likely caused by sky-region and car-region, based on its empirical studies. So the authors propose to use DNN to segment these regions out of the input image, by using a mask, and then perform ORB-SLAM on the rest regions of the image.
+
 
 
 ### Reference:
