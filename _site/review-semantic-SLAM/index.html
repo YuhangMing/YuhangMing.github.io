@@ -150,6 +150,7 @@
 <p>First of all, as stated above, they are more discriminative, which helps data association; Secondly, they can serve to inform robotic tasks that require higher level information, saying if a robot that needs to reason about moving from point A to B needs access to place identities (room, corridor, kitchen etc), while a robot that manipulates objects needs information about object identities and affordances (What can be done with the object? How to grab it? How is it supported in space?) [6].</p>
 
 <h3 id="semantic-information">Semantic Information</h3>
+<h4 id="-how-it-is-extracted-and-used-in-slam-systems">— How it is extracted and used in SLAM systems</h4>
 
 <p><u>Objection Recognition</u></p>
 
@@ -162,18 +163,18 @@
   <li>
     <p>Use Pre-Defined Models</p>
 
-    <p>[1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The pipeline of the SLAM++ system is shown below.</p>
+    <p>[1] builds models of objects using KinectFusion, and then 3D objects are detected by matching to these pre-defined models. The camera poses are estimated using a fast dense ICP and then updated with detected objects. Graph optimization is formulized to jointly optimize camera and object poses. The pipeline of the SLAM++ system is shown below.</p>
 
     <p><img src="\assets\img\posts\SLAM++.png" alt="Image" /></p>
 
-    <p>[3] doesn’t mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection.</p>
+    <p>[3] doesn’t mention how the object detection is performed but the objects to be detected are limited to doors and red chairs only. So a reasonable guess is that the model of doors and red chairs are built before-hand and then perform 3D object detection. With objects obtained, the data association and optimization are formulized into a EM style formulation, by performing object classes and data association in the E-step and pose graph optimization in M-step.</p>
   </li>
   <li>
     <p>Use Deep Learning Methods</p>
 
-    <p>[6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D unsupervised segmentation is performed leveraging depth information.</p>
+    <p>[6] uses SLAM to help create accurate maps with objects. Due to the online requirements, the authors model objects as separate entities in space instead of generating object instances from point-wise labelling map. The objects are detected using Single Shot MultiBox Detector (SSD) and 3D unsupervised segmentation is performed leveraging depth information. Then a 3D point cloud is assigned to every detected objected, and add new map objects if necessary.</p>
 
-    <p>[7] proposes a more general setup of semantic SLAM which uses points, planes and objects. <u>This is the first real-time semantic SLAM system proposed in literature that uses previously unseen objects as landmarks</u>. The authors use Faster-RCNN to perform object recognition and then instead of bounding boxes, ellipsoids are used to represent objects. The pipeline of the semantic point-plane-object SLAM system is shown below.</p>
+    <p>[7] proposes a more general setup of semantic SLAM which uses points, planes and objects. <u>This is the first real-time semantic SLAM system proposed in literature that uses previously unseen objects as landmarks</u>. The authors use Faster-RCNN to perform object recognition and then instead of bounding boxes, ellipsoids are used to represent objects. Points, planes, and objects are jointly optimized in a factor-graph. The pipeline of the semantic point-plane-object SLAM system is shown below.</p>
 
     <p><img src="\assets\img\posts\point-plane-object-SLAM.png" alt="Image" /></p>
 
@@ -187,18 +188,18 @@
   <li>
     <p>Plane Segmentation</p>
 
-    <p>[5] considers all homogeneous planes as planar landmarks and the remaining non-planar regions as the regions corresponding to potential objects of interest. The ICP algorithm is then used to find matches between objects of interest. In this manner, no pre-defined object models are needed, and a dataset of objects as the system is running.</p>
+    <p>[5] considers all homogeneous planes as planar landmarks and the remaining non-planar regions as the regions corresponding to potential objects of interest. The ICP algorithm is then used to find matches between objects of interest. In this manner, no pre-defined object models are needed, and a dataset of objects as the system is running. The discovered objects are used as landmarks to help SLAM systems perform localization in an online manner.</p>
 
-    <p>[10] uses CNN to detect planes and then incorporating them into points-based LSD-SLAM to achieve better performance in low texture environment.</p>
+    <p>[10] uses CNN to detect planes and then incorporating them into points-based LSD-SLAM to achieve better performance in low texture environment. A planar SLAM formulation is proposed.</p>
   </li>
   <li>
     <p>Scene Segmentation</p>
 
-    <p>[4] tackles the problem of medium-term continuous tracking. Patch / feature-point based tracking may fail due to severe scale variation, but if we have the information about the semantic identity of the patch / feature-point, we can still perform correct matching. Meaning that although the patch appearance changes drastically, its semantic identity remains the same, for example from the same vehicle.</p>
+    <p>[4] tackles the problem of medium-term continuous tracking. Patch / feature-point based tracking may fail due to severe scale variation, but if we have the information about the semantic identity of the patch / feature-point, we can still perform correct matching. Meaning that although the patch appearance changes drastically, its semantic identity remains the same, for example from the same vehicle. (Methods used for segmentation are not mentioned.) The authors also propose a semantic cost function for optimization.</p>
 
-    <p>[9] aims to improve SLAM performance in the dynamic environments. The authors incorporate the semantic information with optical flow to determine whether the object is moving. Given results from pixel-wise semantic segmentation and moving consistency check, the authors decide if an object is moving based on the following criteria: if the number of dynamic points producedby moving consistency check fall in the contours of a segmented object is larger than a specific threshold, then this object is determined to be moving. If the segmented object is determined to be moving, then all the feature points located in the object’s contour is considered as outlier and will be removed.</p>
+    <p>[9] aims to improve SLAM performance in the dynamic environments. The authors incorporate the semantic information with optical flow to determine whether the object is moving. The segmentation is performed using SegNet by <em>Badrinarayanan et al.</em> Given results from pixel-wise semantic segmentation and moving consistency check, the authors decide if an object is moving based on the following criteria: if the number of dynamic points producedby moving consistency check fall in the contours of a segmented object is larger than a specific threshold, then this object is determined to be moving. If the segmented object is determined to be moving, then all the feature points located in the object’s contour is considered as outlier and will be removed.</p>
 
-    <p>[11] proposes that the error in outdoor-senario tracking is most likely caused by sky-region and car-region, based on its empirical studies. So the authors propose to use DNN to segment these regions out of the input image, by using a mask, and then perform ORB-SLAM on the rest regions of the image.</p>
+    <p>[11] proposes that the error in outdoor-senario tracking is most likely caused by sky-region and car-region, based on its empirical studies. So the authors propose to use DNN (DeepLab v2 by <em>Chen et al.</em>) to segment these regions out of the input image, by using a mask, and then perform ORB-SLAM on the rest regions of the image.</p>
   </li>
 </ul>
 

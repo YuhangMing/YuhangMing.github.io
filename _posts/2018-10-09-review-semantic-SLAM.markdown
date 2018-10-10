@@ -21,6 +21,12 @@ Why higher level features are needed:
 
 First of all, as stated above, they are more discriminative, which helps data association; Secondly, they can serve to inform robotic tasks that require higher level information, saying if a robot that needs to reason about moving from point A to B needs access to place identities (room, corridor, kitchen etc), while a robot that manipulates objects needs information about object identities and affordances (What can be done with the object? How to grab it? How is it supported in space?) [6].
 
+Challenges with object SLAM:
+
+When using objects as higher level features, there are 2 major challenges, as mentioned in [8]. 
+First, there are multiple instances of the object class. Without correct data association, it is hard to distinguish different object instances. Standard pose-graph SLAM algorithms can only optimize poses with exact data association, such as g2o, isam, gtsam. 
+The second challenge is high false positive rates. Blindly using these unfiltered detections in standard SLAM algorithms will lead to “non-exist” nodes and cause loop closure failures.
+
 
 ### Semantic Information
 #### --- How it is extracted and used in SLAM systems
