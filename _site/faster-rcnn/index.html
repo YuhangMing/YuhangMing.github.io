@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<title>Delving into the R-CNN Family</title>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
+  	<meta name="description" content="Explain faster R-CNN in details along with seudo-code in python/pytorch">
+
+  	<link rel="stylesheet" href="/assets/css/main.css">
+  	<link rel="canonical" href="http://localhost:4000/faster-rcnn/">
+  	<link rel="alternate" type="application/rss+xml" title="Yohann's Blog" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+
+  	<!-- Social: Facebook / Open Graph -->
+    <meta property="og:title" content="Delving into the R-CNN Family">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://localhost:4000/faster-rcnn/">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="Explain faster R-CNN in details along with seudo-code in python/pytorch">
+    <meta property="og:site_name" content="Yohann's Blog">
+
+  	<!-- Social: Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:title" content="Yohann's Blog">
+    <meta name="twitter:description" content="I'm gonna write down things I learned along with my understandings.">
+    <meta name="twitter:image:src" content="">
+
+    <!-- Social: Google+ / Schema.org  -->
+    <meta itemprop="name" content="Yohann's Blog"/>
+    <meta itemprop="description" content="I'm gonna write down things I learned along with my understandings.">
+    <meta itemprop="image" content="">
+
+    <svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+
+<!-- menu icon -->
+<symbol id="icon-menu" viewBox="0 0 1024 1024">
+  <title>menu</title>
+  <path class="path1" d="M64 192h896v192h-896zM64 448h896v192h-896zM64 704h896v192h-896z"></path>
+</symbol>
+
+<!-- close icon -->
+<symbol id="icon-close" viewBox="0 0 1024 1024">
+  <title>close</title>
+  <path class="path1" d="M1014.662 822.66c-0.004-0.004-0.008-0.008-0.012-0.010l-310.644-310.65 310.644-310.65c0.004-0.004 0.008-0.006 0.012-0.010 3.344-3.346 5.762-7.254 7.312-11.416 4.246-11.376 1.824-24.682-7.324-33.83l-146.746-146.746c-9.148-9.146-22.45-11.566-33.828-7.32-4.16 1.55-8.070 3.968-11.418 7.31 0 0.004-0.004 0.006-0.008 0.010l-310.648 310.652-310.648-310.65c-0.004-0.004-0.006-0.006-0.010-0.010-3.346-3.342-7.254-5.76-11.414-7.31-11.38-4.248-24.682-1.826-33.83 7.32l-146.748 146.748c-9.148 9.148-11.568 22.452-7.322 33.828 1.552 4.16 3.97 8.072 7.312 11.416 0.004 0.002 0.006 0.006 0.010 0.010l310.65 310.648-310.65 310.652c-0.002 0.004-0.006 0.006-0.008 0.010-3.342 3.346-5.76 7.254-7.314 11.414-4.248 11.376-1.826 24.682 7.322 33.83l146.748 146.746c9.15 9.148 22.452 11.568 33.83 7.322 4.16-1.552 8.070-3.97 11.416-7.312 0.002-0.004 0.006-0.006 0.010-0.010l310.648-310.65 310.648 310.65c0.004 0.002 0.008 0.006 0.012 0.008 3.348 3.344 7.254 5.762 11.414 7.314 11.378 4.246 24.684 1.826 33.828-7.322l146.746-146.748c9.148-9.148 11.57-22.454 7.324-33.83-1.552-4.16-3.97-8.068-7.314-11.414z"></path>
+</symbol>
+
+<!-- facebook icon -->
+<symbol id="icon-facebook" viewBox="0 0 1024 1024">
+  <title>facebook</title>
+  <path class="path1" d="M512 0c-282.77 0-512 229.23-512 512s229.23 512 512 512v-384h-128v-128h128v-96c0-88.366 71.632-160 160-160h160v128h-160c-17.674 0-32 14.328-32 32v96h176l-32 128h-144v367.87c220.828-56.838 384-257.3 384-495.87 0-282.77-229.23-512-512-512z"></path>
+</symbol>
+
+<!-- twitter icon -->
+<symbol id="icon-twitter" viewBox="0 0 1024 1024">
+  <title>twitter</title>
+  <path class="path1" d="M512 0c-282.77 0-512 229.23-512 512s229.23 512 512 512 512-229.23 512-512-229.23-512-512-512zM766.478 381.48c0.252 5.632 0.38 11.296 0.38 16.988 0 173.51-132.070 373.588-373.584 373.588-74.15 0-143.168-21.738-201.276-58.996 10.272 1.218 20.724 1.84 31.322 1.84 61.518 0 118.134-20.992 163.072-56.21-57.458-1.054-105.948-39.020-122.658-91.184 8.018 1.532 16.244 2.36 24.704 2.36 11.976 0 23.578-1.61 34.592-4.61-60.064-12.066-105.326-65.132-105.326-128.75 0-0.554 0-1.104 0.012-1.652 17.7 9.834 37.948 15.742 59.47 16.424-35.232-23.546-58.414-63.736-58.414-109.292 0-24.064 6.476-46.62 17.78-66.010 64.76 79.44 161.51 131.712 270.634 137.19-2.238-9.612-3.4-19.632-3.4-29.924 0-72.512 58.792-131.298 131.304-131.298 37.766 0 71.892 15.944 95.842 41.462 29.908-5.886 58.008-16.814 83.38-31.862-9.804 30.662-30.624 56.394-57.732 72.644 26.56-3.174 51.866-10.232 75.412-20.674-17.594 26.328-39.854 49.454-65.514 67.966z"></path>
+</symbol>
+
+<!-- google plus icon -->
+<symbol id="icon-google-plus" viewBox="0 0 1024 1024">
+	<title>google-plus</title>
+	<path class="path1" d="M437.006 818.162c0 75.068-46.39 134.392-177.758 139.176-76.984-43.786-141.49-106.952-186.908-182.866 23.69-58.496 97.692-103.046 182.316-102.114 24.022 0.252 46.41 4.114 66.744 10.7 55.908 38.866 101 63.152 112.324 107.448 2.114 8.964 3.282 18.206 3.282 27.656zM512 0c-147.94 0-281.196 62.77-374.666 163.098 36.934-20.452 80.538-32.638 126.902-32.638 67.068 0 256.438 0 256.438 0l-57.304 60.14h-67.31c47.496 27.212 72.752 83.248 72.752 145.012 0 56.692-31.416 102.38-75.78 137.058-43.28 33.802-51.492 47.966-51.492 76.734 0 24.542 51.722 61.098 75.5 78.936 82.818 62.112 99.578 101.184 99.578 178.87 0 78.726-68.936 157.104-185.866 183.742 56.348 21.338 117.426 33.048 181.248 33.048 282.77 0 512-229.23 512-512s-229.23-512-512-512zM768 384v128h-64v-128h-128v-64h128v-128h64v128h128v64h-128zM365.768 339.472c11.922 90.776-27.846 149.19-96.934 147.134-69.126-2.082-134.806-65.492-146.74-156.242-11.928-90.788 34.418-160.254 103.53-158.196 69.090 2.074 128.22 76.542 140.144 167.304zM220.886 642.068c-74.68 0-138.128 25.768-182.842 63.864-24.502-59.82-38.044-125.29-38.044-193.932 0-56.766 9.256-111.368 26.312-162.396 7.374 99.442 77.352 176.192 192.97 176.192 8.514 0 16.764-0.442 24.874-1.022-7.95 15.23-13.622 32.19-13.622 49.982 0 29.97 16.488 47.070 36.868 66.894-15.402 0-30.27 0.418-46.516 0.418z"></path>
+</symbol>
+
+<!-- search icon -->
+<symbol id="icon-search" viewBox="0 0 1024 1024">
+  <title>search</title>
+  <path class="path1" d="M992.262 871.396l-242.552-206.294c-25.074-22.566-51.89-32.926-73.552-31.926 57.256-67.068 91.842-154.078 91.842-249.176 0-212.078-171.922-384-384-384-212.076 0-384 171.922-384 384s171.922 384 384 384c95.098 0 182.108-34.586 249.176-91.844-1 21.662 9.36 48.478 31.926 73.552l206.294 242.552c35.322 39.246 93.022 42.554 128.22 7.356s31.892-92.898-7.354-128.22zM384 640c-141.384 0-256-114.616-256-256s114.616-256 256-256 256 114.616 256 256-114.614 256-256 256z"></path>
+</symbol>
+
+</defs>
+</svg>
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Delving into the R-CNN Family | Yohann’s Blog</title>
+<meta name="generator" content="Jekyll v3.3.1" />
+<meta property="og:title" content="Delving into the R-CNN Family" />
+<meta name="author" content="Yuhang Ming" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Explain faster R-CNN in details along with seudo-code in python/pytorch" />
+<meta property="og:description" content="Explain faster R-CNN in details along with seudo-code in python/pytorch" />
+<link rel="canonical" href="http://localhost:4000/faster-rcnn/" />
+<meta property="og:url" content="http://localhost:4000/faster-rcnn/" />
+<meta property="og:site_name" content="Yohann’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-10-22T19:00:00+01:00" />
+<script type="application/ld+json">
+{"description":"Explain faster R-CNN in details along with seudo-code in python/pytorch","author":{"@type":"Person","name":"Yuhang Ming"},"@type":"BlogPosting","url":"http://localhost:4000/faster-rcnn/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/ym.jpg/"},"name":"Yuhang Ming"},"headline":"Delving into the R-CNN Family","dateModified":"2018-10-22T19:00:00+01:00","datePublished":"2018-10-22T19:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/faster-rcnn/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+
+  <body>
+
+    <header class="header">
+
+  <button aria-expanded="false" aria-controls="menu" aria-label="Click to open the menu" class="bt-menu"><svg class="icon-top icon-menu"><use xlink:href="#icon-menu"></use></svg></button>
+    <nav class="menu">
+      <a aria-label="Back to home page" href="/"> Home </a>
+      <a aria-label="My blog" href="/blog"> Blog </a>
+      <a aria-label="Get to know me a little more" href="/about"> About </a>
+    </nav>
+  
+  <button aria-expanded="false" aria-controls="search-container" aria-label="Search" class="bt-search"><svg class="icon-top icon-search"><use xlink:href="#icon-search"></use></svg></button>
+  <div id="search-container">
+    <input type="text" id="search-input" placeholder="Search blog posts...">
+    <button aria-label="Close Search Toolbar" class="bt-close"><svg class="icon-top icon-close"><use xlink:href="#icon-close"></use></svg></button>
+    <ul id="results-container"></ul>
+  </div>
+
+  <hgroup class="title">
+    <h1> <a href="/"> Yohann's Blog </a> </h1>  
+    <!-- <h2> <a href="/"> A simple Jekyll blog theme </a> </h2> -->
+  </hgroup>
+
+</header>
+
+
+    <div class="page-content">
+      <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Delving into the R-CNN Family</h1>
+    <p class="post-date"><time datetime="2018-10-22T19:00:00+01:00" itemprop="datePublished">22 Oct, 2018</time>
+    <hr>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="general-information">General Information</h3>
+
+<p>With the booming advance of the deep neural networks (DNNs), more and more researchers have been applying DNNs in various vision problems. Among all, Regions with CNN features (R-CNN) [2] by <em>R. Girshick et al.</em> is the first to show a CNN can lead to dramatically outstanding object detection performance on PASCAL VOC challenge. However, R-CNN has a significant drawback: detection with VGG16 takes 47s/image (on a GPU). Hence, an improved version of R-CNN is proposed by sharing convolutions across all region proposals, known as Fast R-CNN [3]. The Fast R-CNN system is able to achieve real-tine detection when ignoring time spent on region proposals, with 0.3s/image (excluding object proposal time). Furthermroe, to break the bottleneck of improving detection time, <em>S. Ren et al.</em> proposed Faster R-CNN [4] with the key contribution of replacing Selective Search in Fast R-CNN with Region Proposal Network (RPN), which shares the convolutional layers with Fast R-CNN. This improvement equips the system with the detection frame rate of 5 frame per second (fps) on a GPU. Moving on from object detection to semantic segmentation, Mask R-CNN [5] extends Faster R-CNN by adding a branch for predicting object mask. The architecture of these 4 networks are shown in the figure below and these 4 netowrks together forms the famous R-CNN family of object detection.</p>
+
+<p><img src="\assets\img\posts\rcnn-family.jpg" alt="Image" /></p>
+
+<p>For semantic SLAM, work proposed by <em>M. Hosseinzadeh et al.</em> [8] and <em>B. Mu et al.</em> [9] utilize Faster R-CNN to provide object information for their systems.</p>
+
+<p>In the following sections, I will use Faster R-CNN as the example to delve into the R-CNN family. The Faster R-CNN is diveded into the following parts: R-CNN base which is the convolutional layers that computes the feature maps; RoI pooling that resize all RoIs into the same size, RPN that proposals regions of interest, and the R-CNN head which predicts the class probabilities and regresses the coordinates of the bounding boxes. Finally, the training procedure and the evaluation metic will be discussed.</p>
+
+<h3 id="r-cnn-base">R-CNN Base</h3>
+
+<p>The convolutional layers of VGG16 (up to conv5, before the max pooling layer) are used to form the R-CNN Base, i.e. it is a fully convolutional network (FCN) [6]. The structure of VGG16 is shown below.</p>
+
+<p><img src="\assets\img\posts\vgg16-structure.jpg" alt="Image" /></p>
+
+<p><u>What is FCN?</u> FCN is a net with only layers of the form below which computes a nonlinear filter.</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+y_{ij} = f_{ks}(\{ x_{si+\delta i, sj+\delta j} \}_{0\leq\delta i, \delta j \leq k}) \\
+f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
+\end{cases}</script>
+
+<p>i.e. there are no fully connected layers attached to the convolutional layers.</p>
+
+<p>A code snippet of creating the R-CNN base with PyTorch is shown below:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bn_flag</span> <span class="o">=</span> <span class="n">bn</span>
+    <span class="k">if</span> <span class="n">bn</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg16_bn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="n">pretrain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'conv1_1'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'conv1_2'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'conv2_1'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">'conv2_2'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">'conv3_1'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'conv3_2'</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s">'conv3_3'</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+            <span class="s">'conv4_1'</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span> <span class="s">'conv4_2'</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s">'conv4_3'</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="s">'conv5_1'</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s">'conv5_2'</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span> <span class="s">'conv5_3'</span><span class="p">:</span> <span class="mi">42</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg16</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="n">pretrain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'conv1_1'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'conv1_2'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'conv2_1'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'conv2_2'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s">'conv3_1'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s">'conv3_2'</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s">'conv3_3'</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s">'conv4_1'</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s">'conv4_2'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">'conv4_3'</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+            <span class="s">'conv5_1'</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s">'conv5_2'</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s">'conv5_3'</span><span class="p">:</span> <span class="mi">29</span>
+        <span class="p">}</span>  
+    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c"># In forward():</span>
+    <span class="c"># get the base feature map</span>
+    <span class="n">feature_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="region-proposal-network-rpn">Region Proposal Network (RPN)</h3>
+
+<p>As defined in [4], a RPN taks an image (of any size) as input and outputs a set of rectangular object proposals along with repective objectness scores. This process is also a FCN, and it shares a common set of convolutional layers with the R-CNN base (13 shareable convolutional layers with VGG16).</p>
+
+<p>Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an <script type="math/tex">n \times n</script> (e.g. <script type="math/tex">3 \times 3</script>) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling <script type="math/tex">1 \times 1</script> convolutional layers (i.e. FC layers) are used for box-regression and box-classification. Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously adn the maximum possible proposals for each location is denoted as <script type="math/tex">k</script>. <strong>The</strong> <script type="math/tex">k</script> <strong>proposals are parameterized RELATIVE to</strong> <script type="math/tex">k</script> <strong>reference boxes, which are called ANCHORs</strong>. By default, 3 scales (<script type="math/tex">128^2,\, 256^2,\, 512^2</script>) and 3 aspect ratios (<script type="math/tex">1:1,\, 1:2,\, 2:1</script>) are associated with each anchor, yeilding <script type="math/tex">k=9</script> anchors at each sliding position. Following is a figure from [4] illustrating architechture of RPN.</p>
+
+<p><img src="\assets\img\posts\rpn-structure.jpg" alt="Image" /></p>
+
+<p>However, I found this figure alone is not so easy to understand how RPN acutally works. So I created the flow-chart of the architecture of RPN based on my understanding, showing below.</p>
+
+<p><img src="\assets\img\posts\rpn-flowchart.jpg" alt="Image" /></p>
+
+<p>A code snippet for this procedure is shown below:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RPN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">bn</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">in_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RPN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="c"># number of proposed boxes #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">258</span><span class="p">,</span> <span class="mi">512</span><span class="p">]</span> <span class="k">if</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span> <span class="k">else</span> <span class="bp">None</span>  <span class="c"># meaning size of bbox in original image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">r</span><span class="o">=</span><span class="mi">3</span> <span class="k">else</span> <span class="bp">None</span>      <span class="c"># meaning 1:1, 1:2, 2:1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">r</span>
+        
+        <span class="c"># n*n small network (sliding window) #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">bn</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        
+        <span class="c"># 1*1 convolutional layer for reg and cls, both take in the feature patch #</span>
+        <span class="c"># predicts 2 class probabilities(object is present / no object) for each anchor</span>
+        <span class="c"># as 2-class softmax layer</span>
+        <span class="c"># outputs the probabilities (dim = 2*k)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1_cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c"># predicts 4 coordinates of a bounding box relative to each anchor</span>
+        <span class="c"># outputs the coordinates (dim = 4*k)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1_reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_patch</span><span class="p">):</span>
+        <span class="c"># pass through the small network mentioned in the paper</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">feat_patch</span><span class="p">)</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        
+        <span class="c"># regressor for bbox coordinates</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1_reg</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        <span class="c"># softmax classifier for probabilities</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1_cls</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">cls</span><span class="p">,</span> <span class="n">reg</span></code></pre></figure>
+
+<h3 id="region-of-interest-roi-pooling">Region-of-Interest (RoI) Pooling</h3>
+
+<p>Since the input of the Faster R-CNN network is arbitrary, unlike the fixed input size of 224 for VGG16, RoI pooling layer is implemented to convert the features inside any valid region of interest into small feature map of fixed size of <script type="math/tex">H \times W</script> (e.g. <script type="math/tex">7 \times 7</script>) [3]. It works bi dividing <script type="math/tex">h \times w</script> RoI window into an <script type="math/tex">H \times W</script> and then max-pooling the values in each sub-window of each channel independently into corresponding output grid cell. The RoI pooling layer can be considered as a special case of SPPNet [7], illustrated below:</p>
+
+<p><img src="\assets\img\posts\roi-pooling.jpg" alt="Image" /></p>
+
+<p>A code snippet of the PyTorch implementation is shown below. Note that the RoI pooling layer takes the feature map extracted from a mini-batch of images (bsz=1, feat_chan, feat_h, feat_w) and a list of proposed regions (roi_topleft_r, roi_topleft_c, roi_h, roi_w) as inputs, outputs a list of features of fixed size (bsz=1, feat_chan, H, W). Since the sizes of the input images are arbitrary, we only consider the case of 1 image per mini-batch for now.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RoI_Pooling</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RoI_Pooling</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">H</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_map</span><span class="p">,</span> <span class="n">in_tuple</span><span class="p">):</span>
+        <span class="c"># in_tuple is a list of four-tuple (r, c, h, w), which are the region proposals</span>
+        <span class="c"># instead output a list of feature vectors, concatenate all roi feat vector along the batch dimension</span>
+        <span class="c"># get first RoI</span>
+        <span class="n">roi_r</span><span class="p">,</span> <span class="n">roi_c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">in_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">fixed_size_feat</span> <span class="o">=</span> <span class="n">MaxPooling</span><span class="p">(</span><span class="n">feature_map</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">roi_r</span><span class="p">:</span><span class="n">roi_r</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">roi_c</span><span class="p">:</span><span class="n">roi_c</span><span class="o">+</span><span class="n">w</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_tuple</span><span class="p">)):</span>
+            <span class="n">roi_r</span><span class="p">,</span> <span class="n">roi_c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">in_tuple</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">fixed_size_feat_tmp</span> <span class="o">=</span> <span class="n">MaxPooling</span><span class="p">(</span><span class="n">feature_map</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">roi_r</span><span class="p">:</span><span class="n">roi_r</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">roi_c</span><span class="p">:</span><span class="n">roi_c</span><span class="o">+</span><span class="n">w</span><span class="p">])</span>
+            <span class="n">fixed_size_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">fixed_size_feat</span><span class="p">,</span> <span class="n">fixed_size_feat_tmp</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c"># output feature is a torch tensor of size (bsz=#_of_rois, chans, H, W)</span>
+        <span class="k">return</span> <span class="n">fixed_size_feat</span>
+    
+    <span class="k">def</span> <span class="nf">MaxPooling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_roi</span><span class="p">):</span>
+        <span class="n">bsz</span><span class="p">,</span> <span class="n">chans</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">feat_roi</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">fixed_size_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bsz</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">chans</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+        <span class="c"># sub_window size</span>
+        <span class="n">sub_win_height</span> <span class="o">=</span> <span class="n">h</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">H</span>
+        <span class="n">sub_win_width</span> <span class="o">=</span> <span class="n">w</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span>
+        <span class="c"># max pooling</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">):</span>
+            <span class="n">start_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="o">*</span><span class="n">r</span>
+            <span class="n">end_r</span> <span class="o">=</span> <span class="n">start_r</span> <span class="o">+</span> <span class="n">sub_win_height</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">):</span>
+                <span class="n">start_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">c</span>
+                <span class="n">end_c</span> <span class="o">=</span> <span class="n">start_c</span> <span class="o">+</span> <span class="n">sub_win_width</span>
+                <span class="c"># get the patch</span>
+                <span class="n">patch_feat</span> <span class="o">=</span> <span class="n">feat_roi</span><span class="p">[:,:,</span> <span class="n">start_r</span><span class="p">:</span><span class="n">end_r</span><span class="p">,</span> <span class="n">start_c</span><span class="p">:</span><span class="n">end_c</span><span class="p">]</span>
+                <span class="c"># find maximum in each channel</span>
+                <span class="n">max_along_h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">patch_feat</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">max_final</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">max_along_h</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">fixed_size_feat</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_final</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c"># return feature of (bsz, chans, H, W)</span>
+        <span class="k">return</span> <span class="n">fixed_size_feat</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">RoI_pooling</span> <span class="o">=</span> <span class="n">RoI_Pooling</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<span class="c"># In forward():</span>
+    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RoI_pooling</span><span class="p">(</span><span class="n">feature_map</span><span class="p">,</span> <span class="n">proposals</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="r-cnn-head">R-CNN Head</h3>
+
+<p>R-CNN head consists of two parts. The first part contains 2 fully connected layers which takes in the fixed-length feature vector of RoIs as input. The second part has 2 parallel sibling output layers: one uses softmax for objectness estimation (produces the probability over all object classes plus a background class) and another regressor to predict the position of bounding boxes (4 values tuple). Since I’m using VGG16 for the R-CNN base, so I just adopt the first two FC layers from the VGG16 and then attaches two parallel siblings outputs to the FC layers. The code snippet is shown below:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c"># feature dimension of 4096 for VGG16, K is the # of object classes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># In forward():</span>
+    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
+    <span class="c"># softmax score</span>
+    <span class="n">class_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
+    <span class="c"># bbox coordinates</span>
+    <span class="n">bbox_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="training-procedure">Training Procedure</h3>
+
+<h3 id="evaluation-metric">Evaluation Metric</h3>
+
+<p>mAP</p>
+
+<h3 id="reference">Reference:</h3>
+
+<p>[1] VGG16</p>
+
+<p>[2] R-CNN</p>
+
+<p>[3] Fast R-CNN</p>
+
+<p>[4] Faster R-CNN</p>
+
+<p>[5] Mask R-CNN</p>
+
+<p>[6] FCN</p>
+
+<p>[7] SPPNet</p>
+
+<p>[8] M. Hosseinzadeh, Y. Latif, T. Pham, N. Sünderhauf, and I. Reid. “Towards Semantic SLAM: Points, Planes and Objects”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2017.</p>
+
+<p>[9] B. Mu, S. Liu, L. Paull, J. Leonard, and J. P. How. “SLAM with Objects using a Nonparametric Pose Graph”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2016.</p>
+
+<h3 id="appendix">Appendix</h3>
+
+<p><u>Objection Recognition</u></p>
+
+<p><img src="\assets\img\posts\SLAM++.png" alt="Image" /></p>
+
+<p><img src="\assets\img\posts\point-plane-object-SLAM.png" alt="Image" /></p>
+
+
+  </div>
+
+  <!-- <section class="share">
+	<h3> Share </h3>
+
+	<div class="share-buttons">
+		<a aria-label="Share on Twitter" href="https://twitter.com/intent/tweet?text=&quot;&quot;%20http://localhost:4000/faster-rcnn/%20via%20&#64;&hashtags="
+    	onclick="window.open(this.href, 'twitter-share');return false;" title="Share on Twitter">
+        	<svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>
+    	</a>
+
+    	<a aria-label="Share on Facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/faster-rcnn/"
+    	onclick="window.open(this.href, 'facebook-share');return false;" title="Share on Facebook">
+        	<svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>
+    	</a>
+
+    	<a aria-label="Share on Google Plus" href="https://plus.google.com/share?url=http://localhost:4000/faster-rcnn/"
+    	onclick="window.open(this.href, 'google-plus-share');return false;" title="Share on Google+">
+        	<svg class="icon icon-google-plus"><use xlink:href="#icon-google-plus"></use></svg>
+    	</a>
+    </div>
+</section> -->
+
+  <!-- <section class="author">
+	<!-- <div class="details">
+		<img src="/assets/img/author.jpg" class="img-author">
+		<p><b> Author </b></p>
+		<h2 class="name"> Yuhang Ming </a>
+			<a href=""> Yuhang Ming </a>
+		</h2>
+		<p class="description"> Ph.D. student in the Visual Information Lab in University of Bristol, currently working on semantic SLAM system. </p>
+        <a class="email" href="mailto:yuhang.ming@bristol.ac.uk">yuhang.ming@bristol.ac.uk</a>
+	</div> -->
+</section> -->
+
+  <!-- <section class="comments">
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+</section>
+
+<!-- Replace this script with your disqus script -->
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//devmateusmedeiros.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Por favor, ative o JavaScript para ver os <a href="https://disqus.com/?ref_noscript" rel="nofollow">comentários powered by Disqus.</a></noscript>
+
+<script id="dsq-count-scr" src="//devmateusmedeiros.disqus.com/count.js" async></script> -->
+
+</article>
+
+    </div>
+
+    <footer class="footer">
+	<p> ©2018 All rights reserved.<span aria-label="Love">❤</span></p>
+    <p>Theme by <a aria-label="Theme author" href="http://mateussmedeiros.github.io/" target="_blank" title="Made with Jekyll">Mateus Medeiros</a>, made with <a aria-label="Jekyll" href="http://jekyllrb.com" target="_blank" title="Made with Jekyll">Jekyll</a></p>	
+</footer>
+
+<script src="/assets/components/jquery/dist/jquery.min.js"></script>
+<script src="/assets/components/simple-jekyll-search/dest/jekyll-search.js"></script>
+<script src="/assets/js/script.min.js"></script>
+
+  </body>
+
+</html>

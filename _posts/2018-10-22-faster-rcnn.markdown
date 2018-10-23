@@ -64,11 +64,59 @@ A code snippet of creating the R-CNN base with PyTorch is shown below:
 {% endhighlight %}
 
 
+### R-CNN Head
+
+R-CNN head consists of two parts. The first part contains 2 fully connected layers which takes in the fixed-length feature vector of RoIs as input. The second part has 2 parallel sibling output layers: one uses softmax for objectness estimation (produces the probability over all object classes plus a background class) and another regressor to predict the position of bounding boxes (4 values tuple). Since I'm using VGG16 for the R-CNN base, so I just adopt the first two FC layers from the VGG16 and then attaches two parallel siblings outputs to the FC layers. 
+
+For the purpose of bounding box (b-box) refinement, since the proposed region of interest may not fully coincide with the object b-box, a class-specific b-box regressor is implemented with the goal of learning a transformation that maps the proposed b-box $$P$$ to a ground-truth b-box $$G$$ [2]. The transformation is parameterized as $$d_x(P), d_y(P), d_w(P), d_h(P)$$, and the map function can be formulated as:
+
+$$
+\begin{cases}
+\hat{G_x} = P_w d_x(P) + P_x \\
+\hat{G_y} = P_h d_y(P) + P_y \\
+\hat{G_w} = P_w exp(d_w(P)) \\
+\hat{G_h} = P_h exp(d_h(P))
+\end{cases}
+$$
+
+where the first two equations compute the new b-box center and the second two find the new height and width. Using linear funciton, we have $$ d(P) = \boldsymbol{x}^T\phi_5(P) $$ where $$ \phi_5(P) $$ is the roi feature vector from CNN. Formulized in least squares, we have:
+
+$$
+\begin{cases}
+\boldsymbol{w}^* = \underset{\hat{\boldsymbol{w}}}{\mathrm{argmin}} \sum_i^N (t^i - d(P^i))^2 \\
+t_x = (G_x - P_x)/P_w \\
+t_y = (G_y - P_y)/P_h \\
+t_w = log(G_w/P_w) \\
+t_h = log(G_h/P_h)
+\end{cases}
+$$
+
+
+The code snippet is shown below:
+
+{% highlight python %}
+# In __init__():
+    self.RCNN_base = nn.Sequential(*list(model.classifier.children())[:-1])
+    # feature dimension of 4096 for VGG16, K is the # of object classes
+    self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
+    self.reg = nn.Linear(in_features=4096, out_features=4, bias=True) #### CHECK REGRESSOR LATER !!!!!!
+
+# In forward():
+    RoI_feat = self.RCNN_base(RoI_feat)
+    # softmax score
+    class_scores = self.cls(RoI_feat)
+    # bbox coordinates
+    bbox_coords = self.reg(RoI_feat)
+{% endhighlight python %}
+
+
 ### Region Proposal Network (RPN)
 
 As defined in [4], a RPN taks an image (of any size) as input and outputs a set of rectangular object proposals along with repective objectness scores. This process is also a FCN, and it shares a common set of convolutional layers with the R-CNN base (13 shareable convolutional layers with VGG16).
 
-Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an $$n \times n$$ (e.g. $$3 \times 3$$) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling $$1 \times 1$$ convolutional layers (i.e. FC layers) are used for box-regression and box-classification. Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously adn the maximum possible proposals for each location is denoted as $$k$$. **The** $$k$$ **proposals are parameterized RELATIVE to** $$k$$ **reference boxes, which are called ANCHORs**. By default, 3 scales ($$128^2,\, 256^2,\, 512^2$$) and 3 aspect ratios ($$1:1,\, 1:2,\, 2:1$$) are associated with each anchor, yeilding $$k=9$$ anchors at each sliding position. Following is a figure from [4] illustrating architechture of RPN.
+Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an $$n \times n$$ (e.g. $$3 \times 3$$) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling $$1 \times 1$$ convolutional layers (i.e. FC layers) are used for box-regression and box-classification.
+
+Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously and the maximum possible proposals for each location is denoted as $$k$$. **The** $$k$$ **proposals are parameterized RELATIVE to** $$k$$ **reference boxes, which are called ANCHORs**. By default, 3 scales ($$128^2,\, 256^2,\, 512^2$$) and 3 aspect ratios ($$1:1,\, 1:2,\, 2:1$$) are associated with each anchor, yeilding $$k=9$$ anchors at each sliding position. Following is a figure from [4] illustrating architechture of RPN.
 
 ![Image](\assets\img\posts\rpn-structure.jpg)
 
@@ -111,9 +159,31 @@ class RPN(nn.Module):
         # regressor for bbox coordinates
         reg = self.conv1_reg(interval)
         # softmax classifier for probabilities
-        cls = self.conv1_cls(interval)
-        
+        cls = self.conv1_cls(interval) 
         return cls, reg
+        
+    ## More about staticmethod : ##
+    # 1. Static methods don’t have access to cls or self, won't modify class state
+    # 2. They work like regular functions but belong to the class’s namespace.
+    #   can be called without initialize class
+    # 3. This can have maintenance benefits.
+    @staticmethod
+    def ref_anchors(scale, ratio):
+        # this method generates the desired anchors at location (0,0)
+        anchors = np.empty((len(scale)*len(ratio), 4), dtype=int)
+        count = 0
+        for s in scale:
+            area = s*s
+            for r in ratio:
+                # calculate width and height
+                width = np.sqrt(area/r)
+                height = width*r
+                # calculate start and end coords
+                half_wid = int(round(width/2))
+                half_hei = int(round(height/2))
+                anchors[count, :] = [-half_wid+1, -half_hei+1, half_wid, half_hei]
+                count = count + 1
+        return anchors
 {% endhighlight python %}
 
 
@@ -182,28 +252,6 @@ class RoI_Pooling(nn.Module):
 {% endhighlight %}
 
 
-### R-CNN Head
-
-R-CNN head consists of two parts. The first part contains 2 fully connected layers which takes in the fixed-length feature vector of RoIs as input. The second part has 2 parallel sibling output layers: one uses softmax for objectness estimation (produces the probability over all object classes plus a background class) and another regressor to predict the position of bounding boxes (4 values tuple). Since I'm using VGG16 for the R-CNN base, so I just adopt the first two FC layers from the VGG16 and then attaches two parallel siblings outputs to the FC layers. The code snippet is shown below:
-
-
-{% highlight python %}
-# In __init__():
-    self.RCNN_base = nn.Sequential(*list(model.classifier.children())[:-1])
-    # feature dimension of 4096 for VGG16, K is the # of object classes
-    self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
-    self.reg = nn.Linear(in_features=4096, out_features=4, bias=True)
-
-# In forward():
-    RoI_feat = self.RCNN_base(RoI_feat)
-    # softmax score
-    class_scores = self.cls(RoI_feat)
-    # bbox coordinates
-    bbox_coords = self.reg(RoI_feat)
-{% endhighlight python %}
-
-
-
 ### Training Procedure
 
 
@@ -237,11 +285,6 @@ mAP
 
 ### Appendix
 
-<u>Objection Recognition</u>
-
-![Image](\assets\img\posts\SLAM++.png)
-
-![Image](\assets\img\posts\point-plane-object-SLAM.png)
   
 
 
