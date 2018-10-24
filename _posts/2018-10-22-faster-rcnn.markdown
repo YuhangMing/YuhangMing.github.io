@@ -138,29 +138,7 @@ i.e. there are no fully connected layers attached to the convolutional layers.
 A code snippet of creating the R-CNN base with PyTorch is shown below:
 
 {% highlight python %}
-# In __init__():
-    self.bn_flag = bn
-    if bn:
-        model = models.vgg16_bn(pretrained=pretrain)
-        self.layer_dict = {
-            'conv1_1': 2, 'conv1_2': 5, 'conv2_1': 9, 'conv2_2': 12,
-            'conv3_1': 16, 'conv3_2': 19, 'conv3_3': 22,
-            'conv4_1': 26, 'conv4_2': 29, 'conv4_3': 32,
-            'conv5_1': 36, 'conv5_2': 39, 'conv5_3': 42
-        }
-    else:
-        model = models.vgg16(pretrained=pretrain)
-        self.layer_dict = {
-            'conv1_1': 1, 'conv1_2': 3, 'conv2_1': 6, 'conv2_2': 8,
-            'conv3_1': 11, 'conv3_2': 13, 'conv3_3': 15,
-            'conv4_1': 18, 'conv4_2': 20, 'conv4_3': 22,
-            'conv5_1': 25, 'conv5_2': 27, 'conv5_3': 29
-        }  
-    self.RCNN_base = nn.Sequential(*list(model.features.children())[:-1])
-
-# In forward():
-    # get the base feature map
-    feature_map = self.RCNN_base(img)
+self.RCNN_base = nn.Sequential(*list(model.features.children())[:-1])
 {% endhighlight %}
 
 
@@ -195,19 +173,10 @@ $$
 The code snippet is shown below:
 
 {% highlight python %}
-# In __init__():
-    self.RCNN_head = nn.Sequential(*list(model.classifier.children())[:-1])
-    # feature dimension of 4096 for VGG16, K is the # of object classes
-    self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
-    self.reg = nn.Linear(in_features=4096, out_features=4, bias=True)
-
-# In forward():
-    RoI_feat = self.RCNN_head(RoI_feat)
-    # classification, output softmax scores
-    class_scores = self.cls(RoI_feat)
-    class_scores = F.softmax(class_scores)
-    # regression, output bbox offsets to the gt
-    bbox_coords = self.reg(RoI_feat)
+self.RCNN_head = nn.Sequential(*list(model.classifier.children())[:-1])
+# feature dimension of 4096 for VGG16, K is the # of object classes
+self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
+self.reg = nn.Linear(in_features=4096, out_features=4, bias=True)
 {% endhighlight python %}
 
 
