@@ -186,11 +186,53 @@ f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
     <span class="c"># get the base feature map</span>
     <span class="n">feature_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code></pre></figure>
 
+<h3 id="r-cnn-head">R-CNN Head</h3>
+
+<p>R-CNN head consists of two parts. The first part contains 2 fully connected layers which takes in the fixed-length feature vector of RoIs as input. The second part has 2 parallel sibling output layers: one uses softmax for objectness estimation (produces the probability over all object classes plus a background class) and another regressor to predict the position of bounding boxes (4 values tuple). Since I’m using VGG16 for the R-CNN base, so I just adopt the first two FC layers from the VGG16 and then attaches two parallel siblings outputs to the FC layers.</p>
+
+<p>For the purpose of bounding box (b-box) refinement, since the proposed region of interest may not fully coincide with the object b-box, a class-specific b-box regressor is implemented with the goal of learning a transformation that maps the proposed b-box <script type="math/tex">P</script> to a ground-truth b-box <script type="math/tex">G</script> [2]. The transformation is parameterized as <script type="math/tex">d_x(P), d_y(P), d_w(P), d_h(P)</script>, and the map function can be formulated as:</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+\hat{G_x} = P_w d_x(P) + P_x \\
+\hat{G_y} = P_h d_y(P) + P_y \\
+\hat{G_w} = P_w exp(d_w(P)) \\
+\hat{G_h} = P_h exp(d_h(P))
+\end{cases}</script>
+
+<p>where the first two equations compute the new b-box center and the second two find the new height and width. Using linear funciton, we have <script type="math/tex">d(P) = \boldsymbol{x}^T\phi_5(P)</script> where <script type="math/tex">\phi_5(P)</script> is the roi feature vector from CNN. Formulized in least squares, we have:</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+\boldsymbol{w}^* = \underset{\hat{\boldsymbol{w}}}{\mathrm{argmin}} \sum_i^N (t^i - d(P^i))^2 \\
+t_x = (G_x - P_x)/P_w \\
+t_y = (G_y - P_y)/P_h \\
+t_w = log(G_w/P_w) \\
+t_h = log(G_h/P_h)
+\end{cases}</script>
+
+<p>The code snippet is shown below:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c"># feature dimension of 4096 for VGG16, K is the # of object classes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#### CHECK REGRESSOR LATER !!!!!!</span>
+
+<span class="c"># In forward():</span>
+    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
+    <span class="c"># softmax score</span>
+    <span class="n">class_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
+    <span class="c"># bbox coordinates</span>
+    <span class="n">bbox_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span></code></pre></figure>
+
 <h3 id="region-proposal-network-rpn">Region Proposal Network (RPN)</h3>
 
 <p>As defined in [4], a RPN taks an image (of any size) as input and outputs a set of rectangular object proposals along with repective objectness scores. This process is also a FCN, and it shares a common set of convolutional layers with the R-CNN base (13 shareable convolutional layers with VGG16).</p>
 
-<p>Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an <script type="math/tex">n \times n</script> (e.g. <script type="math/tex">3 \times 3</script>) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling <script type="math/tex">1 \times 1</script> convolutional layers (i.e. FC layers) are used for box-regression and box-classification. Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously adn the maximum possible proposals for each location is denoted as <script type="math/tex">k</script>. <strong>The</strong> <script type="math/tex">k</script> <strong>proposals are parameterized RELATIVE to</strong> <script type="math/tex">k</script> <strong>reference boxes, which are called ANCHORs</strong>. By default, 3 scales (<script type="math/tex">128^2,\, 256^2,\, 512^2</script>) and 3 aspect ratios (<script type="math/tex">1:1,\, 1:2,\, 2:1</script>) are associated with each anchor, yeilding <script type="math/tex">k=9</script> anchors at each sliding position. Following is a figure from [4] illustrating architechture of RPN.</p>
+<p>Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an <script type="math/tex">n \times n</script> (e.g. <script type="math/tex">3 \times 3</script>) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling <script type="math/tex">1 \times 1</script> convolutional layers (i.e. FC layers) are used for box-regression and box-classification.</p>
+
+<p>Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously and the maximum possible proposals for each location is denoted as <script type="math/tex">k</script>. <strong>The</strong> <script type="math/tex">k</script> <strong>proposals are parameterized RELATIVE to</strong> <script type="math/tex">k</script> <strong>reference boxes, which are called ANCHORs</strong>. By default, 3 scales (<script type="math/tex">128^2,\, 256^2,\, 512^2</script>) and 3 aspect ratios (<script type="math/tex">1:1,\, 1:2,\, 2:1</script>) are associated with each anchor, yeilding <script type="math/tex">k=9</script> anchors at each sliding position. Similar to the b-box regression formulation from R-CNN head, a transformation is learned to map b-boxes from the FCN to the anchors, and the output is the final region proposals needed later.</p>
+
+<p>Following is a figure from [4] illustrating architechture of RPN.</p>
 
 <p><img src="\assets\img\posts\rpn-structure.jpg" alt="Image" /></p>
 
@@ -232,9 +274,31 @@ f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
         <span class="c"># regressor for bbox coordinates</span>
         <span class="n">reg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1_reg</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
         <span class="c"># softmax classifier for probabilities</span>
-        <span class="n">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1_cls</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1_cls</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span> 
+        <span class="k">return</span> <span class="n">cls</span><span class="p">,</span> <span class="n">reg</span>
         
-        <span class="k">return</span> <span class="n">cls</span><span class="p">,</span> <span class="n">reg</span></code></pre></figure>
+    <span class="c">## More about staticmethod : ##</span>
+    <span class="c"># 1. Static methods don’t have access to cls or self, won't modify class state</span>
+    <span class="c"># 2. They work like regular functions but belong to the class’s namespace.</span>
+    <span class="c">#   can be called without initialize class</span>
+    <span class="c"># 3. This can have maintenance benefits.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">ref_anchors</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
+        <span class="c"># this method generates the desired anchors at location (0,0)</span>
+        <span class="n">anchors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ratio</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scale</span><span class="p">:</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="n">s</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ratio</span><span class="p">:</span>
+                <span class="c"># calculate width and height</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">area</span><span class="o">/</span><span class="n">r</span><span class="p">)</span>
+                <span class="n">height</span> <span class="o">=</span> <span class="n">width</span><span class="o">*</span><span class="n">r</span>
+                <span class="c"># calculate start and end coords</span>
+                <span class="n">half_wid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">half_hei</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">anchors</span><span class="p">[</span><span class="n">count</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">half_wid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">half_hei</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">half_wid</span><span class="p">,</span> <span class="n">half_hei</span><span class="p">]</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">anchors</span></code></pre></figure>
 
 <h3 id="region-of-interest-roi-pooling">Region-of-Interest (RoI) Pooling</h3>
 
@@ -292,23 +356,6 @@ f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
 <span class="c"># In forward():</span>
     <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RoI_pooling</span><span class="p">(</span><span class="n">feature_map</span><span class="p">,</span> <span class="n">proposals</span><span class="p">)</span></code></pre></figure>
 
-<h3 id="r-cnn-head">R-CNN Head</h3>
-
-<p>R-CNN head consists of two parts. The first part contains 2 fully connected layers which takes in the fixed-length feature vector of RoIs as input. The second part has 2 parallel sibling output layers: one uses softmax for objectness estimation (produces the probability over all object classes plus a background class) and another regressor to predict the position of bounding boxes (4 values tuple). Since I’m using VGG16 for the R-CNN base, so I just adopt the first two FC layers from the VGG16 and then attaches two parallel siblings outputs to the FC layers. The code snippet is shown below:</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="c"># feature dimension of 4096 for VGG16, K is the # of object classes</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="c"># In forward():</span>
-    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
-    <span class="c"># softmax score</span>
-    <span class="n">class_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
-    <span class="c"># bbox coordinates</span>
-    <span class="n">bbox_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span></code></pre></figure>
-
 <h3 id="training-procedure">Training Procedure</h3>
 
 <h3 id="evaluation-metric">Evaluation Metric</h3>
@@ -336,12 +383,6 @@ f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
 <p>[9] B. Mu, S. Liu, L. Paull, J. Leonard, and J. P. How. “SLAM with Objects using a Nonparametric Pose Graph”. IEEE/RSJ International Conference on Intelligent Robotics and Systems (IROS), 2016.</p>
 
 <h3 id="appendix">Appendix</h3>
-
-<p><u>Objection Recognition</u></p>
-
-<p><img src="\assets\img\posts\SLAM++.png" alt="Image" /></p>
-
-<p><img src="\assets\img\posts\point-plane-object-SLAM.png" alt="Image" /></p>
 
 
   </div>

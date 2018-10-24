@@ -18,6 +18,106 @@ For semantic SLAM, work proposed by *M. Hosseinzadeh et al.* [8] and *B. Mu et a
 In the following sections, I will use Faster R-CNN as the example to delve into the R-CNN family. The Faster R-CNN is diveded into the following parts: R-CNN base which is the convolutional layers that computes the feature maps; RoI pooling that resize all RoIs into the same size, RPN that proposals regions of interest, and the R-CNN head which predicts the class probabilities and regresses the coordinates of the bounding boxes. Finally, the training procedure and the evaluation metic will be discussed.
 
 
+### Pre-processing
+
+All image are resize to make the shorter side be 600 pixels.
+
+{% highlight python %}
+PILimg = PIL.Image.open("cars.jpg").convert("RGB")
+img_w, img_h = PILimg.size
+if img_w < img_h:
+    scaled_w = 600
+    scaled_h = img_h*600/img_w
+else:
+    scaled_w = img_w*600/img_h
+    scaled_h = 600
+print((img_w, img_h, scaled_w, scaled_h))
+
+mytransform = transforms.Compose(
+            [
+                # Resize is for the purpose of speeding up
+                # scale the shorter side to 600 pixels
+                transforms.Resize((scaled_h,scaled_w)),
+                
+                # for the purpose of data augmentation
+                # transforms.RandomHorizontalFlip(),
+                
+                # (H x W x C) in the range [0, 255] to (C x H x W) in the range [0.0, 1.0].
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
+            ]
+        )
+
+in_img = mytransform(PILimg)
+in_img = in_img.unsqueeze(0)  # add an additional dimension as first dimension
+{% endhighlight python %}
+
+And the whole structure of Faster R-CNN is as below:
+
+{% highlight python %}
+# due to the inconsistent input size, process 1 img per batch
+class faster_rcnn(nn.Module):
+    def __init__(self, bn=True, pretrain=True):
+        super(faster_rcnn, self).__init__()
+        
+        #### RCNN base ####
+        # load vgg16 with/without batch_normalization
+        print('Using conv layers from vgg16...')
+        self.bn_flag = bn
+        if bn:
+            model = models.vgg16_bn(pretrained=pretrain)
+            self.layer_dict = {
+                'conv1_1': 2, 'conv1_2': 5, 'conv2_1': 9, 'conv2_2': 12,
+                'conv3_1': 16, 'conv3_2': 19, 'conv3_3': 22,
+                'conv4_1': 26, 'conv4_2': 29, 'conv4_3': 32,
+                'conv5_1': 36, 'conv5_2': 39, 'conv5_3': 42
+            }
+        else:
+            model = models.vgg16(pretrained=pretrain)
+            self.layer_dict = {
+                'conv1_1': 1, 'conv1_2': 3, 'conv2_1': 6, 'conv2_2': 8,
+                'conv3_1': 11, 'conv3_2': 13, 'conv3_3': 15,
+                'conv4_1': 18, 'conv4_2': 20, 'conv4_3': 22,
+                'conv5_1': 25, 'conv5_2': 27, 'conv5_3': 29
+            }  
+        # discard last max pooling layer
+        # will be replaced with a RoI pooling layer
+        self.RCNN_base = nn.Sequential(*list(model.features.children())[:-1])
+        
+        #### RPN ####
+        self.RPN = RPN(s=[128, 256, 512], r=[1, 0.5, 2], n=3, bn=False, in_channels=512)
+        
+        #### RoI pooling ####
+        self.RoI_pooling = RoI_Pooling(7, 7)
+        
+        #### RCNN head ####
+        self.RCNN_head = nn.Sequential(*list(model.classifier.children())[:-1])
+        # feature dimension of 4096 for VGG16, K is the # of object classes
+        self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
+        self.reg = nn.Linear(in_features=4096, out_features=4, bias=True)
+            
+    def forward(self, img):
+        # get the base feature map
+        feature_map = self.RCNN_base(img)
+        
+        # find regions of interests
+        proposals = self.RPN(feature_map, nms_topN=2000, nms_thresh=0.7)
+        
+        # reshape all RoI to the same size
+        RoI_feat = self.RoI_pooling(feature_map, proposals)
+        # then pass the extracted roi feature through fc layers
+        RoI_feat = self.RCNN_head(RoI_feat)
+        
+        # classification, output softmax scores
+        class_scores = self.cls(RoI_feat)
+        class_scores = F.softmax(class_scores)
+        # regression, output bbox offsets to the gt
+        bbox_coords = self.reg(RoI_feat)
+        
+        return class_scores, bbox_coords
+{% endhighlight python %}
+
+
 ### R-CNN Base
 
 The convolutional layers of VGG16 (up to conv5, before the max pooling layer) are used to form the R-CNN Base, i.e. it is a fully convolutional network (FCN) [6]. The structure of VGG16 is shown below.
@@ -96,7 +196,7 @@ The code snippet is shown below:
 
 {% highlight python %}
 # In __init__():
-    self.RCNN_base = nn.Sequential(*list(model.classifier.children())[:-1])
+    self.RCNN_head = nn.Sequential(*list(model.classifier.children())[:-1])
     # feature dimension of 4096 for VGG16, K is the # of object classes
     self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
     self.reg = nn.Linear(in_features=4096, out_features=4, bias=True) #### CHECK REGRESSOR LATER !!!!!!
@@ -116,7 +216,9 @@ As defined in [4], a RPN taks an image (of any size) as input and outputs a set 
 
 Follow the procedure in [4], a small network is slided over the feature map from R-CNN base, which takes as input an $$n \times n$$ (e.g. $$3 \times 3$$) spatial window. The window is mapped to a lower-dimensional feature vector (512-d for VGG with ReLU following), and then 2 sibling $$1 \times 1$$ convolutional layers (i.e. FC layers) are used for box-regression and box-classification.
 
-Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously and the maximum possible proposals for each location is denoted as $$k$$. **The** $$k$$ **proposals are parameterized RELATIVE to** $$k$$ **reference boxes, which are called ANCHORs**. By default, 3 scales ($$128^2,\, 256^2,\, 512^2$$) and 3 aspect ratios ($$1:1,\, 1:2,\, 2:1$$) are associated with each anchor, yeilding $$k=9$$ anchors at each sliding position. Following is a figure from [4] illustrating architechture of RPN.
+Furthermore, at each sliding-window location, mutiple region proposals are predicted simultaneously and the maximum possible proposals for each location is denoted as $$k$$. **The** $$k$$ **proposals are parameterized RELATIVE to** $$k$$ **reference boxes, which are called ANCHORs**. By default, 3 scales ($$128^2,\, 256^2,\, 512^2$$) and 3 aspect ratios ($$1:1,\, 1:2,\, 2:1$$) are associated with each anchor, yeilding $$k=9$$ anchors at each sliding position. Similar to the b-box regression formulation from R-CNN head, a transformation is learned to map b-boxes from the FCN to the anchors, and the output is the final region proposals needed later.
+
+Following is a figure from [4] illustrating architechture of RPN. 
 
 ![Image](\assets\img\posts\rpn-structure.jpg)
 
@@ -129,39 +231,101 @@ A code snippet for this procedure is shown below:
 {% highlight python %}
 class RPN(nn.Module):
 
-    def __init__(self, s=3, r=3, n=3, bn=True, in_channels=512, out_channels=512):
+    def __init__(self, s=[128, 256, 512], r=[1, 0.5, 2], n=3, bn=False, in_channels=512):
         super(RPN, self).__init__()
         # number of proposed boxes #
-        self.scale = [128, 258, 512] if s=3 else None  # meaning size of bbox in original image
-        self.ratio = [1, 0.5, 2] if r=3 else None      # meaning 1:1, 1:2, 2:1
-        self.k = s*r
+        self.scale = s  # meaning size of bbox in original image
+        self.ratio = r  # meaning 1:1, 1:2, 2:1
+        self.k = len(s)*len(r)
+        self.anchors = self.ref_anchors(s, r)
         
         # n*n small network (sliding window) #
-        self.conv3 = nn.Conv2d(in_channels, out_channels, kernel_size=n, stride=1, padding=1)
-        self.bn = nn.BatchNorm2d(out_channels, eps=0.001, momentum=0, affine=True) if bn else None
+        # scale down from whatever dimension to 512
+        self.conv3 = nn.Conv2d(in_channels, 512, kernel_size=n, stride=1, padding=1)
+        self.bn = nn.BatchNorm2d(512, eps=0.001, momentum=0, affine=True) if bn else None
         self.relu = nn.ReLU(inplace=True)
         
-        # 1*1 convolutional layer for reg and cls, both take in the feature patch #
+        # 1*1 convolutional layer for reg and cls #
         # predicts 2 class probabilities(object is present / no object) for each anchor
-        # as 2-class softmax layer
-        # outputs the probabilities (dim = 2*k)
-        self.conv1_cls = nn.Conv2d(out_channels, 2*self.k, kernel_size=1, stride=1, padding=0)
-        # predicts 4 coordinates of a bounding box relative to each anchor
-        # outputs the coordinates (dim = 4*k)
-        self.conv1_reg = nn.Conv2d(out_channels, 4*self.k, kernel_size=1, stride=1, padding=0)
+        self.conv1_cls = nn.Conv2d(512, 2*self.k, kernel_size=1, stride=1, padding=0)
+        # predicts 4 coordinates of a bounding box relative to each anchor ("t")
+        self.conv1_reg = nn.Conv2d(512, 4*self.k, kernel_size=1, stride=1, padding=0)
         
-    def forward(self, feat_patch):
-        # pass through the small network mentioned in the paper
+    def forward(self, feat_map, nms_topN=2000, nms_thresh=0.7):
+        ########## following is Network operation, all variables in torch!!
+        ## scale dimension: (bsz=1, feat_chan, H, W) -> (bsz=1, 512, , H, W)
         interval = self.conv3(feat_patch)
         interval = self.bn(interval)
-        interval = self.relu(interval)
+        interval = self.relu(interval)        
+        ## cls
+        # output tensor of shape (bsz=1, 18, H, W)
+        cls_scores = self.conv1_cls(interval)
+        _, cls_s_chan, H, W = cls_scores.size()
+        # reshape to (bsz=1, 2, 9H, W)
+        cls_scores_reshape = cls_scores.view(1, 2, H*self.k, W)
+        # output tensor of shape (bsz=1, 2, 9H, W)
+        cls_prob_reshape = F.softmax(cls_scores_reshape, 1)
+        # reshape back to !!(bsz=1, 18, H, W)!!
+        t_cls_prob = cls_prob_reshape.view(1, cls_s_chan, H, W)
+        ## reg
+        # output tensor of shape !!(bsz=1, 36, H, W)!!
+        t_reg_bbox = self.conv1_reg(interval)
         
-        # regressor for bbox coordinates
-        reg = self.conv1_reg(interval)
-        # softmax classifier for probabilities
-        cls = self.conv1_cls(interval) 
-        return cls, reg
+        ########## following is Post-network operation, 
+        ########## torch variables are specified with "t_"
+        ## get anchors at each position:
+        # 1 pixel in conv5 is a 16x16 patch in original img, use (7,7) as center
+        shift_row = np.arange(0, H) * 16 + 7
+        shift_col = np.arange(0, W) * 16 + 7
+        shift_row, shift_col = np.meshgrid(shift_row, shift_col)
+        # new_centers is in shape (HxW, 4)
+        new_centers = np.vstack(shift_row.ravel(), shift_col.ravel(), 
+                                shift_row.ravel(), shift_col.ravel()).transpose()
+        # reshape to: anchor (1, 9, 4), centers (HxW, 1, 4)
+        t_centers = torch.from_numpy(new_centers).float().view(H*W, 1, 4)
+        t_ref_anchors = torch.from_numpy(self.anchors).float().view(1, 9, 4)
+        # anchors at each location, (bsz=1, HxW, 9, 4)
+        t_anchors = (t_anchors + t_centers).unsqueeze(0).expand(1, -1, -1, -1)
         
+        ## map the proposed bbox into the anchor boxes
+        # reshape output of network to the same format
+        t_reg_bbox = t_reg_bbox.permute(0, 2, 3, 1).view(1, H*W, 9, 4)
+        # [object prob, non-obj prob]
+        t_cls_prob = t_cls_prob.permute(0, 2, 3, 1).view(1, -1, 2)
+        # refine bbox using regression result, in shape of (bsz=1, H*W*9, 4)
+        t_init_proposals = self.inverse_parameterize(t_reg_bbox, t_anchors)
+        # [start_r, start_c, end_r, end_c]
+        t_init_proposals = t_init_proposals.view(1, -1, 4)
+        
+        ## ignore cross-boundary proposals FOR TRAINING, test clip to bd, torch.clamp()
+        img_h, img_w = H*16, W*16
+        # cross-bd ones: 1, in-bd ones: 0
+        comp_r_lower = torch.lt(t_init_proposals[0,:,0], torch.zeros(H*W*9))
+        comp_r_higher = torch.gt(t_init_proposals[0,:,2], torch.ones(H*W*9)*img_h-1)
+        comp_c_lower = torch.lt(t_init_proposals[0,:,1], torch.zeros(H*W*9))
+        comp_c_higher = torch.gt(t_init_proposals[0,:,3], torch.ones(H*W*9)*img_c-1)
+        comp_cross_bd = torch.le(comp_r_lower + comp_r_higher + 
+                                 comp_c_lower + comp_c_higher, torch.zeros(H*W*9))
+        t_inbd_proposals = t_init_proposals[:, comp_cross_bd, :]
+        t_inbd_scores = t_cls_prob[:, comp_cross_bd, :]
+        
+        ## non-maximum suppression
+        # sort by the probability a object presents
+        _, order = torch.sort(t_inbd_scores[:,:, 0], descending=True)
+        roi_proposals = []
+        for idx in order.numpy():
+            t_tmp_roi = t_inbd_proposals[0, idx, :]
+            b_accept_roi = True
+            for t_roi in roi_proposals:
+                iou_score = self.calculate_IoU(t_tmp_roi, t_roi)
+                if iou_score > nms_thresh:
+                    accept_roi = False
+                    break
+            roi_proposals.push_back(t_tmp_roi) if b_accept_roi
+            break if len(roi_proposals) >= nms_topN
+        
+        return roi_proposals
+    
     ## More about staticmethod : ##
     # 1. Static methods don’t have access to cls or self, won't modify class state
     # 2. They work like regular functions but belong to the class’s namespace.
@@ -170,6 +334,7 @@ class RPN(nn.Module):
     @staticmethod
     def ref_anchors(scale, ratio):
         # this method generates the desired anchors at location (0,0)
+        # anchors in the form of (start_row, start_col, end_row, end_col)
         anchors = np.empty((len(scale)*len(ratio), 4), dtype=int)
         count = 0
         for s in scale:
@@ -181,9 +346,58 @@ class RPN(nn.Module):
                 # calculate start and end coords
                 half_wid = int(round(width/2))
                 half_hei = int(round(height/2))
-                anchors[count, :] = [-half_wid+1, -half_hei+1, half_wid, half_hei]
+                anchors[count, :] = [-half_hei+1, -half_wid+1, half_hei, half_wid]
                 count = count + 1
         return anchors
+        
+    @staticmethod
+    def inverse_parameterize(reg_bbox, anchor_bbox):
+        # (bsz=1, H*W, 9, 4), 
+        # in order of: tx, ty, tw, th; start_row, start_col, end_row, end_col
+        # all in float type
+        # get center_row, center_col, height, width for anchor boxes
+        an_height = anchor_bbox[:, :, :, 2] - anchor_bbox[:, :, :, 0] + 1.
+        an_width = anchor_bbox[:, :, :, 3] - anchor_bbox[:, :, :, 1] + 1.
+        an_center_row = anchor_bbox[:, :, :, 0] + an_height*0.5
+        an_center_col = anchor_bbox[:, :, :, 1] + an_width*0.5
+        
+        # for every anchor, calculate the final coordinates of initial proposals
+        prop_x = reg_bbox[:,:,:,0] * an_width + an_center_col
+        prop_y = reg_bbox[:,:,:,1] * an_height + an_center_row
+        prop_w = torch.exp(reg_bbox[:,:,:,2]) * an_width
+        prop_h = torch.exp(reg_bbox[:,:,:,3]) * an_height
+        
+        # get to the format of start_row, start_col, end_row, end_col
+        prop_start_r = (prop_y - 0.5*prop_h).unsqueeze(3)
+        prop_end_r = (prop_y + 0.5*prop_h).unsqueeze(3)
+        prop_start_c = (prop_x - 0.5*prop_w).unsqueeze(3)
+        prop_end_c = (prop_x + 0.5*prop_w).unsqueeze(3)
+        init_proposals = torch.cat((prop_start_r, prop_start_c, prop_end_r, prop_end_c), 3)
+        
+        # return in shape of (bsz=1, H*W, 9, 4), start_row, start_col, end_row, end_col
+        return init_proposals
+        
+    @staticmethod
+    def calculate_IoU(bbox1, bbox2):
+        # input type: torch tensors of size 4
+        # convert to numpy
+        np_bbox1 = bbox1.numpy()
+        np_bbox2 = bbox2.numpy()
+        # get width and height
+        w1 = bbox1[3] - bbox1[1] + 1.
+        h1 = bbox1[2] - bbox1[0] + 1.
+        w2 = bbox2[3] - bbox2[1] + 1.
+        h2 = bbox2[2] - bbox2[0] + 1.
+        # get area of overlap
+        upperleft_r = max(bbox1[0], bbox2[0])
+        upperleft_c = max(bbox1[1], bbox2[1])
+        lowerright_r = min(bbox1[2], bbox2[2])
+        lowerright_c = min(bbox1[3], bbox2[3])
+        return 0. if upperleft_r >= lowerright_r or upperleft_c >= lowerright_c
+        
+        area_inter = (lowerright_r-upperleft_r+1.) * (lowerright_c-upperleft_c+1.)
+        area_union = (w1*h1) + (w2*h2) - area_inter
+        return float(area_inter) / float(area_union)
 {% endhighlight python %}
 
 
@@ -207,25 +421,32 @@ class RoI_Pooling(nn.Module):
         self.H = H
         self.W = W
         
-    def forward(self, feature_map, in_tuple):
-        # in_tuple is a list of four-tuple (r, c, h, w), which are the region proposals
+    def forward(self, feature_map, list_rois):
+        # list_rois is a list of torch_tensors (r_s, c_s, h_e, w_e), which are the region proposals
         # instead output a list of feature vectors, concatenate all roi feat vector along the batch dimension
         # get first RoI
-        roi_r, roi_c, h, w = in_tuple[0]
-        fixed_size_feat = MaxPooling(feature_map[:, :, roi_r:roi_r+h, roi_c:roi_c+w])
-        for i in range(1, len(in_tuple)):
-            roi_r, roi_c, h, w = in_tuple[i]
-            fixed_size_feat_tmp = MaxPooling(feature_map[:, :, roi_r:roi_r+h, roi_c:roi_c+w])
+        roi_r, roi_c, roi_r_end, roi_c_end = list_rois[0].numpy()
+        feat_patch = feature_map[:, :, round(roi_r/16):round(roi_r_end/16),
+                                 round(roi_c/16):round(roi_c_end/16)]
+        fixed_size_feat = MaxPooling(feat_patch)
+        for i in range(1, len(list_rois)):
+            roi_r, roi_c, roi_r_end, roi_c_end = list_rois[i].numpy()
+            feat_patch = feature_map[:, :, round(roi_r/16):round(roi_r_end/16),
+                                     round(roi_c/16):round(roi_c_end/16)]
+            fixed_size_feat_tmp = MaxPooling(feature_patch)
             fixed_size_feat = torch.cat((fixed_size_feat, fixed_size_feat_tmp), 0)
         # output feature is a torch tensor of size (bsz=#_of_rois, chans, H, W)
         return fixed_size_feat
-    
+        
     def MaxPooling(self, feat_roi):
         bsz, chans, h, w = feat_roi.size()
-        fixed_size_feat = torch.zeros(bsz=1, chans, self.H, self.W)
+        # padded with zeros if h,w < H,W
+        fixed_size_feat = torch.zeros(bsz, chans, self.H, self.W)
         # sub_window size
-        sub_win_height = h/self.H
-        sub_win_width = w/self.W
+        sub_win_height = int(h/self.H)
+        sub_win_height = 1 if sub_win_height == 0
+        sub_win_width = int(w/self.W)
+        sub_win_width = 1 if sub_win_width == 0
         # max pooling
         for r in range(self.H):
             start_r = self.H*r
@@ -238,7 +459,7 @@ class RoI_Pooling(nn.Module):
                 # find maximum in each channel
                 max_along_h = torch.max(patch_feat, 2)
                 max_final = torch.max(max_along_h[0], 2)
-                fixed_size_feat[:, :, r, c] = max_final[0]
+                fixed_size_feat[:, :, r, c] = max_final[0]        
         # return feature of (bsz, chans, H, W)
         return fixed_size_feat
 {% endhighlight %}
