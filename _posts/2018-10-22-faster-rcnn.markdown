@@ -434,14 +434,6 @@ class RoI_Pooling(nn.Module):
         return fixed_size_feat
 {% endhighlight %}
 
-{% highlight python %}
-# In __init__():
-    self.RoI_pooling = RoI_Pooling(7, 7)
-
-# In forward():
-    RoI_feat = self.RoI_pooling(feature_map, proposals)
-{% endhighlight %}
-
 
 ### Training Procedure
 

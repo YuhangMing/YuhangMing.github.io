@@ -257,29 +257,7 @@ f_{ks} \circ g_{k's'} = (f \circ g)_{k'+(k-1)s', ss'}
 
 <p>A code snippet of creating the R-CNN base with PyTorch is shown below:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">bn_flag</span> <span class="o">=</span> <span class="n">bn</span>
-    <span class="k">if</span> <span class="n">bn</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg16_bn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="n">pretrain</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">'conv1_1'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'conv1_2'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'conv2_1'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">'conv2_2'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="s">'conv3_1'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'conv3_2'</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s">'conv3_3'</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
-            <span class="s">'conv4_1'</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span> <span class="s">'conv4_2'</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s">'conv4_3'</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
-            <span class="s">'conv5_1'</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s">'conv5_2'</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span> <span class="s">'conv5_3'</span><span class="p">:</span> <span class="mi">42</span>
-        <span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg16</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="n">pretrain</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">'conv1_1'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'conv1_2'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'conv2_1'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'conv2_2'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="s">'conv3_1'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s">'conv3_2'</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s">'conv3_3'</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-            <span class="s">'conv4_1'</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s">'conv4_2'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">'conv4_3'</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
-            <span class="s">'conv5_1'</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s">'conv5_2'</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s">'conv5_3'</span><span class="p">:</span> <span class="mi">29</span>
-        <span class="p">}</span>  
-    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="c"># In forward():</span>
-    <span class="c"># get the base feature map</span>
-    <span class="n">feature_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">RCNN_base</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
 
 <h3 id="r-cnn-head">R-CNN Head</h3>
 
@@ -306,19 +284,10 @@ t_h = log(G_h/P_h)
 
 <p>The code snippet is shown below:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="c"># feature dimension of 4096 for VGG16, K is the # of object classes</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="c"># In forward():</span>
-    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCNN_head</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
-    <span class="c"># classification, output softmax scores</span>
-    <span class="n">class_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span>
-    <span class="n">class_scores</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">class_scores</span><span class="p">)</span>
-    <span class="c"># regression, output bbox offsets to the gt</span>
-    <span class="n">bbox_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg</span><span class="p">(</span><span class="n">RoI_feat</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">RCNN_head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># feature dimension of 4096 for VGG16, K is the # of object classes</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">reg</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
 
 <h3 id="region-proposal-network-rpn">Region Proposal Network (RPN)</h3>
 
