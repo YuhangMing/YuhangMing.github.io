@@ -199,13 +199,14 @@ The code snippet is shown below:
     self.RCNN_head = nn.Sequential(*list(model.classifier.children())[:-1])
     # feature dimension of 4096 for VGG16, K is the # of object classes
     self.cls = nn.Linear(in_features=4096, out_features=K+1, bias=True)
-    self.reg = nn.Linear(in_features=4096, out_features=4, bias=True) #### CHECK REGRESSOR LATER !!!!!!
+    self.reg = nn.Linear(in_features=4096, out_features=4, bias=True)
 
 # In forward():
-    RoI_feat = self.RCNN_base(RoI_feat)
-    # softmax score
+    RoI_feat = self.RCNN_head(RoI_feat)
+    # classification, output softmax scores
     class_scores = self.cls(RoI_feat)
-    # bbox coordinates
+    class_scores = F.softmax(class_scores)
+    # regression, output bbox offsets to the gt
     bbox_coords = self.reg(RoI_feat)
 {% endhighlight python %}
 
