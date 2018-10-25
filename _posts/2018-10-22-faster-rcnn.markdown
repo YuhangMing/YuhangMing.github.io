@@ -447,6 +447,12 @@ It's the mean of AP.
 
 Average Precision (AP) computes the average of the maximum precisions at different recall values.
 
+                       | groundtruth
+                       | Positive | Negative 
+predictions | Positive |    TP    |   FP
+            | Negative |    FN    |   TN
+
+
 True Positive (TP): Predicted as positive while it's positive in GT.
 
 False Positive (FP): ........... positive .......... negative ......
@@ -458,7 +464,7 @@ True Negative (TN): ............ negative .......... negative ......
 $$
 \begin{cases}
 precision = \frac{TP}{TP + FP} \\
-recall = frac{TP}{TP + FN} \\
+recall = \frac{TP}{TP + FN} \\
 F1 = 2 \frac{precision \times recall}{precision + recall} \\
 mAP = \frac{\sum_{q=1}^Q Avg(P(q))}{Q}
 \end{cases}
