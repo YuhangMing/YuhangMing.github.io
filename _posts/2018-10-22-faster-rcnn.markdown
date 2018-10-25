@@ -441,8 +441,53 @@ class RoI_Pooling(nn.Module):
 
 ### Evaluation Metric
 
-mAP
+mean Average Precision (mAP): 
 
+It's the mean of AP. 
+
+Average Precision (AP) computes the average of the maximum precisions at different recall values.
+
+True Positive (TP): Predicted as positive while it's positive in GT.
+
+False Positive (FP): ........... positive .......... negative ......
+
+False Negative (FN): ........... negative .......... positive ......
+
+True Negative (TN): ............ negative .......... negative ......
+
+$$
+\begin{cases}
+precision = \frac{TP}{TP + FP} \\
+recall = frac{TP}{TP + FN} \\
+F1 = 2 \frac{precision \times recall}{precision + recall} \\
+mAP = \frac{\sum_{q=1}^Q Avg(P(q))}{Q}
+\end{cases}
+$$
+
+*e.g.* Given 3 classes of objects in an image, calss 1 has 3 instances, class 2 has 5 instances and class 3 has 1 instance. We obtain 10 detections for each class, o for correct detection and x for misses.
+
+
+---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- 
+class 1:   |  o  |  x  |  o  |  x  |  x  |  o  |  x  |  x  |  o  |  o
+precision: | 1.0 | 0.5 | 0.67| 0.5 | 0.4 | 0.5 | 0.43| 0.38| 0.44| 0.5
+recall:    | 0.2 | 0.2 | 0.4 | 0.4 | 0.4 | 0.6 | 0.6 | 0.6 | 0.8 | 1.0
+---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- 
+class 2:   |  x  |  o  |  x  |  x  |  o  |  x  |  o  |  x  |  x  |  x
+precision: | 0.0 | 0.5 | 0.33| 0.25| 0.4 | 0.33| 0.43| 0.38| 0.33| 0.3
+recall:    | 0.0 | 0.33| 0.33| 0.33| 0.67| 0.67| 1.0 | 1.0 | 1.0 | 1.0
+---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- 
+class 3:   |  x  |  x  |  x  |  o  |  x  |  x  |  x  |  x  |  x  |  x
+precision: | 0.0 | 0.0 | 0.0 | 0.25| 0.2 | 0.17| 0.14| 0.13| 0.11| 0.1
+recall:    | 0.0 | 0.0 | 0.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0
+
+$$
+\begin{cases}
+AP_1 &= \frac{1.0\times 2 + 0.67\times 3 + 0.5\times 3 + 0.44 + 0.5}{10} = 0.645 \\
+AP_2 &= \frac{0 + 0.5\times 3 + 0.4\times 2 + 0.43\times 4}{10} = 0.502 \\ 
+AP_3 &= \frac{0\times 3 + 0.25\times 7}{10} = 0.175
+mAP  &= \frac{0.645 + 0.502 + 0.175}{3} = 0.441
+\end{cases}
+$$
 
 
 ### Reference:

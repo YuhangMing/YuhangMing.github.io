@@ -534,12 +534,6 @@ t_h = log(G_h/P_h)
         <span class="c"># return feature of (bsz, chans, H, W)</span>
         <span class="k">return</span> <span class="n">fixed_size_feat</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># In __init__():</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">RoI_pooling</span> <span class="o">=</span> <span class="n">RoI_Pooling</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-
-<span class="c"># In forward():</span>
-    <span class="n">RoI_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RoI_pooling</span><span class="p">(</span><span class="n">feature_map</span><span class="p">,</span> <span class="n">proposals</span><span class="p">)</span></code></pre></figure>
-
 <h3 id="training-procedure">Training Procedure</h3>
 
 <h3 id="evaluation-metric">Evaluation Metric</h3>
