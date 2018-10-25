@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-24T18:13:13+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Delving into the R-CNN Family</title><link href="http://localhost:4000/faster-rcnn/" rel="alternate" type="text/html" title="Delving into the R-CNN Family" /><published>2018-10-22T19:00:00+01:00</published><updated>2018-10-22T19:00:00+01:00</updated><id>http://localhost:4000/faster-rcnn</id><content type="html" xml:base="http://localhost:4000/faster-rcnn/">&lt;h3 id=&quot;general-information&quot;&gt;General Information&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-25T16:16:42+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Delving into the R-CNN Family</title><link href="http://localhost:4000/faster-rcnn/" rel="alternate" type="text/html" title="Delving into the R-CNN Family" /><published>2018-10-22T19:00:00+01:00</published><updated>2018-10-22T19:00:00+01:00</updated><id>http://localhost:4000/faster-rcnn</id><content type="html" xml:base="http://localhost:4000/faster-rcnn/">&lt;h3 id=&quot;general-information&quot;&gt;General Information&lt;/h3&gt;
 
 &lt;p&gt;With the booming advance of the deep neural networks (DNNs), more and more researchers have been applying DNNs in various vision problems. Among all, Regions with CNN features (R-CNN) [2] by &lt;em&gt;R. Girshick et al.&lt;/em&gt; is the first to show a CNN can lead to dramatically outstanding object detection performance on PASCAL VOC challenge. However, R-CNN has a significant drawback: detection with VGG16 takes 47s/image (on a GPU). Hence, an improved version of R-CNN is proposed by sharing convolutions across all region proposals, known as Fast R-CNN [3]. The Fast R-CNN system is able to achieve real-tine detection when ignoring time spent on region proposals, with 0.3s/image (excluding object proposal time). Furthermroe, to break the bottleneck of improving detection time, &lt;em&gt;S. Ren et al.&lt;/em&gt; proposed Faster R-CNN [4] with the key contribution of replacing Selective Search in Fast R-CNN with Region Proposal Network (RPN), which shares the convolutional layers with Fast R-CNN. This improvement equips the system with the detection frame rate of 5 frame per second (fps) on a GPU. Moving on from object detection to semantic segmentation, Mask R-CNN [5] extends Faster R-CNN by adding a branch for predicting object mask. The architecture of these 4 networks are shown in the figure below and these 4 netowrks together forms the famous R-CNN family of object detection.&lt;/p&gt;
 
@@ -401,7 +401,158 @@ t_h = log(G_h/P_h)
 
 &lt;h3 id=&quot;evaluation-metric&quot;&gt;Evaluation Metric&lt;/h3&gt;
 
-&lt;p&gt;mAP&lt;/p&gt;
+&lt;p&gt;mean Average Precision (mAP):&lt;/p&gt;
+
+&lt;p&gt;It’s the mean of AP.&lt;/p&gt;
+
+&lt;p&gt;Average Precision (AP) computes the average of the maximum precisions at different recall values.&lt;/p&gt;
+
+&lt;p&gt;True Positive (TP): Predicted as positive while it’s positive in GT.&lt;/p&gt;
+
+&lt;p&gt;False Positive (FP): ……….. positive ………. negative ……&lt;/p&gt;
+
+&lt;p&gt;False Negative (FN): ……….. negative ………. positive ……&lt;/p&gt;
+
+&lt;p&gt;True Negative (TN): ………… negative ………. negative ……&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{cases}
+precision = \frac{TP}{TP + FP} \\
+recall = frac{TP}{TP + FN} \\
+F1 = 2 \frac{precision \times recall}{precision + recall} \\
+mAP = \frac{\sum_{q=1}^Q Avg(P(q))}{Q}
+\end{cases}&lt;/script&gt;
+
+&lt;p&gt;&lt;em&gt;e.g.&lt;/em&gt; Given 3 classes of objects in an image, calss 1 has 3 instances, class 2 has 5 instances and class 3 has 1 instance. We obtain 10 detections for each class, o for correct detection and x for misses.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;class 1:&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;precision:&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+      &lt;td&gt;0.67&lt;/td&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+      &lt;td&gt;0.43&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+      &lt;td&gt;0.44&lt;/td&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;recall:&lt;/td&gt;
+      &lt;td&gt;0.2&lt;/td&gt;
+      &lt;td&gt;0.2&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;0.6&lt;/td&gt;
+      &lt;td&gt;0.6&lt;/td&gt;
+      &lt;td&gt;0.6&lt;/td&gt;
+      &lt;td&gt;0.8&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;class 2:&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;precision:&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.43&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;recall:&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;0.67&lt;/td&gt;
+      &lt;td&gt;0.67&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;class 3:&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;precision:&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+      &lt;td&gt;0.2&lt;/td&gt;
+      &lt;td&gt;0.17&lt;/td&gt;
+      &lt;td&gt;0.14&lt;/td&gt;
+      &lt;td&gt;0.13&lt;/td&gt;
+      &lt;td&gt;0.11&lt;/td&gt;
+      &lt;td&gt;0.1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;recall:&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{cases}
+AP_1 &amp;= \frac{1.0\times 2 + 0.67\times 3 + 0.5\times 3 + 0.44 + 0.5}{10} = 0.645 \\
+AP_2 &amp;= \frac{0 + 0.5\times 3 + 0.4\times 2 + 0.43\times 4}{10} = 0.502 \\ 
+AP_3 &amp;= \frac{0\times 3 + 0.25\times 7}{10} = 0.175 \\
+mAP  &amp;= \frac{0.645 + 0.502 + 0.175}{3} = 0.441
+\end{cases} %]]&gt;&lt;/script&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;Reference:&lt;/h3&gt;
 

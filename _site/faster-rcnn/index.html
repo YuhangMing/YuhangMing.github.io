@@ -538,7 +538,158 @@ t_h = log(G_h/P_h)
 
 <h3 id="evaluation-metric">Evaluation Metric</h3>
 
-<p>mAP</p>
+<p>mean Average Precision (mAP):</p>
+
+<p>It’s the mean of AP.</p>
+
+<p>Average Precision (AP) computes the average of the maximum precisions at different recall values.</p>
+
+<p>True Positive (TP): Predicted as positive while it’s positive in GT.</p>
+
+<p>False Positive (FP): ……….. positive ………. negative ……</p>
+
+<p>False Negative (FN): ……….. negative ………. positive ……</p>
+
+<p>True Negative (TN): ………… negative ………. negative ……</p>
+
+<script type="math/tex; mode=display">\begin{cases}
+precision = \frac{TP}{TP + FP} \\
+recall = frac{TP}{TP + FN} \\
+F1 = 2 \frac{precision \times recall}{precision + recall} \\
+mAP = \frac{\sum_{q=1}^Q Avg(P(q))}{Q}
+\end{cases}</script>
+
+<p><em>e.g.</em> Given 3 classes of objects in an image, calss 1 has 3 instances, class 2 has 5 instances and class 3 has 1 instance. We obtain 10 detections for each class, o for correct detection and x for misses.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>class 1:</td>
+      <td>o</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>x</td>
+      <td>o</td>
+      <td>o</td>
+    </tr>
+    <tr>
+      <td>precision:</td>
+      <td>1.0</td>
+      <td>0.5</td>
+      <td>0.67</td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td>0.5</td>
+      <td>0.43</td>
+      <td>0.38</td>
+      <td>0.44</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>recall:</td>
+      <td>0.2</td>
+      <td>0.2</td>
+      <td>0.4</td>
+      <td>0.4</td>
+      <td>0.4</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.6</td>
+      <td>0.8</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>class 2:</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <td>precision:</td>
+      <td>0.0</td>
+      <td>0.5</td>
+      <td>0.33</td>
+      <td>0.25</td>
+      <td>0.4</td>
+      <td>0.33</td>
+      <td>0.43</td>
+      <td>0.38</td>
+      <td>0.33</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>recall:</td>
+      <td>0.0</td>
+      <td>0.33</td>
+      <td>0.33</td>
+      <td>0.33</td>
+      <td>0.67</td>
+      <td>0.67</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>class 3:</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>o</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <td>precision:</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>0.2</td>
+      <td>0.17</td>
+      <td>0.14</td>
+      <td>0.13</td>
+      <td>0.11</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>recall:</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{cases}
+AP_1 &= \frac{1.0\times 2 + 0.67\times 3 + 0.5\times 3 + 0.44 + 0.5}{10} = 0.645 \\
+AP_2 &= \frac{0 + 0.5\times 3 + 0.4\times 2 + 0.43\times 4}{10} = 0.502 \\ 
+AP_3 &= \frac{0\times 3 + 0.25\times 7}{10} = 0.175 \\
+mAP  &= \frac{0.645 + 0.502 + 0.175}{3} = 0.441
+\end{cases} %]]></script>
 
 <h3 id="reference">Reference:</h3>
 
