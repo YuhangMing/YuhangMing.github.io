@@ -447,19 +447,9 @@ It's the mean of AP.
 
 Average Precision (AP) computes the average of the maximum precisions at different recall values.
 
-| groundtruth         |
-| Positive | Negative |
-|    TP    |   FP     | Positive | predictions 
-|    FN    |   TN     | Negative |
-
-
-True Positive (TP): Predicted as positive while it's positive in GT.
-
-False Positive (FP): ........... positive .......... negative ......
-
-False Negative (FN): ........... negative .......... positive ......
-
-True Negative (TN): ............ negative .......... negative ......
+| Pred \ GT | Positive | Negative |
+| Positive  |    TP    |   FP     |  
+| Negative  |    FN    |   TN     | 
 
 $$
 \begin{cases}
