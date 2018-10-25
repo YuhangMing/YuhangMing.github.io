@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-25T16:18:25+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Delving into the R-CNN Family</title><link href="http://localhost:4000/faster-rcnn/" rel="alternate" type="text/html" title="Delving into the R-CNN Family" /><published>2018-10-22T19:00:00+01:00</published><updated>2018-10-22T19:00:00+01:00</updated><id>http://localhost:4000/faster-rcnn</id><content type="html" xml:base="http://localhost:4000/faster-rcnn/">&lt;h3 id=&quot;general-information&quot;&gt;General Information&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-25T16:23:00+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yohann’s Blog</title><subtitle>I'm gonna write down things I learned along with my understandings.</subtitle><author><name>Yuhang Ming</name><email>yuhang.ming@bristol.ac.uk</email></author><entry><title type="html">Delving into the R-CNN Family</title><link href="http://localhost:4000/faster-rcnn/" rel="alternate" type="text/html" title="Delving into the R-CNN Family" /><published>2018-10-22T19:00:00+01:00</published><updated>2018-10-22T19:00:00+01:00</updated><id>http://localhost:4000/faster-rcnn</id><content type="html" xml:base="http://localhost:4000/faster-rcnn/">&lt;h3 id=&quot;general-information&quot;&gt;General Information&lt;/h3&gt;
 
 &lt;p&gt;With the booming advance of the deep neural networks (DNNs), more and more researchers have been applying DNNs in various vision problems. Among all, Regions with CNN features (R-CNN) [2] by &lt;em&gt;R. Girshick et al.&lt;/em&gt; is the first to show a CNN can lead to dramatically outstanding object detection performance on PASCAL VOC challenge. However, R-CNN has a significant drawback: detection with VGG16 takes 47s/image (on a GPU). Hence, an improved version of R-CNN is proposed by sharing convolutions across all region proposals, known as Fast R-CNN [3]. The Fast R-CNN system is able to achieve real-tine detection when ignoring time spent on region proposals, with 0.3s/image (excluding object proposal time). Furthermroe, to break the bottleneck of improving detection time, &lt;em&gt;S. Ren et al.&lt;/em&gt; proposed Faster R-CNN [4] with the key contribution of replacing Selective Search in Fast R-CNN with Region Proposal Network (RPN), which shares the convolutional layers with Fast R-CNN. This improvement equips the system with the detection frame rate of 5 frame per second (fps) on a GPU. Moving on from object detection to semantic segmentation, Mask R-CNN [5] extends Faster R-CNN by adding a branch for predicting object mask. The architecture of these 4 networks are shown in the figure below and these 4 netowrks together forms the famous R-CNN family of object detection.&lt;/p&gt;
 
@@ -406,6 +406,35 @@ t_h = log(G_h/P_h)
 &lt;p&gt;It’s the mean of AP.&lt;/p&gt;
 
 &lt;p&gt;Average Precision (AP) computes the average of the maximum precisions at different recall values.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;groundtruth&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Positive&lt;/td&gt;
+      &lt;td&gt;Negative&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TP&lt;/td&gt;
+      &lt;td&gt;FP&lt;/td&gt;
+      &lt;td&gt;Positive&lt;/td&gt;
+      &lt;td&gt;predictions&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FN&lt;/td&gt;
+      &lt;td&gt;TN&lt;/td&gt;
+      &lt;td&gt;Negative&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;True Positive (TP): Predicted as positive while it’s positive in GT.&lt;/p&gt;
 
